@@ -81,21 +81,21 @@ static CBlock CreateGenesisBlock(const CScript& genesisInputScript, const CScrip
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
-    const char* pszTimestamp = "... choose what comes next.  Lives of your own, or a return to chains. -- V";
-    const CScript genesisInputScript = CScript() << 0x1c007fff << CScriptNum(522) << std::vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
-    const CScript genesisOutputScript = CScript() << ParseHex("04b620369050cd899ffbbc4e8ee51e8c4534a855bb463439d63d235d4779685d8b6f4870a238cf365ac94fa13ef9a2a22cd99d0d5ee86dcabcafce36c7acf43ce5") << OP_CHECKSIG;
+    const char* pszTimestamp = "USA überraschen Europa mit einem Gesetz zur Online-Durchsuchung";
+    const CScript genesisInputScript = CScript() << 0x1f00ffff << CScriptNum(4) << std::vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
+    const CScript genesisOutputScript = CScript() << ParseHex("042f413ffbe86df73d195832efd61003fe4e7f6c061e75afa06365928fa649dd4a408c4029ca98c9a0bfda2b99e53c587c95d566375036c7f85be51b5a4e150118") << OP_CHECKSIG;
     return CreateGenesisBlock(genesisInputScript, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
 
 /**
- * Build genesis block for testnet.  In Namecoin, it has a changed timestamp
- * and output script (it uses Bitcoin's).
+ * Build genesis block for testnet.  In Doichain, it has a changed timestamp
+ * and output script.
  */
 static CBlock CreateTestnetGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
-    const char* pszTimestamp = "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks";
+    const char* pszTimestamp = "Mark Zuckerberg und Apple-Chef Tim Cook gehen aufeinander los";
     const CScript genesisInputScript = CScript() << 0x1d00ffff << CScriptNum(4) << std::vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
-    const CScript genesisOutputScript = CScript() << "04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f"_hex_v_u8 << OP_CHECKSIG;
+    const CScript genesisOutputScript = CScript() << ParseHex("042f413ffbe86df73d195832efd61003fe4e7f6c061e75afa06365928fa649dd4a408c4029ca98c9a0bfda2b99e53c587c95d566375036c7f85be51b5a4e150118") << OP_CHECKSIG;
     return CreateGenesisBlock(genesisInputScript, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
 
@@ -120,7 +120,7 @@ public:
         consensus.CSVHeight = 475000;
         consensus.SegwitHeight = 475000;
         consensus.MinBIP9WarningHeight = 477016; // segwit activation height + miner confirmation window
-        consensus.powLimit = uint256{"00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
+        consensus.powLimit = uint256{"0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = false;
@@ -223,52 +223,15 @@ public:
         m_assumeutxo_data = {};
 
         chainTxData = ChainTxData{
-            // Data from RPC: getchaintxstats 4096 94c093af984579ccd885eab4e4a2914dd7619970f87d1fdaaf122dc91c215769
-            .nTime    = 1741273217,
-            .tx_count = 8379714,
-            .dTxRate  = 0.01284092389901117,
+            // Data from rpc: getchaintxstats 4096 42c5147b7204a00ad0e56f167ed52e214da623a5459261db32d6da1687d601d6
+            1522756358,          // * UNIX timestamp of last known number of transactions
+            0, // * total number of transactions between genesis and that timestamp
+            1    // * estimated number of transactions per second after checkpoint
         };
 
-        /* See also doc/NamecoinBugs.txt for more explanation on the
-           historical bugs added below.  */
-
-        /* These transactions have name outputs but a non-Namecoin tx version.
-           They contain NAME_NEWs, which are fine, and also NAME_FIRSTUPDATE.
-           The latter are not interpreted by namecoind, thus also ignore
-           them for us here.  */
-        addBug(98423, uint256{"bff3ed6873e5698b97bf0c28c29302b59588590b747787c7d1ef32decdabe0d1"}, BUG_FULLY_IGNORE);
-        addBug(98424, uint256{"e9b211007e5cac471769212ca0f47bb066b81966a8e541d44acf0f8a1bd24976"}, BUG_FULLY_IGNORE);
-        addBug(98425, uint256{"8aa2b0fc7d1033de28e0192526765a72e9df0c635f7305bdc57cb451ed01a4ca"}, BUG_FULLY_IGNORE);
-
-        /* These are non-Namecoin tx that contain just NAME_NEWs.  Those were
-           handled with a special rule previously, but now they are fully
-           disallowed and we handle the few exceptions here.  It is fine to
-           "ignore" them, as their outputs need no special Namecoin handling
-           before they are reused in a NAME_FIRSTUPDATE.  */
-        addBug(98318, uint256{"0ae5e958ff05ad8e273222656d98d076097def6d36f781a627c584b859f4727b"}, BUG_FULLY_IGNORE);
-        addBug(98321, uint256{"aca8ce46da1bbb9bb8e563880efcd9d6dd18342c446d6f0e3d4b964a990d1c27"}, BUG_FULLY_IGNORE);
-        addBug(98424, uint256{"c29b0d9d478411462a8ac29946bf6fdeca358a77b4be15cd921567eb66852180"}, BUG_FULLY_IGNORE);
-        addBug(98425, uint256{"221719b360f0c83fa5b1c26fb6b67c5e74e4e7c6aa3dce55025da6759f5f7060"}, BUG_FULLY_IGNORE);
-        addBug(193518, uint256{"597370b632efb35d5ed554c634c7af44affa6066f2a87a88046532d4057b46f8"}, BUG_FULLY_IGNORE);
-        addBug(195605, uint256{"0bb8c7807a9756aefe62c271770b313b31dee73151f515b1ac2066c50eaeeb91"}, BUG_FULLY_IGNORE);
-        addBug(195639, uint256{"3181930765b970fc43cd31d53fc6fc1da9439a28257d9067c3b5912d23eab01c"}, BUG_FULLY_IGNORE);
-        addBug(195639, uint256{"e815e7d774937d96a4b265ed4866b7e3dc8d9f2acb8563402e216aba6edd1e9e"}, BUG_FULLY_IGNORE);
-        addBug(195639, uint256{"cdfe6eda068e09fe760a70bec201feb041b8c660d0e98cbc05c8aa4106eae6ab"}, BUG_FULLY_IGNORE);
-        addBug(195641, uint256{"1e29e937b2a9e1f18af500371b8714157cf5ac7c95461913e08ce402de64ae75"}, BUG_FULLY_IGNORE);
-        addBug(195648, uint256{"d44ed6c0fac251931465f9123ada8459ec954cc6c7b648a56c9326ff7b13f552"}, BUG_FULLY_IGNORE);
-        addBug(197711, uint256{"dd77aea50a189935d0ef36a04856805cd74600a53193c539eb90c1e1c0f9ecac"}, BUG_FULLY_IGNORE);
-        addBug(204151, uint256{"f31875dfaf94bd3a93cfbed0e22d405d1f2e49b4d0750cb13812adc5e57f1e47"}, BUG_FULLY_IGNORE);
-
-        /* This transaction has both a NAME_NEW and a NAME_FIRSTUPDATE as
-           inputs.  This was accepted due to the "argument concatenation" bug.
-           It is fine to accept it as valid and just process the NAME_UPDATE
-           output that builds on the NAME_FIRSTUPDATE input.  (NAME_NEW has no
-           special side-effect in applying anyway.)  */
-        addBug(99381, uint256{"774d4c446cecfc40b1c02fdc5a13be6d2007233f9d91daefab6b3c2e70042f05"}, BUG_FULLY_APPLY);
-
-        /* These were libcoin's name stealing bugs.  */
-        addBug(139872, uint256{"2f034f2499c136a2c5a922ca4be65c1292815c753bbb100a2a26d5ad532c3919"}, BUG_IN_UTXO);
-        addBug(139936, uint256{"c3e76d5384139228221cce60250397d1b87adf7366086bc8d6b5e6eee03c55c7"}, BUG_FULLY_IGNORE);
+        /* Doichain does not have the historical bugs that Namecoin had,
+           so we keep the bug map empty for mainnet. */
+        assert(mapHistoricBugs.empty());
     }
 
     int DefaultCheckNameDB () const override
@@ -317,11 +280,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].min_activation_height = 0; // No activation delay
 
         // The best chain should have at least this much work.
-        // The value is the chain work of the Namecoin testnet chain at height
-        // 233,000, with best block hash:
-        // bc66fc22b8a2988bdc519c4c6aa431bb57201e5102ad8b8272fcde2937b4d2f7
-        consensus.nMinimumChainWork = uint256{"000000000000000000000000000000000000000000000000ed17e3004a583c4f"};
-        consensus.defaultAssumeValid = uint256{"bc66fc22b8a2988bdc519c4c6aa431bb57201e5102ad8b8272fcde2937b4d2f7"}; // 233,100
+        // The value is the chain work of the Doichain testnet chain
+        // TODO: Update with actual Doichain testnet chain work values
+        consensus.nMinimumChainWork = uint256{"0000000000000000000000000000000000000000000000000000000000001c71"};
+        consensus.defaultAssumeValid = uint256{"0000cd7572b3ecc78b7cddf49eda95e718d4df77c236ca2e375125e111e7e9c4"}; // Doichain testnet genesis
 
         consensus.nAuxpowStartHeight = 0;
         consensus.nAuxpowChainId = 0x0001;
@@ -339,10 +301,10 @@ public:
         m_assumed_blockchain_size = 1;
         m_assumed_chain_state_size = 1;
 
-        genesis = CreateTestnetGenesisBlock(1296688602, 0x16ec0bff, 0x1d07fff8, 1, 50 * COIN);
+        genesis = CreateTestnetGenesisBlock(1522756358, 6658, 0x1f08ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256{"00000007199508e34a9ff81e6ec0c477a4cccff2a4767a8eee39c11db367b008"});
-        assert(genesis.hashMerkleRoot == uint256{"4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"});
+        assert(consensus.hashGenesisBlock == uint256{"0000cd7572b3ecc78b7cddf49eda95e718d4df77c236ca2e375125e111e7e9c4"});
+        assert(genesis.hashMerkleRoot == uint256{"8de06f9a125793c3b6bfe7e3bc473ba2bb505b234af5d7e999bda03ed3f4ac34"});
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -395,9 +357,9 @@ public:
 
         chainTxData = ChainTxData{
             // Data from RPC: getchaintxstats 4096 bc66fc22b8a2988bdc519c4c6aa431bb57201e5102ad8b8272fcde2937b4d2f7
-            .nTime    = 1573859059,
-            .tx_count = 276907,
-            .dTxRate  = 0.0002269357829851853,
+            .nTime    = 1522756358,
+            .tx_count = 173446,
+            .dTxRate  = 0.0027,
         };
 
         assert(mapHistoricBugs.empty());
@@ -720,10 +682,10 @@ public:
             consensus.vDeployments[deployment_pos].min_activation_height = version_bits_params.min_activation_height;
         }
 
-        genesis = CreateTestnetGenesisBlock(1296688602, 2, 0x207fffff, 1, 50 * COIN);
+        genesis = CreateTestnetGenesisBlock(1296688602, 0, 0x207fffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256{"0f9188f13cb7b2c71f2a335e3a4fc328bf5beb436012afca590b1a11466e2206"});
-        assert(genesis.hashMerkleRoot == uint256{"4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"});
+        assert(consensus.hashGenesisBlock == uint256{"0231881e96d6690eb00bb69cd8e221df3564e2cd95829d47d131ed5110a34e9d"});
+        assert(genesis.hashMerkleRoot == uint256{"8de06f9a125793c3b6bfe7e3bc473ba2bb505b234af5d7e999bda03ed3f4ac34"});
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();
@@ -762,9 +724,9 @@ public:
         };
 
         chainTxData = ChainTxData{
-            0,
-            0,
-            0
+            .nTime = 0,
+            .tx_count = 0,
+            .dTxRate = 0.001, // Set a non-zero rate to make it testable
         };
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
@@ -773,7 +735,7 @@ public:
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
 
-        bech32_hrp = "ncrt";
+        bech32_hrp = "dcrt";
 
         assert(mapHistoricBugs.empty());
     }
