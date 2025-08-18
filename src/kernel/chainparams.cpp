@@ -158,11 +158,11 @@ public:
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 32-bit integer with any alignment.
          */
-        pchMessageStart[0] = 0xf9;
-        pchMessageStart[1] = 0xbe;
-        pchMessageStart[2] = 0xb4;
-        pchMessageStart[3] = 0xfe;
-        nDefaultPort = 8334;
+        pchMessageStart[0] = 0xf8;
+        pchMessageStart[1] = 0xb2;
+        pchMessageStart[2] = 0xb2;
+        pchMessageStart[3] = 0xff;
+        nDefaultPort = 8338;
         nPruneAfterHeight = 100000;
         m_assumed_blockchain_size = 8;
         m_assumed_chain_state_size = 1;
@@ -330,11 +330,11 @@ public:
 
         consensus.rules.reset(new Consensus::TestNetConsensus());
 
-        pchMessageStart[0] = 0xfa;
-        pchMessageStart[1] = 0xbf;
-        pchMessageStart[2] = 0xb5;
-        pchMessageStart[3] = 0xfe;
-        nDefaultPort = 18334;
+        pchMessageStart[0] = 0xfc;
+        pchMessageStart[1] = 0xba;
+        pchMessageStart[2] = 0xb2;
+        pchMessageStart[3] = 0xfb;
+        nDefaultPort = 18338;
         nPruneAfterHeight = 1000;
         m_assumed_blockchain_size = 1;
         m_assumed_chain_state_size = 1;
