@@ -134,6 +134,13 @@ CNameMemPool::addUnchecked (const CTxMemPoolEntry& entry)
       else
         mit->second.insert (txHash);
     }
+
+  if (entry.isNameDoi ())
+    {
+      const valtype& name = entry.getName ();
+      assert (mapNameDois.count (name) == 0);
+      mapNameDois.insert (std::make_pair (name, txHash));
+    }
 }
 
 void
@@ -158,6 +165,13 @@ CNameMemPool::remove (const CTxMemPoolEntry& entry)
       txids.erase (itTxid);
       if (txids.empty ())
         updates.erase (itName);
+    }
+
+  if (entry.isNameDoi ())
+    {
+      const auto mit = mapNameDois.find (entry.getName ());
+      assert (mit != mapNameDois.end ());
+      mapNameDois.erase (mit);
     }
 }
 
@@ -338,6 +352,17 @@ CNameMemPool::checkTx (const CTransaction& tx) const
              properly and really a chain, as this is automatic due to the
              coloured-coin nature of names.  */
           break;
+
+        case OP_NAME_DOI:
+          {
+            const valtype& name = nameOp.getOpName ();
+            /* For DOI operations, we need to check if the name is already
+               being registered via a different DOI operation.  DOI operations
+               can create new names or update existing DOI names.  */
+            if (registersDoi (name))
+              return false;
+            break;
+          }
 
         default:
           assert (false);

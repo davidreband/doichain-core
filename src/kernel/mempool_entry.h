@@ -219,6 +219,11 @@ public:
     {
         return nameOp.isNameOp() && nameOp.getNameOp() == OP_NAME_UPDATE;
     }
+    inline bool
+    isNameDoi() const
+    {
+        return nameOp.isNameOp() && nameOp.getNameOp() == OP_NAME_DOI;
+    }
     inline const valtype&
     getNameNewHash() const
     {

@@ -68,6 +68,12 @@ private:
    */
   std::map<valtype, Txid> mapNameNews;
 
+  /**
+   * Keep track of names that are registered via OP_NAME_DOI operations.
+   * Similar to mapNameRegs but for DOI registrations.
+   */
+  std::map<valtype, Txid> mapNameDois;
+
 public:
 
   /**
@@ -102,6 +108,16 @@ public:
   }
 
   /**
+   * Checks whether a particular name is being registered via DOI by
+   * some transaction in the mempool.
+   */
+  bool
+  registersDoi (const valtype& name) const
+  {
+    return mapNameDois.count (name) > 0;
+  }
+
+  /**
    * Returns the number of pending operations on this name in the mempool.
    * In other words, this is the "length" of the chain of operations that
    * are already pending.
@@ -125,6 +141,7 @@ public:
     mapNameRegs.clear ();
     updates.clear ();
     mapNameNews.clear ();
+    mapNameDois.clear ();
   }
 
   /**

@@ -240,6 +240,53 @@ CheckNameTransaction (const CTransaction& tx, unsigned nHeight,
       return true;
     }
 
+  /* Process NAME_DOI next.  */
+
+  if (nameOpOut.getNameOp () == OP_NAME_DOI)
+    {
+      /* DOI operations can be performed without previous name input,
+         or can update existing DOI names.  */
+      if (nameIn != -1)
+        {
+          /* If there is a name input, it must be a DOI operation.  */
+          if (nameOpIn.getNameOp () != OP_NAME_DOI)
+            return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                                  "tx-namedoi-invalid-prev",
+                                  "NAME_DOI input is not a OP_NAME_DOI");
+
+          if (name != nameOpIn.getOpName ())
+            return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                                  "tx-namedoi-name-mismatch", 
+                                  "NAME_DOI name mismatch to name input");
+
+          /* Check name database if not pending.  */
+          const unsigned inHeight = coinIn.nHeight;
+          if (inHeight != MEMPOOL_HEIGHT)
+            {
+              CNameData oldName;
+              if (!view.GetName (name, oldName))
+                return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                                      "tx-namedoi-nonexistant",
+                                      "OP_NAME_DOI name does not exist");
+              if (oldName.isExpired (nHeight))
+                return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                                      "tx-namedoi-expired",
+                                      "OP_NAME_DOI on an expired name");
+            }
+        }
+      else
+        {
+          /* New DOI registration without previous input.  */
+          CNameData existingName;
+          if (view.GetName (name, existingName) && !existingName.isExpired (nHeight))
+            return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                                  "tx-namedoi-exists",
+                                  "OP_NAME_DOI name already exists");
+        }
+
+      return true;
+    }
+
   /* Finally, NAME_FIRSTUPDATE.  */
 
   assert (nameOpOut.getNameOp () == OP_NAME_FIRSTUPDATE);
