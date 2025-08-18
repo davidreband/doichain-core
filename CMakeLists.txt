@@ -26,12 +26,12 @@ get_directory_property(precious_variables CACHE_VARIABLES)
 #=============================
 # Project / Package metadata
 #=============================
-set(CLIENT_NAME "Namecoin Core")
+set(CLIENT_NAME "Doichain Core")
 set(CLIENT_VERSION_MAJOR 29)
-set(CLIENT_VERSION_MINOR 1)
+set(CLIENT_VERSION_MINOR 99)
 set(CLIENT_VERSION_BUILD 0)
-set(CLIENT_VERSION_RC 1)
-set(CLIENT_VERSION_IS_RELEASE "true")
+set(CLIENT_VERSION_RC 0)
+set(CLIENT_VERSION_IS_RELEASE "false")
 set(COPYRIGHT_YEAR "2025")
 
 # During the enabling of the CXX and CXXOBJ languages, we modify
@@ -50,10 +50,10 @@ set(CMAKE_TRY_COMPILE_PLATFORM_VARIABLES
   CMAKE_CXX_LINK_EXECUTABLE
 )
 
-project(NamecoinCore
+project(DoichainCore
   VERSION ${CLIENT_VERSION_MAJOR}.${CLIENT_VERSION_MINOR}.${CLIENT_VERSION_BUILD}
-  DESCRIPTION "Namecoin client software"
-  HOMEPAGE_URL "https://namecoin.org/"
+  DESCRIPTION "Doichain client software"
+  HOMEPAGE_URL "https://doichain.org/"
   LANGUAGES NONE
 )
 
@@ -64,7 +64,7 @@ endif()
 
 set(COPYRIGHT_HOLDERS "The %s developers")
 set(COPYRIGHT_HOLDERS_FINAL "The ${CLIENT_NAME} developers")
-set(CLIENT_BUGREPORT "https://github.com/namecoin/namecoin-core/issues")
+set(CLIENT_BUGREPORT "https://github.com/doichain/doichain-core/issues")
 
 #=============================
 # Language setup
@@ -94,16 +94,16 @@ endif()
 #=============================
 include(CMakeDependentOption)
 # When adding a new option, end the <help_text> with a full stop for consistency.
-option(BUILD_DAEMON "Build namecoind executable." ON)
-option(BUILD_GUI "Build namecoin-qt executable." OFF)
-option(BUILD_CLI "Build namecoin-cli executable." ON)
+option(BUILD_DAEMON "Build doichaind executable." ON)
+option(BUILD_GUI "Build doichain-qt executable." OFF)
+option(BUILD_CLI "Build doichain-cli executable." ON)
 
-option(BUILD_TESTS "Build test_namecoin executable." ON)
-option(BUILD_TX "Build namecoin-tx executable." ${BUILD_TESTS})
-option(BUILD_UTIL "Build namecoin-util executable." ${BUILD_TESTS})
+option(BUILD_TESTS "Build test_doichain executable." ON)
+option(BUILD_TX "Build doichain-tx executable." ${BUILD_TESTS})
+option(BUILD_UTIL "Build doichain-util executable." ${BUILD_TESTS})
 
-option(BUILD_UTIL_CHAINSTATE "Build experimental namecoin-chainstate executable." OFF)
-option(BUILD_KERNEL_LIB "Build experimental namecoinkernel library." ${BUILD_UTIL_CHAINSTATE})
+option(BUILD_UTIL_CHAINSTATE "Build experimental doichain-chainstate executable." OFF)
+option(BUILD_KERNEL_LIB "Build experimental doichainkernel library." ${BUILD_UTIL_CHAINSTATE})
 
 option(ENABLE_WALLET "Enable wallet." ON)
 option(WITH_SQLITE "Enable SQLite wallet support." ${ENABLE_WALLET})
@@ -132,7 +132,7 @@ if(WITH_BDB)
     endif()
   endif()
 endif()
-cmake_dependent_option(BUILD_WALLET_TOOL "Build namecoin-wallet tool." ${BUILD_TESTS} "ENABLE_WALLET" OFF)
+cmake_dependent_option(BUILD_WALLET_TOOL "Build doichain-wallet tool." ${BUILD_TESTS} "ENABLE_WALLET" OFF)
 
 option(ENABLE_HARDENING "Attempt to harden the resulting executables." ON)
 option(REDUCE_EXPORTS "Attempt to reduce exported symbols in the resulting executables." OFF)
@@ -159,7 +159,7 @@ endif()
 
 cmake_dependent_option(WITH_DBUS "Enable DBus support." ON "NOT CMAKE_SYSTEM_NAME MATCHES \"(Windows|Darwin)\" AND BUILD_GUI" OFF)
 
-option(WITH_MULTIPROCESS "Build multiprocess namecoin-node and namecoin-gui executables in addition to monolithic namecoind and namecoin-qt executables. Requires libmultiprocess library. Experimental." OFF)
+option(WITH_MULTIPROCESS "Build multiprocess doichain-node and doichain-gui executables in addition to monolithic doichaind and doichain-qt executables. Requires libmultiprocess library. Experimental." OFF)
 if(WITH_MULTIPROCESS)
   find_package(Libmultiprocess REQUIRED COMPONENTS Lib)
   find_package(LibmultiprocessNative REQUIRED COMPONENTS Bin
@@ -167,7 +167,7 @@ if(WITH_MULTIPROCESS)
   )
 endif()
 
-cmake_dependent_option(BUILD_GUI_TESTS "Build test_namecoin-qt executable." ON "BUILD_GUI;BUILD_TESTS" OFF)
+cmake_dependent_option(BUILD_GUI_TESTS "Build test_doichain-qt executable." ON "BUILD_GUI;BUILD_TESTS" OFF)
 if(BUILD_GUI)
   set(qt_components Core Gui Widgets LinguistTools)
   if(ENABLE_WALLET)
@@ -186,7 +186,7 @@ if(BUILD_GUI)
   unset(qt_components)
 endif()
 
-option(BUILD_BENCH "Build bench_namecoin executable." OFF)
+option(BUILD_BENCH "Build bench_doichain executable." OFF)
 option(BUILD_FUZZ_BINARY "Build fuzz binary." OFF)
 option(BUILD_FOR_FUZZING "Build for fuzzing. Enabling this will disable all other targets and override BUILD_FUZZ_BINARY." OFF)
 
@@ -634,26 +634,26 @@ message("\n")
 message("Configure summary")
 message("=================")
 message("Executables:")
-message("  namecoind ............................ ${BUILD_DAEMON}")
+message("  doichaind ............................ ${BUILD_DAEMON}")
 if(BUILD_DAEMON AND WITH_MULTIPROCESS)
   set(bitcoin_daemon_status ON)
 else()
   set(bitcoin_daemon_status OFF)
 endif()
-message("  namecoin-node (multiprocess) ......... ${bitcoin_daemon_status}")
-message("  namecoin-qt (GUI) .................... ${BUILD_GUI}")
+message("  doichain-node (multiprocess) ......... ${bitcoin_daemon_status}")
+message("  doichain-qt (GUI) .................... ${BUILD_GUI}")
 if(BUILD_GUI AND WITH_MULTIPROCESS)
   set(bitcoin_gui_status ON)
 else()
   set(bitcoin_gui_status OFF)
 endif()
-message("  namecoin-gui (GUI, multiprocess) ..... ${bitcoin_gui_status}")
-message("  namecoin-cli ......................... ${BUILD_CLI}")
-message("  namecoin-tx .......................... ${BUILD_TX}")
-message("  namecoin-util ........................ ${BUILD_UTIL}")
-message("  namecoin-wallet ...................... ${BUILD_WALLET_TOOL}")
-message("  namecoin-chainstate (experimental) ... ${BUILD_UTIL_CHAINSTATE}")
-message("  libnamecoinkernel (experimental) ..... ${BUILD_KERNEL_LIB}")
+message("  doichain-gui (GUI, multiprocess) ..... ${bitcoin_gui_status}")
+message("  doichain-cli ......................... ${BUILD_CLI}")
+message("  doichain-tx .......................... ${BUILD_TX}")
+message("  doichain-util ........................ ${BUILD_UTIL}")
+message("  doichain-wallet ...................... ${BUILD_WALLET_TOOL}")
+message("  doichain-chainstate (experimental) ... ${BUILD_UTIL_CHAINSTATE}")
+message("  libdoichainkernel (experimental) ..... ${BUILD_KERNEL_LIB}")
 message("Optional features:")
 message("  wallet support ...................... ${ENABLE_WALLET}")
 if(ENABLE_WALLET)
@@ -666,9 +666,9 @@ message("  USDT tracing ........................ ${WITH_USDT}")
 message("  QR code (GUI) ....................... ${WITH_QRENCODE}")
 message("  DBus (GUI) .......................... ${WITH_DBUS}")
 message("Tests:")
-message("  test_namecoin ........................ ${BUILD_TESTS}")
-message("  test_namecoin-qt ..................... ${BUILD_GUI_TESTS}")
-message("  bench_namecoin ....................... ${BUILD_BENCH}")
+message("  test_doichain ........................ ${BUILD_TESTS}")
+message("  test_doichain-qt ..................... ${BUILD_GUI_TESTS}")
+message("  bench_doichain ....................... ${BUILD_BENCH}")
 message("  fuzz binary ......................... ${BUILD_FUZZ_BINARY}")
 message("")
 if(CMAKE_CROSSCOMPILING)
