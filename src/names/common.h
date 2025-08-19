@@ -110,6 +110,17 @@ public:
    * @param h The height at which to check.
    * @return True iff the name is expired at height h.
    */
+  /**
+   * Check if the name is expired at the current chain height.
+   * @return True iff the name is expired.
+   */
+  bool isExpired () const;
+
+  /**
+   * Check if the name is expired at the given height.
+   * @param h The height at which to check.
+   * @return True iff the name is expired.
+   */
   bool isExpired (unsigned h) const;
 
   /**

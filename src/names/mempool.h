@@ -13,8 +13,10 @@
 #include <set>
 
 class CCoinsViewCache;
+class CCoinsView;
 class CTxMemPool;
 class CTxMemPoolEntry;
+class ChainstateManager;
 
 /**
  * Default limit for the length of pending name chains that can be
@@ -26,7 +28,7 @@ class CTxMemPoolEntry;
  * the network has upgraded sufficiently, we should increase this to a value
  * higher but still lower than the general mempool ancestor limit.
  */
-static constexpr unsigned DEFAULT_NAME_CHAIN_LIMIT = 1;
+static constexpr unsigned DEFAULT_NAME_CHAIN_LIMIT = 2;
 
 /**
  * Handle the name component of the transaction mempool.  This keeps track
@@ -69,10 +71,15 @@ private:
   std::map<valtype, Txid> mapNameNews;
 
   /**
-   * Keep track of names that are registered via OP_NAME_DOI operations.
-   * Similar to mapNameRegs but for DOI registrations.
+   * Keep track of all transactions that register or update a given Doi name.  For each name,
+   * this may be a whole chain of updates.  This field is used to remove the
+   * transactions from the mempool should the name expire (and the updates
+   * thus become invalid).
+   *
+   * We also use this to determine the length of chains of pending name_update
+   * operations.
    */
-  std::map<valtype, Txid> mapNameDois;
+  std::map<valtype, std::set<Txid>> mapNameDois;
 
 public:
 
@@ -108,14 +115,18 @@ public:
   }
 
   /**
-   * Checks whether a particular name is being registered via DOI by
-   * some transaction in the mempool.
+   * Check whether a particular DOI is being registered.  Does not lock.
+   * @param name The name to check for.
+   * @return True if there's a matching doi in the pool.
    */
-  bool
-  registersDoi (const valtype& name) const
-  {
-    return mapNameDois.count (name) > 0;
-  }
+    inline bool
+    registersDoi (const valtype& name) const
+    {
+      const auto mit = mapNameDois.find (name);
+      if (mit == mapNameDois.end ())
+        return false;
+      return !mit->second.empty ();
+    }
 
   /**
    * Returns the number of pending operations on this name in the mempool.
@@ -176,7 +187,7 @@ public:
   /**
    * Performs sanity checks.  Throws if it fails.
    */
-  void check (const CCoinsViewCache& tip, int64_t spendheight) const;
+  void check (ChainstateManager& chainman, const CCoinsView& coins) const;
 
   /**
    * Checks if a tx can be added (based on name criteria) without

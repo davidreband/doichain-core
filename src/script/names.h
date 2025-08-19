@@ -100,6 +100,27 @@ public:
   }
 
   /**
+   * Return whether this is a DOI registration.
+   * @return True iff this is NAME_DOI.
+   */
+  inline bool
+  isDoiRegistration () const
+  {
+    switch (op)
+      {
+      case OP_NAME_DOI:
+        return true;
+      case OP_NAME_NEW:
+      case OP_NAME_FIRSTUPDATE:
+      case OP_NAME_UPDATE:
+        return false;
+
+      default:
+        assert (false);
+      }
+  }
+
+  /**
    * Return whether this is a name update (including first updates).  I. e.,
    * whether this creates a name index update/entry.
    * @return True iff this is NAME_FIRSTUPDATE or NAME_UPDATE.
