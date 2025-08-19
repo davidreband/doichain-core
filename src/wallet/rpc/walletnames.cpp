@@ -171,7 +171,7 @@ SendNameOutput (const JSONRPCRequest& request,
         if (nAmount <= 0)
           throw JSONRPCError (RPC_TYPE_ERROR, "Invalid amount for send");
 
-        vecSend.push_back ({coinDest, nAmount, false});
+        vecSend.push_back ({coinDest, nAmount, false, CScript()});
       }
 
   CCoinControl coinControl;
@@ -1081,13 +1081,116 @@ sendtoname ()
   EnsureWalletIsUnlocked(*pwallet);
 
   std::vector<CRecipient> recipients;
-  const CNoDestination dest(data.getAddress ());
+  const CTxDestination dest = CNoDestination(data.getAddress ());
   const CAmount amount = AmountFromValue (request.params[1]);
-  recipients.push_back ({dest, amount, fSubtractFeeFromAmount});
+  recipients.push_back ({dest, amount, fSubtractFeeFromAmount, CScript()});
 
   return SendMoney(*pwallet, coin_control, nullptr, recipients, mapValue, false);
 }
   };
+}
+
+/* ************************************************************************** */
+
+RPCHelpMan
+name_doi ()
+{
+  NameOptionsHelp optHelp;
+  optHelp
+      .withNameEncoding ()
+      .withValueEncoding ()
+      .withWriteOptions ();
+
+  return RPCHelpMan ("name_doi",
+      "\nCreates or updates a DOI (Decentralized Open Identity) name and possibly transfers it."
+          + HELP_REQUIRING_PASSPHRASE,
+      {
+          {"name", RPCArg::Type::STR, RPCArg::Optional::NO, "The DOI name to create or update"},
+          {"value", RPCArg::Type::STR, RPCArg::Optional::NO, "Value for the DOI name"},
+          optHelp.buildRpcArg (),
+      },
+      RPCResult {RPCResult::Type::STR_HEX, "", "the transaction ID"},
+      RPCExamples {
+          HelpExampleCli ("name_doi", "\"myname\" \"new value\"")
+          + HelpExampleRpc ("name_doi", "\"myname\", \"new value\"")
+      },
+      [&] (const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
+{
+  std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest (request);
+  if (!wallet)
+    return NullUniValue;
+  CWallet* const pwallet = wallet.get ();
+
+  const auto& node = EnsureAnyNodeContext (request);
+  const auto& chainman = EnsureChainman (node);
+
+  UniValue options(UniValue::VOBJ);
+  if (request.params.size () >= 3)
+    options = request.params[2].get_obj ();
+
+  const valtype name = DecodeNameFromRPCOrThrow (request.params[0], options);
+  if (name.size () > MAX_NAME_LENGTH)
+    throw JSONRPCError (RPC_INVALID_PARAMETER, "the name is too long");
+
+  const valtype value = DecodeValueFromRPCOrThrow (request.params[1], options);
+  if (value.size () > MAX_VALUE_LENGTH_UI)
+    throw JSONRPCError (RPC_INVALID_PARAMETER, "the value is too long");
+
+  /* Make sure the results are valid at least up to the most recent block
+     the user could have gotten from another RPC command prior to now.  */
+  pwallet->BlockUntilSyncedToCurrentChain ();
+
+  LOCK (pwallet->cs_wallet);
+
+  EnsureWalletIsUnlocked (*pwallet);
+
+  DestinationAddressHelper destHelper(*pwallet);
+  destHelper.setOptions (options);
+
+  /* Check if this is an update of an existing name or a new registration.  */
+  CNameData oldData;
+  bool isUpdate = false;
+  CTxIn nameInput;
+
+  {
+    LOCK (cs_main);
+    
+    const auto& coinsTip = chainman.ActiveChainstate ().CoinsTip ();
+    if (coinsTip.GetName (name, oldData) && !oldData.isExpired (chainman.ActiveHeight () + 1))
+      {
+        isUpdate = true;
+        
+        /* Check that we own the name.  */
+        const COutPoint& prevout = oldData.getUpdateOutpoint ();
+        nameInput = CTxIn(prevout);
+
+        const auto coin = coinsTip.GetCoin (prevout);
+        if (!coin || coin->IsSpent())
+          throw JSONRPCError (RPC_TRANSACTION_ERROR,
+                              "the name cannot be updated since the name output is not available");
+
+        const CScript& prevScript = coin->out.scriptPubKey;
+        if (!pwallet->IsMine (prevScript))
+          throw JSONRPCError (RPC_WALLET_ERROR, "the name is not owned by this wallet");
+
+        const CNameScript prevNameOp(prevScript);
+        if (!prevNameOp.isNameOp ())
+          throw JSONRPCError (RPC_TRANSACTION_ERROR, "the name input is not a name operation");
+
+        if (prevNameOp.getNameOp () != OP_NAME_DOI)
+          throw JSONRPCError (RPC_TRANSACTION_ERROR, "the name input is not a OP_NAME_DOI operation");
+      }
+  }
+
+  const CScript nameOp = CNameScript::buildNameDOI (CScript (), name, value);
+
+  const UniValue txidVal = SendNameOutput (request, *pwallet, destHelper.getDest (), nameOp,
+                                           isUpdate ? &nameInput : nullptr, options);
+  destHelper.finalise ();
+
+  return txidVal;
+}
+  );
 }
 
 } // namespace wallet
