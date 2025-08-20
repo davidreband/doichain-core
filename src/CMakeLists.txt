@@ -202,20 +202,20 @@ if(ENABLE_WALLET)
   add_subdirectory(wallet)
 
   if(BUILD_WALLET_TOOL)
-    add_executable(namecoin-wallet
+    add_executable(doichain-wallet
       bitcoin-wallet.cpp
       init/bitcoin-wallet.cpp
       wallet/wallettool.cpp
     )
-    add_windows_resources(namecoin-wallet bitcoin-wallet-res.rc)
-    target_link_libraries(namecoin-wallet
+    add_windows_resources(doichain-wallet bitcoin-wallet-res.rc)
+    target_link_libraries(doichain-wallet
       core_interface
       bitcoin_wallet
       bitcoin_common
       bitcoin_util
       Boost::headers
     )
-    install_binary_component(namecoin-wallet HAS_MANPAGE)
+    install_binary_component(doichain-wallet HAS_MANPAGE)
   endif()
 endif()
 
@@ -340,30 +340,30 @@ target_link_libraries(bitcoin_node
 
 # Bitcoin Core bitcoind.
 if(BUILD_DAEMON)
-  add_executable(namecoind
+  add_executable(doichaind
     bitcoind.cpp
     init/bitcoind.cpp
   )
-  add_windows_resources(namecoind bitcoind-res.rc)
-  target_link_libraries(namecoind
+  add_windows_resources(doichaind bitcoind-res.rc)
+  target_link_libraries(doichaind
     core_interface
     bitcoin_node
     $<TARGET_NAME_IF_EXISTS:bitcoin_wallet>
   )
-  install_binary_component(namecoind HAS_MANPAGE)
+  install_binary_component(doichaind HAS_MANPAGE)
 endif()
 if(WITH_MULTIPROCESS AND BUILD_DAEMON)
-  add_executable(namecoin-node
+  add_executable(doichain-node
     bitcoind.cpp
     init/bitcoin-node.cpp
   )
-  target_link_libraries(namecoin-node
+  target_link_libraries(doichain-node
     core_interface
     bitcoin_node
     bitcoin_ipc
     $<TARGET_NAME_IF_EXISTS:bitcoin_wallet>
   )
-  install_binary_component(namecoin-node)
+  install_binary_component(doichain-node)
 endif()
 
 if(WITH_MULTIPROCESS AND BUILD_TESTS)
@@ -396,9 +396,9 @@ target_link_libraries(bitcoin_cli
 
 # Bitcoin Core RPC client
 if(BUILD_CLI)
-  add_executable(namecoin-cli bitcoin-cli.cpp)
-  add_windows_resources(namecoin-cli bitcoin-cli-res.rc)
-  target_link_libraries(namecoin-cli
+  add_executable(doichain-cli bitcoin-cli.cpp)
+  add_windows_resources(doichain-cli bitcoin-cli-res.rc)
+  target_link_libraries(doichain-cli
     core_interface
     bitcoin_cli
     bitcoin_common
@@ -406,32 +406,32 @@ if(BUILD_CLI)
     libevent::core
     libevent::extra
   )
-  install_binary_component(namecoin-cli HAS_MANPAGE)
+  install_binary_component(doichain-cli HAS_MANPAGE)
 endif()
 
 
 if(BUILD_TX)
-  add_executable(namecoin-tx bitcoin-tx.cpp)
-  add_windows_resources(namecoin-tx bitcoin-tx-res.rc)
-  target_link_libraries(namecoin-tx
+  add_executable(doichain-tx bitcoin-tx.cpp)
+  add_windows_resources(doichain-tx bitcoin-tx-res.rc)
+  target_link_libraries(doichain-tx
     core_interface
     bitcoin_common
     bitcoin_util
     univalue
   )
-  install_binary_component(namecoin-tx HAS_MANPAGE)
+  install_binary_component(doichain-tx HAS_MANPAGE)
 endif()
 
 
 if(BUILD_UTIL)
-  add_executable(namecoin-util bitcoin-util.cpp)
-  add_windows_resources(namecoin-util bitcoin-util-res.rc)
-  target_link_libraries(namecoin-util
+  add_executable(doichain-util bitcoin-util.cpp)
+  add_windows_resources(doichain-util bitcoin-util-res.rc)
+  target_link_libraries(doichain-util
     core_interface
     bitcoin_common
     bitcoin_util
   )
-  install_binary_component(namecoin-util HAS_MANPAGE)
+  install_binary_component(doichain-util HAS_MANPAGE)
 endif()
 
 
@@ -445,7 +445,7 @@ if(BUILD_KERNEL_LIB)
 endif()
 
 if(BUILD_UTIL_CHAINSTATE)
-  add_executable(namecoin-chainstate
+  add_executable(doichain-chainstate
     bitcoin-chainstate.cpp
   )
   # TODO: The `SKIP_BUILD_RPATH` property setting can be deleted
@@ -454,13 +454,13 @@ if(BUILD_UTIL_CHAINSTATE)
   # Relevant discussions:
   # - https://github.com/hebasto/bitcoin/pull/236#issuecomment-2183120953
   # - https://github.com/bitcoin/bitcoin/pull/30312#issuecomment-2191235833
-  set_target_properties(namecoin-chainstate PROPERTIES
+  set_target_properties(doichain-chainstate PROPERTIES
     SKIP_BUILD_RPATH OFF
   )
-  target_link_libraries(namecoin-chainstate
+  target_link_libraries(doichain-chainstate
     PRIVATE
       core_interface
-      namecoinkernel
+      doichainkernel
   )
 endif()
 
