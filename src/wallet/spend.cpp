@@ -1068,7 +1068,7 @@ static util::Result<CreatedTransactionResult> CreateTransactionInternal(
     const OutputType change_type = wallet.TransactionChangeType(coin_control.m_change_type ? *coin_control.m_change_type : wallet.m_default_change_type, vecSend);
     ReserveDestination reservedest(&wallet, change_type);
     unsigned int outputs_to_subtract_fee_from = 0; // The number of outputs which we are subtracting the fee from
-    bool isNamecoin = false;
+    bool isDoichain = false;
     for (const auto& recipient : vecSend) {
         if (IsDust(recipient, wallet.chain().relayDustFee())) {
             return util::Error{_("Transaction amount too small")};
@@ -1084,15 +1084,15 @@ static util::Result<CreatedTransactionResult> CreateTransactionInternal(
         }
 
         if (CNameScript::isNameScript (recipient.nameScript))
-            isNamecoin = true;
+            isDoichain = true;
     }
 
     /* It can happen that the transaction has already a Namecoin version, for
        instance, when it is being funded via FundTransaction, where the nVersion
        of the original transaction is copied via the coin_control.  This is fine
        and will just do nothing then.  */
-    if (isNamecoin)
-        txNew.SetNamecoin();
+    if (isDoichain)
+        txNew.SetDoichain();
 
     // Create change script that will be used if we need change
     CScript scriptChange;
