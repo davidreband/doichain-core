@@ -79,7 +79,7 @@ bool CTransaction::ComputeHasWitness() const
     });
 }
 
-void CMutableTransaction::SetNamecoin()
+void CMutableTransaction::SetDoichain()
 {
     version = CTransaction::NAMECOIN_VERSION;
 }

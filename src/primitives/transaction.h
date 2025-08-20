@@ -300,7 +300,7 @@ public:
     // FIXME: Upstream Bitcoin has default version set to 2 already.  Do this
     // once we forked to make the tx version irrelevant for Namecoin.
     static const int32_t CURRENT_VERSION{1};
-    static const int32_t NAMECOIN_VERSION{0x7100};
+    static const int32_t DOICHAIN_VERSION{0x7100};
 
     // The local variables are made const to prevent unintended modification
     // without updating the cached hash value. However, CTransaction is not
@@ -362,9 +362,11 @@ public:
         return (vin.size() == 1 && vin[0].prevout.IsNull());
     }
 
-    bool IsNamecoin() const
+
+
+    bool IsDoichain() const
     {
-        return version == NAMECOIN_VERSION;
+        return version == DOICHAIN_VERSION;
     }
 
     friend bool operator==(const CTransaction& a, const CTransaction& b)
@@ -431,7 +433,7 @@ struct CMutableTransaction
     /**
      * Turn this into a Namecoin version transaction if it is not yet one.
      */
-    void SetNamecoin();
+    void SetDoichain();
 };
 
 typedef std::shared_ptr<const CTransaction> CTransactionRef;
