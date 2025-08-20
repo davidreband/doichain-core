@@ -576,14 +576,14 @@ BOOST_AUTO_TEST_CASE (name_tx_verification)
 
   /* Non-name tx should be non-Namecoin version.  */
   BOOST_CHECK (CheckNameTransaction (baseTx, 200000, view, state, 0));
-  mtx.SetNamecoin ();
+  mtx.SetDoichain();
   BOOST_CHECK (!CheckNameTransaction (mtx, 200000, view, state, 0));
 
   /* Name tx should be Namecoin version.  */
   mtx = CMutableTransaction (baseTx);
   mtx.vin.push_back (CTxIn (inNew));
   BOOST_CHECK (!CheckNameTransaction (mtx, 200000, view, state, 0));
-  mtx.SetNamecoin ();
+  mtx.SetDoichain();
   mtx.vin.push_back (CTxIn (inUpdate));
   BOOST_CHECK (!CheckNameTransaction (mtx, 200000, view, state, 0));
 
@@ -591,7 +591,7 @@ BOOST_AUTO_TEST_CASE (name_tx_verification)
   mtx = CMutableTransaction (baseTx);
   mtx.vout.push_back (CTxOut (COIN, scrNew));
   BOOST_CHECK (!CheckNameTransaction (mtx, 200000, view, state, 0));
-  mtx.SetNamecoin ();
+  mtx.SetDoichain();
   BOOST_CHECK (CheckNameTransaction (mtx, 200000, view, state, 0));
   mtx.vout.push_back (CTxOut (COIN, scrNew));
   BOOST_CHECK (!CheckNameTransaction (mtx, 200000, view, state, 0));
@@ -601,7 +601,7 @@ BOOST_AUTO_TEST_CASE (name_tx_verification)
 
   /* Basic verification of NAME_NEW.  */
   mtx = CMutableTransaction (baseTx);
-  mtx.SetNamecoin ();
+  mtx.SetDoichain();
   mtx.vout.push_back (CTxOut (COIN, scrNew));
   BOOST_CHECK (CheckNameTransaction (mtx, 200000, view, state, 0));
   mtx.vin.push_back (CTxIn (inNew));
@@ -630,7 +630,7 @@ BOOST_AUTO_TEST_CASE (name_tx_verification)
 
   /* Check update of UPDATE output, plus expiry.  */
   mtx = CMutableTransaction (baseTx);
-  mtx.SetNamecoin ();
+  mtx.SetDoichain();
   mtx.vout.push_back (CTxOut (COIN, scrUpdate));
   BOOST_CHECK (!CheckNameTransaction (mtx, 135999, viewUpd, state, 0));
   mtx.vin.push_back (CTxIn (inUpdate));
@@ -651,7 +651,7 @@ BOOST_AUTO_TEST_CASE (name_tx_verification)
 
   /* Value length limits.  */
   mtx = CMutableTransaction (baseTx);
-  mtx.SetNamecoin ();
+  mtx.SetDoichain();
   mtx.vin.push_back (CTxIn (inUpdate));
   scr = CNameScript::buildNameUpdate (addr, name1, tooLongValue);
   mtx.vout.push_back (CTxOut (COIN, scr));
@@ -665,7 +665,7 @@ BOOST_AUTO_TEST_CASE (name_tx_verification)
 
   /* Previous NAME_NEW is not allowed!  */
   mtx = CMutableTransaction (baseTx);
-  mtx.SetNamecoin ();
+  mtx.SetDoichain();
   mtx.vout.push_back (CTxOut (COIN, scrUpdate));
   mtx.vin.push_back (CTxIn (inNew));
   CCoinsViewCache viewNew(&view);
@@ -680,7 +680,7 @@ BOOST_AUTO_TEST_CASE (name_tx_verification)
 
   /* Basic valid transaction.  */
   mtx = CMutableTransaction (baseTx);
-  mtx.SetNamecoin ();
+  mtx.SetDoichain();
   mtx.vout.push_back (CTxOut (COIN, scrFirst));
   BOOST_CHECK (!CheckNameTransaction (mtx, 100012, viewClean, state, 0));
   mtx.vin.push_back (CTxIn (inNew));
@@ -710,7 +710,7 @@ BOOST_AUTO_TEST_CASE (name_tx_verification)
 
   /* Non-NAME_NEW prev output.  */
   mtx = CMutableTransaction (baseTx);
-  mtx.SetNamecoin ();
+  mtx.SetDoichain();
   mtx.vout.push_back (CTxOut (COIN, scrFirst));
   mtx.vin.push_back (CTxIn (inUpdate));
   BOOST_CHECK (!CheckNameTransaction (mtx, 100012, viewClean, state, 0));
@@ -748,7 +748,7 @@ BOOST_AUTO_TEST_CASE (name_firstupdate_salt_length)
       mtx.vin.emplace_back (inCoin);
       mtx.vin.emplace_back (inNew);
       mtx.vout.emplace_back (COIN, scrFirst);
-      mtx.SetNamecoin ();
+      mtx.SetDoichain();
 
       TxValidationState state;
       return CheckNameTransaction (mtx, 100'100, view, state, flags);
@@ -793,7 +793,7 @@ BOOST_AUTO_TEST_CASE (name_updates_undo)
      ApplyNameTransaction and not validation.  */
 
   CMutableTransaction mtx;
-  mtx.SetNamecoin ();
+  mtx.SetDoichain();
   mtx.vout.push_back (CTxOut (COIN, scrNew));
   ApplyNameTransaction (CTransaction (mtx), 100, view, undo);
   BOOST_CHECK (!view.GetName (name, data));
