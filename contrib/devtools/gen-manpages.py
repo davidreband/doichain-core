@@ -9,12 +9,12 @@ import tempfile
 import argparse
 
 BINARIES = [
-'bin/namecoind',
-'bin/namecoin-cli',
-'bin/namecoin-tx',
-'bin/namecoin-wallet',
-'bin/namecoin-util',
-'bin/namecoin-qt',
+'bin/doichaind',
+'bin/doichain-cli',
+'bin/doichain-tx',
+'bin/doichain-wallet',
+'bin/doichain-util',
+'bin/doichain-qt',
 ]
 
 parser = argparse.ArgumentParser(

@@ -7,9 +7,9 @@ export LC_ALL=C
 TOPDIR=${TOPDIR:-$(git rev-parse --show-toplevel)}
 BUILDDIR=${BUILDDIR:-$TOPDIR/build}
 BINDIR=${BINDIR:-$BUILDDIR/bin}
-BITCOIND=${BITCOIND:-$BINDIR/namecoind}
+BITCOIND=${BITCOIND:-$BINDIR/doichaind}
 SHARE_EXAMPLES_DIR=${SHARE_EXAMPLES_DIR:-$TOPDIR/share/examples}
-EXAMPLE_CONF_FILE=${EXAMPLE_CONF_FILE:-$SHARE_EXAMPLES_DIR/namecoin.conf}
+EXAMPLE_CONF_FILE=${EXAMPLE_CONF_FILE:-$SHARE_EXAMPLES_DIR/doichain.conf}
 
 [ ! -x "$BITCOIND" ] && echo "$BITCOIND not found or not executable." && exit 1
 
@@ -22,10 +22,10 @@ fi
 if [ -n "$DIRTY" ]
 then
   echo -e "WARNING: $BITCOIND was built from a dirty tree.\n"
-  echo -e "To safely generate a namecoin.conf file, please commit your changes to $BITCOIND, rebuild, then run this script again.\n"
+  echo -e "To safely generate a doichain.conf file, please commit your changes to $BITCOIND, rebuild, then run this script again.\n"
 fi
 
-echo 'Generating example namecoin.conf file in share/examples/'
+echo 'Generating example doichain.conf file in share/examples/'
 
 # create the directory, if it doesn't exist
 mkdir -p "${SHARE_EXAMPLES_DIR}"
