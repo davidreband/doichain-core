@@ -61,17 +61,17 @@ static std::optional<int> WalletAppInit(ArgsManager& args, int argc, char* argv[
     }
     const bool missing_args{argc < 2};
     if (missing_args || HelpRequested(args) || args.GetBoolArg("-version", false)) {
-        std::string strUsage = strprintf("%s namecoin-wallet utility version", CLIENT_NAME) + " " + FormatFullVersion() + "\n";
+        std::string strUsage = strprintf("%s doichain-wallet utility version", CLIENT_NAME) + " " + FormatFullVersion() + "\n";
 
         if (args.GetBoolArg("-version", false)) {
             strUsage += FormatParagraph(LicenseInfo());
         } else {
             strUsage += "\n"
-                "namecoin-wallet is an offline tool for creating and interacting with " CLIENT_NAME " wallet files.\n\n"
-                "By default namecoin-wallet will act on wallets in the default mainnet wallet directory in the datadir.\n\n"
+                "doichain-wallet is an offline tool for creating and interacting with " CLIENT_NAME " wallet files.\n\n"
+                "By default doichain-wallet will act on wallets in the default mainnet wallet directory in the datadir.\n\n"
                 "To change the target wallet, use the -datadir, -wallet and (test)chain selection arguments.\n"
                 "\n"
-                "Usage: namecoin-wallet [options] <command>\n"
+                "Usage: doichain-wallet [options] <command>\n"
                 "\n";
             strUsage += "\n" + args.GetHelpMessage();
         }
@@ -124,7 +124,7 @@ MAIN_FUNCTION
 
     const auto command = args.GetCommand();
     if (!command) {
-        tfm::format(std::cerr, "No method provided. Run `namecoin-wallet -help` for valid methods.\n");
+        tfm::format(std::cerr, "No method provided. Run `doichain-wallet -help` for valid methods.\n");
         return EXIT_FAILURE;
     }
     if (command->args.size() != 0) {
