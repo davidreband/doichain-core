@@ -116,7 +116,7 @@ public:
         consensus.BIP34Height = 250000;
         consensus.BIP65Height = 335000;
         consensus.BIP66Height = 250000;
-        /* Namecoin activates CSV/Segwit with BIP16.  */
+        /* Doichain activates CSV/Segwit with BIP16.  */
         consensus.CSVHeight = 475000;
         consensus.SegwitHeight = 475000;
         consensus.MinBIP9WarningHeight = 477016; // segwit activation height + miner confirmation window
@@ -140,7 +140,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].min_activation_height = 0; // No activation delay
 
         // The best chain should have at least this much work.
-        // The value is the chain work of the Namecoin mainnet chain at height
+        // The value is the chain work of the Doichain mainnet chain at height
         // 762'000, with best block hash:
         // 94c093af984579ccd885eab4e4a2914dd7619970f87d1fdaaf122dc91c215769
         consensus.nMinimumChainWork = uint256{"0000000000000000000000000000000000000000720852f45db06485eac283a8"};
@@ -237,7 +237,7 @@ public:
         consensus.BIP34Height = 130000;
         consensus.BIP65Height = 130000;
         consensus.BIP66Height = 130000;
-        /* Namecoin activates CSV/Segwit with BIP16.  */
+        /* Doichain activates CSV/Segwit with BIP16.  */
         consensus.CSVHeight = 232000;
         consensus.SegwitHeight = 232000;
         consensus.MinBIP9WarningHeight = 234016; // segwit activation height + miner confirmation window
