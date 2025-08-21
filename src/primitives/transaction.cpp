@@ -81,7 +81,7 @@ bool CTransaction::ComputeHasWitness() const
 
 void CMutableTransaction::SetDoichain()
 {
-    version = CTransaction::NAMECOIN_VERSION;
+    version = CTransaction::DOICHAIN_VERSION;
 }
 
 Txid CTransaction::ComputeHash() const
