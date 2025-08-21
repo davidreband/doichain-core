@@ -131,7 +131,7 @@ public:
           nModFeesWithAncestors{nFee},
           nSigOpCostWithAncestors{sigOpCost}
     {
-        if (tx->IsNamecoin())
+        if (tx->IsDoichain())
         {
             for (const auto& txOut : tx->vout)
             {

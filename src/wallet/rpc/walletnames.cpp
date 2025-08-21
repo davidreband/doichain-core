@@ -238,7 +238,7 @@ name_list ()
   for (const auto& item : pwallet->mapWallet)
     {
       const CWalletTx& tx = item.second;
-      if (!tx.tx->IsNamecoin ())
+      if (!tx.tx->IsDoichain ())
         continue;
 
       CNameScript nameOp;
@@ -622,7 +622,7 @@ name_firstupdate ()
       for (const auto& item : pwallet->mapWallet)
         {
           const CWalletTx& tx = item.second;
-          if (!tx.tx->IsNamecoin ())
+          if (!tx.tx->IsDoichain ())
             continue;
 
           CScript output;
