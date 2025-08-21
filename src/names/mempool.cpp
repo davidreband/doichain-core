@@ -233,7 +233,8 @@ CNameMemPool::removeConflicts (const CTransaction& tx)
 {
   AssertLockHeld (pool.cs);
 
-  if (!tx.IsNamecoin ())
+
+  if (!tx.IsDoichain ())
     return;
 
   for (const auto& txout : tx.vout)
@@ -314,7 +315,7 @@ CNameMemPool::check (ChainstateManager& chainman, const CCoinsView& coins) const
   if (blockHash.IsNull())
     nHeight = 0;
   else
-    nHeight = chainman.BlockIndex ().find (blockHash)->second->nHeight;
+    nHeight = chainman.BlockIndex ().find (blockHash)->second.nHeight;
 
   std::set<valtype> nameRegs;
   std::map<valtype, unsigned> nameDois;

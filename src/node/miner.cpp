@@ -239,7 +239,7 @@ bool BlockAssembler::TestPackageTransactions(const CTxMemPool::setEntries& packa
 bool
 BlockAssembler::TxAllowedForNamecoin (const CTransaction& tx) const
 {
-  if (!tx.IsNamecoin ())
+  if (!tx.IsDoichain ())
     return true;
 
   bool nameOutFound = false;

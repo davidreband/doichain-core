@@ -4043,7 +4043,7 @@ bool CheckDbLockLimit(const std::vector<CTransactionRef>& vtx)
     for (const auto& tx : vtx)
     {
         setTxIds.insert(tx->GetHash());
-        if (tx->IsNamecoin())
+        if (tx->IsDoichain())
             ++nNames;
 
         for (const auto& txIn : tx->vin)
