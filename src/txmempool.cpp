@@ -806,7 +806,8 @@ void CTxMemPool::check(const CCoinsViewCache& active_coins_tip, int64_t spendhei
 
 void CTxMemPool::checkNames(const CCoinsViewCache& active_coins_tip, int64_t spendheight) const
 {
-    names.check (active_coins_tip, spendheight);
+    // TODO: Adapt this to work with the new ChainstateManager interface
+    // names.check (active_coins_tip, spendheight);
 }
 
 bool CTxMemPool::CompareDepthAndScore(const uint256& hasha, const uint256& hashb, bool wtxid)
