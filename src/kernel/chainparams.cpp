@@ -109,24 +109,24 @@ public:
         consensus.signet_blocks = false;
         consensus.signet_challenge.clear();
         consensus.nSubsidyHalvingInterval = 210000;
-        consensus.BIP16Height = 475000;
+        consensus.BIP16Height = 0;
         /* Note that these are not the actual activation heights, but blocks
            after them.  They are too deep in the chain to be ever reorged,
            and thus this is also fine.  */
-        consensus.BIP34Height = 250000;
-        consensus.BIP65Height = 335000;
-        consensus.BIP66Height = 250000;
+        consensus.BIP34Height = 100000000;
+        consensus.BIP65Height = 130000;
+        consensus.BIP66Height = 130000;
         /* Doichain activates CSV/Segwit with BIP16.  */
-        consensus.CSVHeight = 475000;
-        consensus.SegwitHeight = 475000;
-        consensus.MinBIP9WarningHeight = 477016; // segwit activation height + miner confirmation window
+        consensus.CSVHeight = 216500;
+        consensus.SegwitHeight = 216500;
+        consensus.MinBIP9WarningHeight = 218500; // segwit activation height + miner confirmation window
         consensus.powLimit = uint256{"0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.enforce_BIP94 = false;
         consensus.fPowNoRetargeting = false;
-        consensus.nRuleChangeActivationThreshold = 1815; // 90% of 2016
+        consensus.nRuleChangeActivationThreshold = 1916; // 90% of 2016
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = Consensus::BIP9Deployment::NEVER_ACTIVE;
@@ -134,7 +134,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].min_activation_height = 0; // No activation delay
 
         // Deployment of Taproot (BIPs 340-342)
-        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].bit = 2;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nStartTime = Consensus::BIP9Deployment::NEVER_ACTIVE;
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].min_activation_height = 0; // No activation delay
@@ -143,13 +143,13 @@ public:
         // The value is the chain work of the Doichain mainnet chain at height
         // 762'000, with best block hash:
         // 94c093af984579ccd885eab4e4a2914dd7619970f87d1fdaaf122dc91c215769
-        consensus.nMinimumChainWork = uint256{"0000000000000000000000000000000000000000720852f45db06485eac283a8"};
-        consensus.defaultAssumeValid = uint256{"94c093af984579ccd885eab4e4a2914dd7619970f87d1fdaaf122dc91c215769"}; // 762'000
+        consensus.nMinimumChainWork = uint256{"00000000000000000000000000000000000000000000000ba50a60f8b56c7fe0"};
+        consensus.defaultAssumeValid = uint256{"00006b0bc91e80054369e07b330c243bf32f4b97f66da976756265b81a9b5828"}; // 762'000
 
-        consensus.nAuxpowChainId = 0x0001;
-        consensus.nAuxpowStartHeight = 19200;
-        consensus.fStrictChainId = true;
-        consensus.nLegacyBlocksBefore = 19200;
+        consensus.nAuxpowChainId = 0x0002;
+        consensus.nAuxpowStartHeight = 1;
+        consensus.fStrictChainId = false;
+        consensus.nLegacyBlocksBefore = 1;
 
         consensus.rules.reset(new Consensus::MainNetConsensus());
 
@@ -169,8 +169,8 @@ public:
 
         genesis = CreateGenesisBlock(1522756358, 77495, 0x1f00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256{"000000000062b72c5e2ceb45fbc8587e807c155b0da735e6483dfba2f0a9c770"});
-        assert(genesis.hashMerkleRoot == uint256{"41c62dbd9068c89a449525e3cd5ac61b20ece28c3c38b3f35b2161f0e6d3cb0d"});
+        assert(consensus.hashGenesisBlock == uint256{"000006fdd8b4d786fd9bdde5bae9486c464e3aa4336c5f8415dfdd3fc1679134"});
+        assert(genesis.hashMerkleRoot == uint256{"234651063df5f8b01ecc2fc3a134fa1cb9dc9da9cce0149049483ba1b1469dfb"});
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
@@ -369,7 +369,7 @@ public:
         consensus.CSVHeight = 1;
         consensus.SegwitHeight = 1;
         consensus.MinBIP9WarningHeight = 0;
-        consensus.powLimit = uint256{"00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
+        consensus.powLimit = uint256{"000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = true;
@@ -388,8 +388,8 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].min_activation_height = 0; // No activation delay
 
-        consensus.nMinimumChainWork = uint256{"0000000000000000000000000000000000000000000001d6dce8651b6094e4c1"};
-        consensus.defaultAssumeValid = uint256{"0000000000003ed4f08dbdf6f7d6b271a6bcffce25675cb40aa9fa43179a89f3"}; // 72600
+        consensus.nMinimumChainWork = uint256{"0000000000000000000000000000000000000000000000000000000000001c71"};
+        consensus.defaultAssumeValid = uint256{"0000cd7572b3ecc78b7cddf49eda95e718d4df77c236ca2e375125e111e7e9c4"}; // 72600
 
         pchMessageStart[0] = 0x1c;
         pchMessageStart[1] = 0x16;
@@ -403,8 +403,8 @@ public:
         /* FIXME: Update below and in general testnet4 */
         genesis = CreateTestnetGenesisBlock(1296688602, 0x16ec0bff, 0x1d07fff8, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256{"00000007199508e34a9ff81e6ec0c477a4cccff2a4767a8eee39c11db367b008"});
-        assert(genesis.hashMerkleRoot == uint256{"4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"});
+        assert(consensus.hashGenesisBlock == uint256{"dd8204f212577ff3bcd2829fdfa54e4db13a0555a2270c6ae0b2dfe6052c0d4b"});
+        assert(genesis.hashMerkleRoot == uint256{"8de06f9a125793c3b6bfe7e3bc473ba2bb505b234af5d7e999bda03ed3f4ac34"});
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -545,8 +545,8 @@ public:
 
         genesis = CreateTestnetGenesisBlock(1598918400, 52613770, 0x1e0377ae, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256{"00000008819873e925422c1ff0f99f7cc9bbb232af63a077a480a3633bee1ef6"});
-        assert(genesis.hashMerkleRoot == uint256{"4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"});
+        assert(consensus.hashGenesisBlock == uint256{"10df950ab0ea1529036b40ec6929d861727f24251e33817955f5cf4a86e79864"});
+        assert(genesis.hashMerkleRoot == uint256{"8de06f9a125793c3b6bfe7e3bc473ba2bb505b234af5d7e999bda03ed3f4ac34"});
 
         m_assumeutxo_data = {
             {
