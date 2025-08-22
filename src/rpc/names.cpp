@@ -845,7 +845,7 @@ name_pending ()
   for (const CTxMemPoolEntry& entry : mempool.entryAll ())
     {
       const auto& tx = entry.GetTx ();
-      if (!tx.IsNamecoin ())
+      if (!tx.IsDoichain ())
         continue;
 
       for (size_t n = 0; n < tx.vout.size (); ++n)
