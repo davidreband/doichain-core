@@ -974,7 +974,7 @@ PerformNameRawtx (const unsigned nOut, const UniValue& nameOp,
 
       script = CNameScript::buildNameFirstupdate (script, name, value, rand);
     }
-  else if (op == "name_update")
+  else if (op == "name_update" || op == "name_doi")
     {
       RPCTypeCheckObj (nameOp,
         {
@@ -1024,7 +1024,7 @@ namerawtransaction ()
                           {"hexstring", RPCArg::Type::STR_HEX, RPCArg::Optional::NO, "The transaction hex string"},
                           {"vout", RPCArg::Type::NUM, RPCArg::Optional::NO, "The vout of the desired name output"},
                           {"nameop", RPCArg::Type::OBJ, RPCArg::Optional::NO, "The name operation to create", {
-                                                                                                                  {"op", RPCArg::Type::STR, RPCArg::Optional::NO, "The operation to perform, can be \"name_new\", \"name_firstupdate\" and \"name_update\""},
+                                                                                                                  {"op", RPCArg::Type::STR, RPCArg::Optional::NO, "The operation to perform, can be \"name_new\", \"name_firstupdate\", \"name_update\" and \"name_doi\""},
                                                                                                                   {"name", RPCArg::Type::STR, RPCArg::Optional::NO, "The name to operate on"},
                                                                                                                   {"value", RPCArg::Type::STR, RPCArg::Optional::OMITTED, "The new value for the name"},
                                                                                                                   {"rand", RPCArg::Type::STR, RPCArg::Optional::OMITTED, "The nonce value to use for registrations"},
@@ -1039,7 +1039,7 @@ namerawtransaction ()
                               {RPCResult::Type::STR_HEX, "rand", /* optional */ true, "If this is a name_new, the nonce used to create it"},
                           },
                       },
-                      RPCExamples{HelpExampleCli("namerawtransaction", R"(\"raw tx hex\" 1 \"{\"op\":\"name_new\",\"name\":\"my-name\")") + HelpExampleCli("namerawtransaction", R"(\"raw tx hex\" 1 \"{\"op\":\"name_firstupdate\",\"name\":\"my-name\",\"value\":\"new value\",\"rand\":\"00112233\")") + HelpExampleCli("namerawtransaction", R"(\"raw tx hex\" 1 \"{\"op\":\"name_update\",\"name\":\"my-name\",\"value\":\"new value\")") + HelpExampleRpc("namerawtransaction", R"(\"raw tx hex\", 1, \"{\"op\":\"name_doi\",\"name\":\"my-name\",\"value\":\"new value\")")}, [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue {
+                      RPCExamples{HelpExampleCli("namerawtransaction", R"(\"raw tx hex\" 1 \"{\"op\":\"name_new\",\"name\":\"my-name\")") + HelpExampleCli("namerawtransaction", R"(\"raw tx hex\" 1 \"{\"op\":\"name_firstupdate\",\"name\":\"my-name\",\"value\":\"new value\",\"rand\":\"00112233\")") + HelpExampleCli("namerawtransaction", R"(\"raw tx hex\" 1 \"{\"op\":\"name_doi\",\"name\":\"my-name\",\"value\":\"new value\")") + HelpExampleRpc("namerawtransaction", R"(\"raw tx hex\", 1, \"{\"op\":\"name_doi\",\"name\":\"my-name\",\"value\":\"new value\")")}, [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue {
                           CMutableTransaction mtx;
                           if (!DecodeHexTx(mtx, request.params[0].get_str(), true))
                               throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
