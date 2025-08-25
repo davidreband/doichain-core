@@ -259,7 +259,7 @@ name_list ()
             }
         }
 
-      if (nOut == -1 || !nameOp.isAnyUpdate ())
+       if (nOut == -1 || (!nameOp.isAnyUpdate () && !nameOp.isDoiRegistration()))
         continue;
 
       const valtype& name = nameOp.getOpName ();
@@ -1156,12 +1156,12 @@ name_doi ()
 
   {
     LOCK (cs_main);
-    
+
     const auto& coinsTip = chainman.ActiveChainstate ().CoinsTip ();
     if (coinsTip.GetName (name, oldData) && !oldData.isExpired (chainman.ActiveHeight () + 1))
       {
         isUpdate = true;
-        
+
         /* Check that we own the name.  */
         const COutPoint& prevout = oldData.getUpdateOutpoint ();
         nameInput = CTxIn(prevout);

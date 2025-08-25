@@ -382,10 +382,10 @@ bool CCoinsViewDB::ValidateNameDB(const Chainstate& chainState, const std::funct
             if (!coin.out.IsNull())
             {
                 const CNameScript nameOp(coin.out.scriptPubKey);
-                if (nameOp.isNameOp() && nameOp.isAnyUpdate())
+                if (nameOp.isNameOp() && (nameOp.isAnyUpdate() || nameOp.isDoiRegistration()))
                 {
                     const valtype& name = nameOp.getOpName();
-                    if (namesInUTXO.count(name) > 0) {
+                    if (!nameOp.isDoiRegistration() && namesInUTXO.count(name) > 0)
                         LogError ("%s : name %s duplicated in UTXO set",
                                   __func__, EncodeNameForMessage(name));
                         return false;
@@ -417,7 +417,7 @@ bool CCoinsViewDB::ValidateNameDB(const Chainstate& chainState, const std::funct
                 return false;
             }
             nameHeightsData.insert(std::make_pair(name, data.getHeight()));
-            
+
             /* Expiration is checked at height+1, because that matches
                how the UTXO set is cleared in ExpireNames.  */
             assert(namesInDB.count(name) == 0);
