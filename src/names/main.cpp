@@ -327,13 +327,13 @@ CheckNameTransaction (const CTransaction& tx, unsigned nHeight,
     }
 
   /* Finally, NAME_FIRSTUPDATE.  */
-
+/*
   assert (nameOpOut.getNameOp () == OP_NAME_FIRSTUPDATE);
   if (nameOpIn.getNameOp () != OP_NAME_NEW)
     return state.Invalid (TxValidationResult::TX_CONSENSUS,
                           "tx-firstupdate-nonnew-input",
                           "NAME_FIRSTUPDATE input is not a NAME_NEW");
-
+*/
   /* Maturity of NAME_NEW is checked only if we're not adding
      to the mempool.  */
   if (!fMempool)
