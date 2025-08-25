@@ -231,21 +231,21 @@ public:
         consensus.signet_blocks = false;
         consensus.signet_challenge.clear();
         consensus.nSubsidyHalvingInterval = 210000;
-        consensus.BIP16Height = 232000;
+        consensus.BIP16Height = 1000;
         /* As before, these are not the actual activation heights but some
            blocks after them.  */
         consensus.BIP34Height = 130000;
-        consensus.BIP65Height = 130000;
-        consensus.BIP66Height = 130000;
+        consensus.BIP65Height = 1000;
+        consensus.BIP66Height = 1000;
         /* Doichain activates CSV/Segwit with BIP16.  */
-        consensus.CSVHeight = 232000;
-        consensus.SegwitHeight = 232000;
-        consensus.MinBIP9WarningHeight = 234016; // segwit activation height + miner confirmation window
-        consensus.powLimit = uint256{"0000000fffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
+        consensus.CSVHeight = 1000;
+        consensus.SegwitHeight = 1000;
+        consensus.MinBIP9WarningHeight = 1000; // segwit activation height + miner confirmation window
+        consensus.powLimit = uint256{"000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = true;
-        consensus.nMinDifficultySince = 1394838000; // 15 Mar 2014
+        consensus.nMinDifficultySince = 0; // 15 Mar 2014
         consensus.fPowNoRetargeting = false;
         consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
@@ -266,11 +266,10 @@ public:
         consensus.nMinimumChainWork = uint256{"0000000000000000000000000000000000000000000000000000000000001c71"};
         consensus.defaultAssumeValid = uint256{"0000cd7572b3ecc78b7cddf49eda95e718d4df77c236ca2e375125e111e7e9c4"}; // Doichain testnet genesis
 
-        consensus.nAuxpowStartHeight = 0;
-        consensus.nAuxpowChainId = 0x0001;
+        consensus.nAuxpowStartHeight = 1;
+        consensus.nAuxpowChainId = 0x0003;
         consensus.fStrictChainId = false;
-        consensus.nLegacyBlocksBefore = -1;
-
+        consensus.nLegacyBlocksBefore = 1;
         consensus.rules.reset(new Consensus::TestNetConsensus());
 
         pchMessageStart[0] = 0xfc;
@@ -311,20 +310,7 @@ public:
 
         checkpointData = {
             {
-                {  2016, uint256{"00000000b9e4132e1a803114bc88df3e49184a3c794c01a6eac334f12f4ccadb"}},
-                {  4032, uint256{"00000003fbc13a48b8de5c8742044c84b800edeabff8b39f7f23ac572c6d80ce"}},
-                {  8064, uint256{"f594a75db40244bc7baa808a695f796ba81cae5bb48fa920e367cdd31dbfb0e3"}},
-                { 10080, uint256{"398d44a1a6e58dce3f7463217f677c2532e42a83696dcc5d4d97329c00a10891"}},
-                { 12096, uint256{"22c9278493cda563565fc2a4250eff48bd68ed40cb5fb30029ca08ea6120ddab"}},
-                { 14112, uint256{"83bade3e3d88845eb52de90311a8017b1cdf725b15d19bc89c47a568f7b4e08c"}},
-                { 16128, uint256{"f456354835623f733bb928ed77d97ae06b96ad6c40aba63f51f94f06e905effc"}},
-                { 18144, uint256{"c0ec570117822ca3c76abd1d10449b283d8ad39c64290d6abafe2bed23917886"}},
-                { 34715, uint256{"0000000580cf4342f869e278d94d7e67d2ac8cae4a411082e0fd518a8091ebf2"}},
-                { 48384, uint256{"00000001d528af69dce584f882e3bdb36127104988607b726591cc5e62287922"}},
-                { 60480, uint256{"d3af823c32e890ca589dd4277aa4d27b8cd290396b7e0eeeee5121481fd43ca5"}},
-                {130000, uint256{"e0a05455d89a54bb7c1b5bb785d6b1b7c5bda42ed4ce8dc19d68652ba8835954"}},
-                {231000, uint256{"4964042a9c9ca5f1e104246f4d70ecb4f7217e02a2656379560e4ee4590f9870"}},
-            }
+                {  0, uint256S{"0000cd7572b3ecc78b7cddf49eda95e718d4df77c236ca2e375125e111e7e9c4"}}
         };
 
         m_assumeutxo_data = {
