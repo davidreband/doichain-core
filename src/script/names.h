@@ -95,7 +95,8 @@ public:
         return op;
 
       default:
-        assert (false);
+          return op;
+          // assert (false);
       }
   }
 

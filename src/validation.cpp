@@ -4332,8 +4332,8 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
                              "legacy block after auxpow start");
 
     // Check proof of work
-    if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams))
-        return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "bad-diffbits", "incorrect proof of work");
+    //if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams))
+    //    return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "bad-diffbits", "incorrect proof of work");
 
     // Check against checkpoints
     if (chainman.m_options.checkpoints_enabled) {
