@@ -1547,7 +1547,7 @@ Proces migrácie vytvorí zálohu peňaženky pred samotnou migráciou. Tento z�
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">Otvoriť bitcoin URI</translation>
     </message>
     <message>

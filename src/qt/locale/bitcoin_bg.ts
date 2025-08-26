@@ -1516,7 +1516,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">Отвори bitcoin URI </translation>
     </message>
     <message>

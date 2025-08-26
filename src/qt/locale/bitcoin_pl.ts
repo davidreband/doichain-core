@@ -1566,7 +1566,7 @@ Proces migracji utworzy kopię zapasową portfela przed migracją. Plik kopii za
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">Otwórz URI</translation>
     </message>
     <message>

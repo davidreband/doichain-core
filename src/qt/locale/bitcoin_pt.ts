@@ -1537,7 +1537,7 @@ O processo de migração criará uma cópia de segurança da carteira antes da m
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">Abrir um URI de bitcoin</translation>
     </message>
     <message>

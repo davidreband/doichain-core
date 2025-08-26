@@ -1548,7 +1548,7 @@ Siirtoprosessi luo varmuuskopion lompakosta ennen siirtoa. Tämä varmuuskopioti
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">Avaa bitcoin URI</translation>
     </message>
     <message>

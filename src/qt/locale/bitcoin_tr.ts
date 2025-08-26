@@ -1455,7 +1455,7 @@ Taşıma işlemi, taşıma işleminden önce cüzdanın bir yedeğini oluşturac
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">Bitcoin URI aç</translation>
     </message>
     <message>

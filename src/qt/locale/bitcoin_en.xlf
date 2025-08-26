@@ -1501,7 +1501,7 @@ The migration process will create a backup of the wallet before migrating. This 
   <file original="../forms/openuridialog.ui" datatype="x-trolltech-designer-ui" source-language="en"><body>
     <group restype="x-trolltech-linguist-context" resname="OpenURIDialog">
       <trans-unit id="_msg329">
-        <source xml:space="preserve">Open bitcoin URI</source>
+        <source xml:space="preserve">Open doichain URI</source>
         <context-group purpose="location"><context context-type="linenumber">14</context></context-group>
       </trans-unit>
       <trans-unit id="_msg330">

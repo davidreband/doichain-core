@@ -1459,7 +1459,7 @@ Diňe "miras" görnüşli salgylar bilen gol çekmek mümkin.</translation>
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">Bitkoin URI aç</translation>
     </message>
     <message>

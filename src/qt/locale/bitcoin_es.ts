@@ -1521,7 +1521,7 @@ El proceso de migración creará un respaldo del monedero antes de migrar. Este 
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">Abrir URI de tipo "bitcoin:"</translation>
     </message>
     <message>

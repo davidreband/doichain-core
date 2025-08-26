@@ -1479,7 +1479,7 @@ O processo de migração criará um backup da carteira antes da migração. Este
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">Abrir um bitcoin URI</translation>
     </message>
     <message>

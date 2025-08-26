@@ -1181,7 +1181,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">பிட்காயின் யூ. ஆர். ஐ.யை திர</translation>
     </message>
     <message>

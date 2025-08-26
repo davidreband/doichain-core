@@ -1548,7 +1548,7 @@ The migration process will create a backup of the wallet before migrating. This 
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">เปิด URI ของบิตคอยน์</translation>
     </message>
     <message>

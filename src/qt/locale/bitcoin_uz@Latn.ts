@@ -1410,7 +1410,7 @@ Kirish faqat 'legacy' turidagi manzillar uchun.</translation>
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">Bitkoin URI sini ochish</translation>
     </message>
     <message>

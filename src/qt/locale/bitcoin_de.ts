@@ -1438,7 +1438,7 @@ Während des Migrationsprozesses wird vor der Migration ein Backup der Wallet er
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">Öffne bitcoin URI</translation>
     </message>
     <message>

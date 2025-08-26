@@ -1558,7 +1558,7 @@ A migrációs folyamat készít biztonsági mentést a tárcáról migrálás el
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">Bitcoin URI megnyitása</translation>
     </message>
     <message>

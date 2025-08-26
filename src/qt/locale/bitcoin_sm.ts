@@ -1488,7 +1488,7 @@ O le fa'amaoniga o le malaga o le a fai se kopi o le 'aofa'i a'o le'i fa'aauau l
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">Tatala le URI o le Bitcoin</translation>
     </message>
     <message>

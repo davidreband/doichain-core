@@ -1512,7 +1512,7 @@ Het migratieproces maakt voorafgaand aan het migreren een backup van de wallet. 
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">Open bitcoin-URI</translation>
     </message>
     <message>

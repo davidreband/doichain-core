@@ -1149,7 +1149,7 @@ Sinatzea 'legacy' motako helbideekin soilik da posible</translation>
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">Ireki bitcoin URIa</translation>
     </message>
     <message>

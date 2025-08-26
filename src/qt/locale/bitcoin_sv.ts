@@ -1500,7 +1500,7 @@ Om den här plånboken innehåller lösbara</translation>
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">Öppna bitcoin-URI</translation>
     </message>
     <message>

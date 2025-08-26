@@ -1559,7 +1559,7 @@ Le processus de migration créera une sauvegarde du portemonnaie avant migration
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">Ouvrir une URI bitcoin</translation>
     </message>
     <message>

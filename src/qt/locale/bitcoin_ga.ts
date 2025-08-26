@@ -1547,7 +1547,7 @@ Cruthóidh an próiseas imirce cúltaca den sparán roimh imirce. Ainmneofar an 
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">Oscail URI bitcoin</translation>
     </message>
     <message>

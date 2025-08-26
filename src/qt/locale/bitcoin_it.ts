@@ -1525,7 +1525,7 @@ Il processo di migrazione creerà un backup del portafoglio prima della migrazio
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open bitcoin URI</source>
+        <source>Open doichain URI</source>
         <translation type="unfinished">Apri un URI bitcoin</translation>
     </message>
     <message>
