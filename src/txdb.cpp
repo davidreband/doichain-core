@@ -385,7 +385,7 @@ bool CCoinsViewDB::ValidateNameDB(const Chainstate& chainState, const std::funct
                 if (nameOp.isNameOp() && (nameOp.isAnyUpdate() || nameOp.isDoiRegistration()))
                 {
                     const valtype& name = nameOp.getOpName();
-                    if (!nameOp.isDoiRegistration() && namesInUTXO.count(name) > 0)
+                    if (namesInUTXO.count(name) > 0 && !nameOp.isDoiRegistration())
                         LogError ("%s : name %s duplicated in UTXO set",
                                   __func__, EncodeNameForMessage(name));
                         return false;

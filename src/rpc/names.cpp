@@ -974,7 +974,7 @@ PerformNameRawtx (const unsigned nOut, const UniValue& nameOp,
 
       script = CNameScript::buildNameFirstupdate (script, name, value, rand);
     }
-  else if (op == "name_update" || op == "name_doi")
+  else if (op == "name_update" )
     {
       RPCTypeCheckObj (nameOp,
         {
