@@ -310,7 +310,8 @@ public:
 
         checkpointData = {
             {
-                {  0, uint256S{"0000cd7572b3ecc78b7cddf49eda95e718d4df77c236ca2e375125e111e7e9c4"}}
+                {  0, uint256{"0000cd7572b3ecc78b7cddf49eda95e718d4df77c236ca2e375125e111e7e9c4"}}
+            }
         };
 
         m_assumeutxo_data = {
