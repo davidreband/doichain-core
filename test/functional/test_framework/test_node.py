@@ -2,7 +2,7 @@
 # Copyright (c) 2017-2022 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-"""Class for namecoind node under test"""
+"""Class for doichaind node under test"""
 
 import contextlib
 import decimal
@@ -64,7 +64,7 @@ class ErrorMatch(Enum):
 
 
 class TestNode():
-    """A class for representing a namecoind node under test.
+    """A class for representing a doichaind node under test.
 
     This class contains:
 
@@ -276,7 +276,7 @@ class TestNode():
         self.process = subprocess.Popen(self.args + extra_args, env=subp_env, stdout=stdout, stderr=stderr, cwd=cwd, **kwargs)
 
         self.running = True
-        self.log.debug("namecoind started, waiting for RPC to come up")
+        self.log.debug("doichaind started, waiting for RPC to come up")
 
         if self.start_perf:
             self._start_perf()
@@ -293,7 +293,7 @@ class TestNode():
                 str_error += "************************\n" if str_error else ''
 
                 raise FailedToStartError(self._node_msg(
-                    f'namecoind exited with status {self.process.returncode} during initialization. {str_error}'))
+                    f'doichaind exited with status {self.process.returncode} during initialization. {str_error}'))
             try:
                 rpc = get_rpc_proxy(
                     rpc_url(self.datadir_path, self.index, self.chain, self.rpchost),
@@ -351,7 +351,7 @@ class TestNode():
                 if "No RPC credentials" not in str(e):
                     raise
             time.sleep(1.0 / poll_per_s)
-        self._raise_assertion_error("Unable to connect to namecoind after {}s".format(self.rpc_timeout))
+        self._raise_assertion_error("Unable to connect to doichaind after {}s".format(self.rpc_timeout))
 
     def wait_for_cookie_credentials(self):
         """Ensures auth cookie credentials can be read, e.g. for testing CLI with -rpcwait before RPC connection is up."""
@@ -688,7 +688,7 @@ class TestNode():
             try:
                 self.start(extra_args, stdout=log_stdout, stderr=log_stderr, *args, **kwargs)
                 ret = self.process.wait(timeout=self.rpc_timeout)
-                self.log.debug(self._node_msg(f'namecoind exited with status {ret} during initialization'))
+                self.log.debug(self._node_msg(f'doichaind exited with status {ret} during initialization'))
                 assert ret != 0  # Exit code must indicate failure
                 self.running = False
                 self.process = None
@@ -712,7 +712,7 @@ class TestNode():
                 self.process.kill()
                 self.running = False
                 self.process = None
-                assert_msg = f'namecoind should have exited within {self.rpc_timeout}s '
+                assert_msg = f'doichaind should have exited within {self.rpc_timeout}s '
                 if expected_msg is None:
                     assert_msg += "with an error"
                 else:
@@ -895,7 +895,7 @@ class TestNodeCLI():
         self.binary = binary
         self.datadir = datadir
         self.input = None
-        self.log = logging.getLogger('TestFramework.namecoincli')
+        self.log = logging.getLogger('TestFramework.doichaincli')
 
     def __call__(self, *options, input=None):
         # TestNodeCLI is callable with bitcoin-cli command-line options
@@ -926,7 +926,7 @@ class TestNodeCLI():
         if clicommand is not None:
             p_args += [clicommand]
         p_args += pos_args + named_args
-        self.log.debug("Running namecoin-cli {}".format(p_args[2:]))
+        self.log.debug("Running doichain-cli {}".format(p_args[2:]))
         process = subprocess.Popen(p_args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         cli_stdout, cli_stderr = process.communicate(input=self.input)
         returncode = process.poll()

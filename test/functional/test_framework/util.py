@@ -28,7 +28,7 @@ SATOSHI_PRECISION = Decimal('0.00000001')
 logger = logging.getLogger("TestFramework.utils")
 
 # Added in Namecoin for easier rebranding to other projects.
-config_file = "namecoin.conf"
+config_file = "doichain.conf"
 
 # Assert functions
 ##################
@@ -491,9 +491,9 @@ def get_temp_default_datadir(temp_dir: pathlib.Path) -> tuple[dict, pathlib.Path
     else:
         env = dict(HOME=str(temp_dir))
         if platform.system() == "Darwin":
-            datadir = temp_dir / "Library/Application Support/Namecoin"
+            datadir = temp_dir / "Library/Application Support/Doichain"
         else:
-            datadir = temp_dir / ".namecoin"
+            datadir = temp_dir / ".doichain"
     return env, datadir
 
 

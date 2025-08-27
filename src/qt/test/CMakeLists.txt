@@ -4,7 +4,7 @@
 
 set(CMAKE_AUTOMOC_MOC_OPTIONS "-p${CMAKE_CURRENT_SOURCE_DIR}")
 
-add_executable(test_namecoin-qt
+add_executable(test_doichain-qt
   apptests.cpp
   optiontests.cpp
   rpcnestedtests.cpp
@@ -14,7 +14,7 @@ add_executable(test_namecoin-qt
   ../../init/bitcoin-qt.cpp
 )
 
-target_link_libraries(test_namecoin-qt
+target_link_libraries(test_doichain-qt
   core_interface
   bitcoinqt
   test_util
@@ -23,10 +23,10 @@ target_link_libraries(test_namecoin-qt
   Qt5::Test
 )
 
-import_plugins(test_namecoin-qt)
+import_plugins(test_doichain-qt)
 
 if(ENABLE_WALLET)
-  target_sources(test_namecoin-qt
+  target_sources(test_doichain-qt
     PRIVATE
       addressbooktests.cpp
       wallettests.cpp
@@ -34,15 +34,15 @@ if(ENABLE_WALLET)
   )
 endif()
 
-add_test(NAME test_namecoin-qt
-  COMMAND test_namecoin-qt
+add_test(NAME test_doichain-qt
+  COMMAND test_doichain-qt
 )
 if(WIN32 AND VCPKG_TARGET_TRIPLET)
   # On Windows, vcpkg configures Qt with `-opengl dynamic`, which makes
   # the "minimal" platform plugin unusable due to internal Qt bugs.
-  set_tests_properties(test_namecoin-qt PROPERTIES
+  set_tests_properties(test_doichain-qt PROPERTIES
     ENVIRONMENT "QT_QPA_PLATFORM=windows"
   )
 endif()
 
-install_binary_component(test_namecoin-qt)
+install_binary_component(test_doichain-qt)

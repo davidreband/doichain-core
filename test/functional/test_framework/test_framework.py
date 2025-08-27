@@ -46,7 +46,7 @@ TEST_EXIT_PASSED = 0
 TEST_EXIT_FAILED = 1
 TEST_EXIT_SKIPPED = 77
 
-TMPDIR_PREFIX = "namecoin_func_test_"
+TMPDIR_PREFIX = "doichain_func_test_"
 
 
 class SkipTest(Exception):
@@ -158,7 +158,7 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
         previous_releases_path = os.getenv("PREVIOUS_RELEASES_DIR") or os.getcwd() + "/releases"
         parser = argparse.ArgumentParser(usage="%(prog)s [options]")
         parser.add_argument("--nocleanup", dest="nocleanup", default=False, action="store_true",
-                            help="Leave namecoinds and test.* datadir on exit or error")
+                            help="Leave doichainds and test.* datadir on exit or error")
         parser.add_argument("--cachedir", dest="cachedir", default=os.path.abspath(os.path.dirname(test_file) + "/../cache"),
                             help="Directory for caching pregenerated datadirs (default: %(default)s)")
         parser.add_argument("--tmpdir", dest="tmpdir", help="Root directory for datadirs (must not exist)")
@@ -179,7 +179,7 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
         parser.add_argument("--pdbonfailure", dest="pdbonfailure", default=False, action="store_true",
                             help="Attach a python debugger if test fails")
         parser.add_argument("--usecli", dest="usecli", default=False, action="store_true",
-                            help="use namecoin-cli instead of RPC for all commands")
+                            help="use doichain-cli instead of RPC for all commands")
         parser.add_argument("--perf", dest="perf", default=False, action="store_true",
                             help="profile running nodes with perf for the duration of the test")
         parser.add_argument("--valgrind", dest="valgrind", default=False, action="store_true",
@@ -235,10 +235,10 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
         """Update self.options with the paths of all binaries from environment variables or their default values"""
 
         binaries = {
-            "namecoind": ("bitcoind", "BITCOIND"),
-            "namecoin-cli": ("bitcoincli", "BITCOINCLI"),
-            "namecoin-util": ("bitcoinutil", "BITCOINUTIL"),
-            "namecoin-wallet": ("bitcoinwallet", "BITCOINWALLET"),
+            "doichaind": ("bitcoind", "BITCOIND"),
+            "doichain-cli": ("bitcoincli", "BITCOINCLI"),
+            "doichain-util": ("bitcoinutil", "BITCOINUTIL"),
+            "doichain-wallet": ("bitcoinwallet", "BITCOINWALLET"),
         }
         for binary, [attribute_name, env_variable_name] in binaries.items():
             default_filename = os.path.join(
@@ -506,9 +506,9 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
         if versions is None:
             versions = [None] * num_nodes
         if binary is None:
-            binary = [get_bin_from_version(v, 'namecoind', self.options.bitcoind) for v in versions]
+            binary = [get_bin_from_version(v, 'doichaind', self.options.bitcoind) for v in versions]
         if binary_cli is None:
-            binary_cli = [get_bin_from_version(v, 'namecoin-cli', self.options.bitcoincli) for v in versions]
+            binary_cli = [get_bin_from_version(v, 'doichain-cli', self.options.bitcoincli) for v in versions]
         # Fail test if any of the needed release binaries is missing
         bins_missing = False
         for bin_path in binary + binary_cli:

@@ -4,7 +4,7 @@
 
 # Do not use generator expressions in test sources because the
 # SOURCES property is processed to gather test suite macros.
-add_executable(test_namecoin
+add_executable(test_doichain
   main.cpp
   addrman_tests.cpp
   allocator_tests.cpp
@@ -130,7 +130,7 @@ add_executable(test_namecoin
 )
 
 include(TargetDataSources)
-target_json_data_sources(test_namecoin
+target_json_data_sources(test_doichain
   data/base58_encode_decode.json
   data/bip341_wallet_vectors.json
   data/blockfilters.json
@@ -141,11 +141,11 @@ target_json_data_sources(test_namecoin
   data/tx_invalid.json
   data/tx_valid.json
 )
-target_raw_data_sources(test_namecoin NAMESPACE test::data
+target_raw_data_sources(test_doichain NAMESPACE test::data
   data/asmap.raw
 )
 
-target_link_libraries(test_namecoin
+target_link_libraries(test_doichain
   core_interface
   test_util
   bitcoin_cli
@@ -168,11 +168,11 @@ if(WITH_MULTIPROCESS)
       univalue
   )
 
-  target_sources(test_namecoin
+  target_sources(test_doichain
     PRIVATE
       ipc_tests.cpp
   )
-  target_link_libraries(test_namecoin bitcoin_ipc_test bitcoin_ipc)
+  target_link_libraries(test_doichain bitcoin_ipc_test bitcoin_ipc)
 endif()
 
 function(add_boost_test source_file)
@@ -191,7 +191,7 @@ function(add_boost_test source_file)
   )
   if(test_suite_name)
     add_test(NAME ${test_suite_name}
-      COMMAND test_namecoin --run_test=${test_suite_name} --catch_system_error=no --log_level=test_suite -- DEBUG_LOG_OUT
+      COMMAND test_doichain --run_test=${test_suite_name} --catch_system_error=no --log_level=test_suite -- DEBUG_LOG_OUT
     )
     set_property(TEST ${test_suite_name} PROPERTY
       SKIP_REGULAR_EXPRESSION "no test cases matching filter"
@@ -200,8 +200,8 @@ function(add_boost_test source_file)
 endfunction()
 
 function(add_all_test_targets)
-  get_target_property(test_source_dir test_namecoin SOURCE_DIR)
-  get_target_property(test_sources test_namecoin SOURCES)
+  get_target_property(test_source_dir test_doichain SOURCE_DIR)
+  get_target_property(test_sources test_doichain SOURCES)
   foreach(test_source ${test_sources})
     cmake_path(IS_RELATIVE test_source result)
     if(result)
@@ -213,4 +213,4 @@ endfunction()
 
 add_all_test_targets()
 
-install_binary_component(test_namecoin)
+install_binary_component(test_doichain)
