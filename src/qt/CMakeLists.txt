@@ -230,40 +230,40 @@ if(qt_lib_type STREQUAL "STATIC_LIBRARY")
   )
 endif()
 
-add_executable(namecoin-qt
+add_executable(doichain-qt
   main.cpp
   ../init/bitcoin-qt.cpp
 )
 
-add_windows_resources(namecoin-qt res/bitcoin-qt-res.rc)
+add_windows_resources(doichain-qt res/bitcoin-qt-res.rc)
 
-target_link_libraries(namecoin-qt
+target_link_libraries(doichain-qt
   core_interface
   bitcoinqt
   bitcoin_node
 )
 
-import_plugins(namecoin-qt)
-install_binary_component(namecoin-qt HAS_MANPAGE)
+import_plugins(doichain-qt)
+install_binary_component(doichain-qt HAS_MANPAGE)
 if(WIN32)
-  set_target_properties(namecoin-qt PROPERTIES WIN32_EXECUTABLE TRUE)
+  set_target_properties(doichain-qt PROPERTIES WIN32_EXECUTABLE TRUE)
 endif()
 
 if(WITH_MULTIPROCESS)
-  add_executable(namecoin-gui
+  add_executable(doichain-gui
     main.cpp
     ../init/bitcoin-gui.cpp
   )
-  target_link_libraries(namecoin-gui
+  target_link_libraries(doichain-gui
     core_interface
     bitcoinqt
     bitcoin_node
     bitcoin_ipc
   )
-  import_plugins(namecoin-gui)
-  install_binary_component(namecoin-gui)
+  import_plugins(doichain-gui)
+  install_binary_component(doichain-gui)
   if(WIN32)
-    set_target_properties(namecoin-gui PROPERTIES WIN32_EXECUTABLE TRUE)
+    set_target_properties(doichain-gui PROPERTIES WIN32_EXECUTABLE TRUE)
   endif()
 endif()
 

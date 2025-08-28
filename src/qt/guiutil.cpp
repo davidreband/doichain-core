@@ -85,7 +85,7 @@ void ForceActivation();
 
 using namespace std::chrono_literals;
 
-#define URI_SCHEME "namecoin"
+#define URI_SCHEME "doichain"
 
 namespace GUIUtil {
 

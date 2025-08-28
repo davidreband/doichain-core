@@ -23,3 +23,4 @@ test/lint/test_runner/target/
 /ci/scratch/
 CLAUDE.md
 MIGRATION_PLAN.md
+.vscode/settings.json
