@@ -141,10 +141,10 @@ public:
 
         // The best chain should have at least this much work.
         // The value is the chain work of the Doichain mainnet chain at height
-        // 762'000, with best block hash:
-        // 94c093af984579ccd885eab4e4a2914dd7619970f87d1fdaaf122dc91c215769
-        consensus.nMinimumChainWork = uint256{"00000000000000000000000000000000000000000000000ba50a60f8b56c7fe0"};
-        consensus.defaultAssumeValid = uint256{"00006b0bc91e80054369e07b330c243bf32f4b97f66da976756265b81a9b5828"}; // 762'000
+        // 399'000, with best block hash:
+        // 7102ae565ce858cb399520ebf27dbef5508828f9bd52cba967f78e989a80197d
+        consensus.nMinimumChainWork = uint256{"00000000000000000000000000000000000000000000dd46e3b7b9e0ce86713c"};
+        consensus.defaultAssumeValid = uint256{"7102ae565ce858cb399520ebf27dbef5508828f9bd52cba967f78e989a80197d"}; // 399'000
 
         consensus.nAuxpowChainId = 0x0002;
         consensus.nAuxpowStartHeight = 1;
@@ -177,7 +177,7 @@ public:
         // This is fine at runtime as we'll fall back to using them as an addrfetch if they don't support the
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
-        
+
         vSeeds.emplace_back("dnsseed.doichain.org");
         vSeeds.emplace_back("seed.doi.works");
 
