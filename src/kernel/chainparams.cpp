@@ -143,8 +143,12 @@ public:
         // The value is the chain work of the Doichain mainnet chain at height
         // 399'000, with best block hash:
         // 7102ae565ce858cb399520ebf27dbef5508828f9bd52cba967f78e989a80197d
-        consensus.nMinimumChainWork = uint256{"00000000000000000000000000000000000000000000dd46e3b7b9e0ce86713c"};
-        consensus.defaultAssumeValid = uint256{"7102ae565ce858cb399520ebf27dbef5508828f9bd52cba967f78e989a80197d"}; // 399'000
+        // consensus.nMinimumChainWork = uint256{"00000000000000000000000000000000000000000000dd46e3b7b9e0ce86713c"};
+        // consensus.defaultAssumeValid = uint256{"7102ae565ce858cb399520ebf27dbef5508828f9bd52cba967f78e989a80197d"};
+
+        // TODO: Update these values when we have mainnet chain work values
+        consensus.nMinimumChainWork = uint256{"0000000000000000000000000000000000000000000000000000000000000001"};
+        consensus.defaultAssumeValid = uint256{"842a0789afe9effafa8c19bd9093f0630bed69dd715a6af2216df66701e9e598"}; // 401'000
 
         consensus.nAuxpowChainId = 0x0002;
         consensus.nAuxpowStartHeight = 1;
