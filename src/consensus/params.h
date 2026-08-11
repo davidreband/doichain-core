@@ -160,6 +160,20 @@ struct Params {
     bool fStrictChainId;
     int nLegacyBlocksBefore; // -1 for "always allow"
 
+    /**
+     * Doichain consensus divergences from Namecoin.  Each of these relaxes a
+     * rule that Namecoin enforces.  They exist because the Doichain chain
+     * contains blocks that would otherwise be rejected, so they must not be
+     * "fixed" without checking the chain first.
+     */
+    /**
+     * Whether an update of an existing name requires a name input.  Namecoin
+     * always requires one.  Doichain does not: mainnet block 29966
+     * (1173d2615de4aba9785646bc414040e622cc04869593f006872b9013e1b1201b)
+     * contains a name update without one.
+     */
+    bool fRequireNameInputForUpdate;
+
     /** Consensus rule interface.  */
     std::unique_ptr<ConsensusRules> rules;
 
