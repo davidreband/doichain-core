@@ -844,7 +844,7 @@ name_pending ()
   for (const CTxMemPoolEntry& entry : mempool.entryAll ())
     {
       const auto& tx = entry.GetTx ();
-      if (!tx.IsNamecoin ())
+      if (!tx.IsDoichain ())
         continue;
 
       for (size_t n = 0; n < tx.vout.size (); ++n)
@@ -868,6 +868,9 @@ name_pending ()
               break;
             case OP_NAME_UPDATE:
               obj.pushKV ("op", "name_update");
+              break;
+            case OP_NAME_DOI:
+              obj.pushKV ("op", "name_doi");
               break;
             default:
               assert (false);
@@ -899,7 +902,7 @@ void
 PerformNameRawtx (const unsigned nOut, const UniValue& nameOp,
                   CMutableTransaction& mtx, UniValue& result)
 {
-  mtx.SetNamecoin ();
+  mtx.SetDoichain ();
 
   if (nOut >= mtx.vout.size ())
     throw JSONRPCError (RPC_INVALID_PARAMETER, "vout is out of range");
@@ -914,7 +917,7 @@ PerformNameRawtx (const unsigned nOut, const UniValue& nameOp,
 
   /* namerawtransaction does not have an options argument.  This would just
      make the already long list of arguments longer.  Instead of using
-     namerawtransaction, namecoin-tx can be used anyway to create name
+     namerawtransaction, doichain-tx can be used anyway to create name
      operations with arbitrary hex data.  */
   const UniValue NO_OPTIONS(UniValue::VOBJ);
 
@@ -970,7 +973,7 @@ PerformNameRawtx (const unsigned nOut, const UniValue& nameOp,
 
       script = CNameScript::buildNameFirstupdate (script, name, value, rand);
     }
-  else if (op == "name_update")
+  else if (op == "name_update" )
     {
       RPCTypeCheckObj (nameOp,
         {
@@ -986,6 +989,23 @@ PerformNameRawtx (const unsigned nOut, const UniValue& nameOp,
                                        NO_OPTIONS);
 
       script = CNameScript::buildNameUpdate (script, name, value);
+    }
+    else if (op == "name_doi")
+    {
+      RPCTypeCheckObj (nameOp,
+        {
+          {"name", UniValueType (UniValue::VSTR)},
+          {"value", UniValueType (UniValue::VSTR)},
+        }
+      );
+
+      const valtype name
+          = DecodeNameFromRPCOrThrow (nameOp.find_value ("name"), NO_OPTIONS);
+      const valtype value
+          = DecodeValueFromRPCOrThrow (nameOp.find_value ("value"),
+                                       NO_OPTIONS);
+
+      script = CNameScript::buildNameDOI (script, name, value);
     }
   else
     throw JSONRPCError (RPC_INVALID_PARAMETER, "Invalid name operation");
@@ -1004,7 +1024,7 @@ namerawtransaction ()
           {"vout", RPCArg::Type::NUM, RPCArg::Optional::NO, "The vout of the desired name output"},
           {"nameop", RPCArg::Type::OBJ, RPCArg::Optional::NO, "The name operation to create",
               {
-                  {"op", RPCArg::Type::STR, RPCArg::Optional::NO, "The operation to perform, can be \"name_new\", \"name_firstupdate\" and \"name_update\""},
+                  {"op", RPCArg::Type::STR, RPCArg::Optional::NO, "The operation to perform, can be \"name_new\", \"name_firstupdate\", \"name_update\" and \"name_doi\""},
                   {"name", RPCArg::Type::STR, RPCArg::Optional::NO, "The name to operate on"},
                   {"value", RPCArg::Type::STR, RPCArg::Optional::OMITTED, "The new value for the name"},
                   {"rand", RPCArg::Type::STR, RPCArg::Optional::OMITTED, "The nonce value to use for registrations"},
@@ -1021,6 +1041,7 @@ namerawtransaction ()
           HelpExampleCli ("namerawtransaction", R"("raw tx hex" 1 "{\"op\":\"name_new\",\"name\":\"my-name\")")
         + HelpExampleCli ("namerawtransaction", R"("raw tx hex" 1 "{\"op\":\"name_firstupdate\",\"name\":\"my-name\",\"value\":\"new value\",\"rand\":\"00112233\")")
         + HelpExampleCli ("namerawtransaction", R"("raw tx hex" 1 "{\"op\":\"name_update\",\"name\":\"my-name\",\"value\":\"new value\")")
+        + HelpExampleCli ("namerawtransaction", R"("raw tx hex" 1 "{\"op\":\"name_doi\",\"name\":\"my-name\",\"value\":\"new value\")")
         + HelpExampleRpc ("namerawtransaction", R"("raw tx hex", 1, "{\"op\":\"name_update\",\"name\":\"my-name\",\"value\":\"new value\")")
       },
       [&] (const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
@@ -1046,7 +1067,7 @@ namepsbt ()
   return RPCHelpMan ("namepsbt",
       "Adds a name operation to an existing PSBT.\n"
       "\nUse createpsbt first to create the basic transaction, including the required inputs and outputs also for the name.\n",
-      {
+       {
           {"psbt", RPCArg::Type::STR, RPCArg::Optional::NO, "A base64 string of a PSBT"},
           {"vout", RPCArg::Type::NUM, RPCArg::Optional::NO, "The vout of the desired name output"},
           {"nameop", RPCArg::Type::OBJ, RPCArg::Optional::NO, "The name operation to create",
@@ -1065,10 +1086,10 @@ namepsbt ()
           },
       },
       RPCExamples {
-          HelpExampleCli ("namepsbt", R"("psbt" 1 "{\"op\":\"name_new\",\"name\":\"my-name\")")
-        + HelpExampleCli ("namepsbt", R"("psbt" 1 "{\"op\":\"name_firstupdate\",\"name\":\"my-name\",\"value\":\"new value\",\"rand\":\"00112233\")")
-        + HelpExampleCli ("namepsbt", R"("psbt" 1 "{\"op\":\"name_update\",\"name\":\"my-name\",\"value\":\"new value\")")
-        + HelpExampleRpc ("namepsbt", R"("psbt", 1, "{\"op\":\"name_update\",\"name\":\"my-name\",\"value\":\"new value\")")
+          HelpExampleCli ("namepsbt", R"(\"psbt\" 1 \"{\\\"op\\\":\\\"name_new\\\",\\\"name\\\":\\\"my-name\\\"})" )
+        + HelpExampleCli ("namepsbt", R"(\"psbt\" 1 \"{\\\"op\\\":\\\"name_firstupdate\\\",\\\"name\\\":\\\"my-name\\\",\\\"value\\\":\\\"new value\\\",\\\"rand\\\":\\\"00112233\\\"})" )
+        + HelpExampleCli ("namepsbt", R"(\"psbt\" 1 \"{\\\"op\\\":\\\"name_update\\\",\\\"name\\\":\\\"my-name\\\",\\\"value\\\":\\\"new value\\\"})" )
+        + HelpExampleRpc ("namepsbt", R"(\"psbt\", 1, \"{\\\"op\\\":\\\"name_update\\\",\\\"name\\\":\\\"my-name\\\",\\\"value\\\":\\\"new value\\\"})" )
       },
       [&] (const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
 {
