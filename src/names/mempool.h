@@ -26,7 +26,7 @@ class CTxMemPoolEntry;
  * the network has upgraded sufficiently, we should increase this to a value
  * higher but still lower than the general mempool ancestor limit.
  */
-static constexpr unsigned DEFAULT_NAME_CHAIN_LIMIT = 1;
+static constexpr unsigned DEFAULT_NAME_CHAIN_LIMIT = 2;
 
 /**
  * Handle the name component of the transaction mempool.  This keeps track
@@ -68,6 +68,17 @@ private:
    */
   std::map<valtype, Txid> mapNameNews;
 
+  /**
+   * Keep track of all transactions that register or update a given Doi name.  For each name,
+   * this may be a whole chain of updates.  This field is used to remove the
+   * transactions from the mempool should the name expire (and the updates
+   * thus become invalid).
+   *
+   * We also use this to determine the length of chains of pending name_update
+   * operations.
+   */
+  std::map<valtype, std::set<Txid>> mapNameDois;
+
 public:
 
   /**
@@ -102,6 +113,20 @@ public:
   }
 
   /**
+   * Check whether a particular DOI is being registered.  Does not lock.
+   * @param name The name to check for.
+   * @return True if there's a matching doi in the pool.
+   */
+    inline bool
+    registersDoi (const valtype& name) const
+    {
+      const auto mit = mapNameDois.find (name);
+      if (mit == mapNameDois.end ())
+        return false;
+      return !mit->second.empty ();
+    }
+
+  /**
    * Returns the number of pending operations on this name in the mempool.
    * In other words, this is the "length" of the chain of operations that
    * are already pending.
@@ -125,6 +150,7 @@ public:
     mapNameRegs.clear ();
     updates.clear ();
     mapNameNews.clear ();
+    mapNameDois.clear ();
   }
 
   /**

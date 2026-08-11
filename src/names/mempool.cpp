@@ -21,9 +21,16 @@ CNameMemPool::pendingChainLength (const valtype& name) const
   if (registersName (name))
     ++res;
 
+  if (registersDoi (name))
+    ++res;
+
   const auto mit = updates.find (name);
   if (mit != updates.end ())
     res += mit->second.size ();
+
+  const auto mitDoi = mapNameDois.find (name);
+  if (mitDoi != mapNameDois.end ())
+    res += mitDoi->second.size ();
 
   return res;
 }
@@ -59,6 +66,8 @@ getNameOutput (const CTxMemPool& pool, const Txid& txid)
 COutPoint
 CNameMemPool::lastNameOutput (const valtype& name) const
 {
+  AssertLockHeld (pool.cs);
+
   const auto itUpd = updates.find (name);
   if (itUpd != updates.end ())
     {
@@ -70,6 +79,41 @@ CNameMemPool::lastNameOutput (const valtype& name) const
          anyway.  */
 
       const std::set<Txid>& candidateTxids = itUpd->second;
+      std::set<Txid> spentTxids;
+
+      for (const auto& txid : candidateTxids)
+        {
+          const auto mit = pool.mapTx.find (txid);
+          assert (mit != pool.mapTx.end ());
+          for (const auto& in : mit->GetTx ().vin)
+            spentTxids.insert (in.prevout.hash);
+        }
+
+      COutPoint res;
+      for (const auto& txid : candidateTxids)
+        {
+          if (spentTxids.count (txid) > 0)
+            continue;
+
+          assert (res.IsNull ());
+          res = getNameOutput (pool, txid);
+        }
+
+      assert (!res.IsNull ());
+      return res;
+    }
+
+  const auto itDois = mapNameDois.find (name);
+  if (itDois != mapNameDois.end ())
+    {
+      /* From all the pending updates, we have to find the last one.  This is
+         the unique outpoint that is not also spent by some other transaction.
+         Thus, we keep track of all the transactions spent as well, and then
+         remove those from the sets of candidates.  Doing so by txid (rather
+         than outpoint) is enough, as those transactions must be in a "chain"
+         anyway.  */
+
+      const std::set<Txid>& candidateTxids = itDois->second;
       std::set<Txid> spentTxids;
 
       for (const auto& txid : candidateTxids)
@@ -134,6 +178,17 @@ CNameMemPool::addUnchecked (const CTxMemPoolEntry& entry)
       else
         mit->second.insert (txHash);
     }
+
+  if (entry.isNameDoi ())
+    {
+      const valtype& name = entry.getName ();
+      const auto mit = mapNameDois.find (name);
+
+      if (mit == mapNameDois.end ())
+        mapNameDois.emplace (name, std::set<Txid> ({txHash}));
+      else
+        mit->second.insert (txHash);
+    }
 }
 
 void
@@ -159,6 +214,18 @@ CNameMemPool::remove (const CTxMemPoolEntry& entry)
       if (txids.empty ())
         updates.erase (itName);
     }
+
+  if (entry.isNameDoi ())
+    {
+      const auto itName = mapNameDois.find (entry.getName ());
+      assert (itName != mapNameDois.end ());
+      auto& txids = itName->second;
+      const auto itTxid = txids.find (entry.GetTx ().GetHash ());
+      assert (itTxid != txids.end ());
+      txids.erase (itTxid);
+      if (txids.empty ())
+        mapNameDois.erase (itName);
+    }
 }
 
 void
@@ -166,7 +233,8 @@ CNameMemPool::removeConflicts (const CTransaction& tx)
 {
   AssertLockHeld (pool.cs);
 
-  if (!tx.IsNamecoin ())
+
+  if (!tx.IsDoichain ())
     return;
 
   for (const auto& txout : tx.vout)
@@ -244,6 +312,7 @@ CNameMemPool::check (const CCoinsViewCache& tip,
   AssertLockHeld (pool.cs);
 
   std::set<valtype> nameRegs;
+  std::map<valtype, unsigned> nameDois;
   std::map<valtype, unsigned> nameUpdates;
   for (const auto& entry : pool.mapTx)
     {
@@ -290,10 +359,29 @@ CNameMemPool::check (const CCoinsViewCache& tip,
           else
             assert (registersName (name));
         }
+      
+      if (entry.isNameDoi ())
+        {
+          const valtype& name = entry.getName ();
+
+          const auto mit = mapNameDois.find (name);
+          assert (mit != mapNameDois.end ());
+          assert (mit->second.count (txHash) > 0);
+
+          ++nameDois[name];
+
+          CNameData data;
+          if (tip.GetName (name, data))
+            assert (!data.isExpired (spendheight));
+          else
+            assert (registersDoi (name));
+        }
     }
 
   assert (nameRegs.size () == mapNameRegs.size ());
   assert (nameUpdates.size () == updates.size ());
+  assert (nameDois.size () == mapNameDois.size ());
+
   for (const auto& upd : nameUpdates)
     assert (updates.at (upd.first).size () == upd.second);
 }
@@ -303,7 +391,7 @@ CNameMemPool::checkTx (const CTransaction& tx) const
 {
   AssertLockHeld (pool.cs);
 
-  if (!tx.IsNamecoin ())
+  if (!tx.IsDoichain ())
     return true;
 
   for (const auto& txout : tx.vout)
@@ -338,6 +426,16 @@ CNameMemPool::checkTx (const CTransaction& tx) const
              properly and really a chain, as this is automatic due to the
              coloured-coin nature of names.  */
           break;
+
+        case OP_NAME_DOI:
+          { //see OP_NAME_UPDATE - this should apply for OP_NAME_DOI too! no problem with multiple updates
+            const valtype& name = nameOp.getOpName ();
+            //check if a name_doi starts with d/
+            //(we want to keep namecoin functionality as it is but don't want to use name_doi for the d/  workflow
+            if (EncodeNameForMessage(name).rfind("d/", 0) == 0)
+              return false;
+            break;
+          }
 
         default:
           assert (false);

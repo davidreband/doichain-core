@@ -104,7 +104,7 @@ public:
           m_modified_fee{nFee},
           lockPoints{lp}
     {
-        if (tx->IsNamecoin())
+        if (tx->IsDoichain())
         {
             for (const auto& txOut : tx->vout)
             {
@@ -169,6 +169,11 @@ public:
     isNameUpdate() const
     {
         return nameOp.isNameOp() && nameOp.getNameOp() == OP_NAME_UPDATE;
+    }
+    inline bool
+    isNameDoi() const
+    {
+        return nameOp.isNameOp() && nameOp.getNameOp() == OP_NAME_DOI;
     }
     inline const valtype&
     getNameNewHash() const
