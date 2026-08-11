@@ -170,6 +170,7 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "name_firstupdate", 4, "options" },
     { "name_firstupdate", 5, "allow_active" },
     { "name_update", 2, "options" },
+    { "name_doi", 2, "options" },
     { "namerawtransaction", 1, "vout" },
     { "namerawtransaction", 2, "nameop" },
     { "namepsbt", 1, "vout" },

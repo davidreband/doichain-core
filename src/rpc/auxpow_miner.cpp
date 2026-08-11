@@ -32,12 +32,12 @@ void auxMiningCheck(const JSONRPCRequest& request)
   if (node.connman->GetNodeCount (CConnman::CONNECTIONS_ALL) == 0
         && !Params ().MineBlocksOnDemand ())
     throw JSONRPCError (RPC_CLIENT_NOT_CONNECTED,
-                        "Namecoin is not connected!");
+                        "Doichain is not connected!");
 
   if (::ChainstateActive ().IsInitialBlockDownload ()
         && !Params ().MineBlocksOnDemand ())
     throw JSONRPCError (RPC_CLIENT_IN_INITIAL_DOWNLOAD,
-                        "Namecoin is downloading blocks...");
+                        "Doichain is downloading blocks...");
 
   /* This should never fail, since the chain is already
      past the point of merge-mining start.  Check nevertheless.  */

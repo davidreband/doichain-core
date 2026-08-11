@@ -11,6 +11,7 @@
 #include <key_io.h>
 #include <names/common.h>
 #include <names/main.h>
+#include <node/context.h>
 #include <primitives/transaction.h>
 #include <psbt.h>
 #include <rpc/blockchain.h>
@@ -469,7 +470,7 @@ name_show ()
 
   if (::ChainstateActive ().IsInitialBlockDownload ())
     throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD,
-                       "Namecoin is downloading blocks...");
+                       "Doichain is downloading blocks...");
 
   UniValue options(UniValue::VOBJ);
   if (request.params.size () >= 2)
@@ -552,7 +553,7 @@ name_history ()
 
   if (::ChainstateActive ().IsInitialBlockDownload ())
     throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD,
-                       "Namecoin is downloading blocks...");
+                       "Doichain is downloading blocks...");
 
   UniValue options(UniValue::VOBJ);
   if (request.params.size () >= 2)
@@ -636,7 +637,7 @@ name_scan ()
 
   if (::ChainstateActive ().IsInitialBlockDownload ())
     throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD,
-                       "Namecoin is downloading blocks...");
+                       "Doichain is downloading blocks...");
 
   UniValue options(UniValue::VOBJ);
   if (request.params.size () >= 3)
@@ -795,7 +796,7 @@ name_pending ()
   for (const auto& txHash : txHashes)
     {
       std::shared_ptr<const CTransaction> tx = mempool.get (txHash);
-      if (!tx || !tx->IsNamecoin ())
+      if (!tx || !tx->IsDoichain ())
         continue;
 
       for (size_t n = 0; n < tx->vout.size (); ++n)
@@ -819,6 +820,9 @@ name_pending ()
               break;
             case OP_NAME_UPDATE:
               obj.pushKV ("op", "name_update");
+              break;
+            case OP_NAME_DOI:
+              obj.pushKV ("op", "name_doi");
               break;
             default:
               assert (false);
@@ -850,7 +854,7 @@ void
 PerformNameRawtx (const int nOut, const UniValue& nameOp,
                   CMutableTransaction& mtx, UniValue& result)
 {
-  mtx.SetNamecoin ();
+  mtx.SetDoichain ();
 
   if (nOut < 0 || nOut >= mtx.vout.size ())
     throw JSONRPCError (RPC_INVALID_PARAMETER, "vout is out of range");
@@ -865,7 +869,7 @@ PerformNameRawtx (const int nOut, const UniValue& nameOp,
 
   /* namerawtransaction does not have an options argument.  This would just
      make the already long list of arguments longer.  Instead of using
-     namerawtransaction, namecoin-tx can be used anyway to create name
+     namerawtransaction, doichain-tx can be used anyway to create name
      operations with arbitrary hex data.  */
   const UniValue NO_OPTIONS(UniValue::VOBJ);
 
@@ -938,6 +942,23 @@ PerformNameRawtx (const int nOut, const UniValue& nameOp,
 
       script = CNameScript::buildNameUpdate (script, name, value);
     }
+    else if (op == "name_doi")
+    {
+      RPCTypeCheckObj (nameOp,
+        {
+          {"name", UniValueType (UniValue::VSTR)},
+          {"value", UniValueType (UniValue::VSTR)},
+        }
+      );
+
+      const valtype name
+          = DecodeNameFromRPCOrThrow (find_value (nameOp, "name"), NO_OPTIONS);
+      const valtype value
+          = DecodeValueFromRPCOrThrow (find_value (nameOp, "value"),
+                                       NO_OPTIONS);
+
+      script = CNameScript::buildNameDOI (script, name, value);
+    }
   else
     throw JSONRPCError (RPC_INVALID_PARAMETER, "Invalid name operation");
 }
@@ -955,7 +976,7 @@ namerawtransaction ()
           {"vout", RPCArg::Type::NUM, RPCArg::Optional::NO, "The vout of the desired name output"},
           {"nameop", RPCArg::Type::OBJ, RPCArg::Optional::NO, "The name operation to create",
               {
-                  {"op", RPCArg::Type::STR, RPCArg::Optional::NO, "The operation to perform, can be \"name_new\", \"name_firstupdate\" and \"name_update\""},
+                  {"op", RPCArg::Type::STR, RPCArg::Optional::NO, "The operation to perform, can be \"name_new\", \"name_firstupdate\", \"name_update\" and \"name_doi\""},
                   {"name", RPCArg::Type::STR, RPCArg::Optional::NO, "The name to operate on"},
                   {"value", RPCArg::Type::STR, RPCArg::Optional::OMITTED, "The new value for the name"},
                   {"rand", RPCArg::Type::STR, RPCArg::Optional::OMITTED, "The nonce value to use for registrations"},
@@ -972,7 +993,7 @@ namerawtransaction ()
           HelpExampleCli ("namerawtransaction", R"("raw tx hex" 1 "{\"op\":\"name_new\",\"name\":\"my-name\")")
         + HelpExampleCli ("namerawtransaction", R"("raw tx hex" 1 "{\"op\":\"name_firstupdate\",\"name\":\"my-name\",\"value\":\"new value\",\"rand\":\"00112233\")")
         + HelpExampleCli ("namerawtransaction", R"("raw tx hex" 1 "{\"op\":\"name_update\",\"name\":\"my-name\",\"value\":\"new value\")")
-        + HelpExampleRpc ("namerawtransaction", R"("raw tx hex", 1, "{\"op\":\"name_update\",\"name\":\"my-name\",\"value\":\"new value\")")
+        + HelpExampleRpc ("namerawtransaction", R"("raw tx hex", 1, "{\"op\":\"name_doi\",\"name\":\"my-name\",\"value\":\"new value\")")
       },
       [&] (const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
 {
@@ -1066,11 +1087,11 @@ name_checkdb ()
       },
       [&] (const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
 {
-  ChainstateManager& chainman = EnsureChainman (request.context);
+NodeContext& node = EnsureNodeContext (request.context);
   LOCK (cs_main);
-  auto& coinsTip = chainman.ActiveChainstate ().CoinsTip ();
+  auto& coinsTip = g_chainman.ActiveChainstate ().CoinsTip ();
   coinsTip.Flush ();
-  return coinsTip.ValidateNameDB (chainman);
+return coinsTip.ValidateNameDB (g_chainman, node.rpc_interruption_point);
 }
   );
 }

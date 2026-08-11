@@ -132,7 +132,7 @@ CoinStatsHashType ParseHashType(const UniValue& param, const CoinStatsHashType d
 
 std::string HelpExampleCli(const std::string& methodname, const std::string& args)
 {
-    return "> namecoin-cli " + methodname + " " + args + "\n";
+    return "> doichain-cli " + methodname + " " + args + "\n";
 }
 
 std::string HelpExampleRpc(const std::string& methodname, const std::string& args)
