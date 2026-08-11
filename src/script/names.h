@@ -57,6 +57,7 @@ public:
       case OP_NAME_NEW:
       case OP_NAME_FIRSTUPDATE:
       case OP_NAME_UPDATE:
+      case OP_NAME_DOI:
         return true;
 
       case OP_NOP:
@@ -90,7 +91,30 @@ public:
       case OP_NAME_NEW:
       case OP_NAME_FIRSTUPDATE:
       case OP_NAME_UPDATE:
+      case OP_NAME_DOI:
         return op;
+
+      default:
+          return op;
+          // assert (false);
+      }
+  }
+
+  /**
+   * Return whether this is a DOI registration.
+   * @return True iff this is NAME_DOI.
+   */
+  inline bool
+  isDoiRegistration () const
+  {
+    switch (op)
+      {
+      case OP_NAME_DOI:
+        return true;
+      case OP_NAME_NEW:
+      case OP_NAME_FIRSTUPDATE:
+      case OP_NAME_UPDATE:
+        return false;
 
       default:
         assert (false);
@@ -112,6 +136,7 @@ public:
 
       case OP_NAME_FIRSTUPDATE:
       case OP_NAME_UPDATE:
+      case OP_NAME_DOI:
         return true;
 
       default:
@@ -121,7 +146,7 @@ public:
 
   /**
    * Return the name operation name.  This call is only valid for
-   * OP_NAME_FIRSTUPDATE or OP_NAME_UPDATE.
+   * OP_NAME_FIRSTUPDATE, OP_NAME_UPDATE or OP_NAME_DOI.
    * @return The name operation's name.
    */
   inline const valtype&
@@ -131,6 +156,7 @@ public:
       {
       case OP_NAME_FIRSTUPDATE:
       case OP_NAME_UPDATE:
+      case OP_NAME_DOI:
         return args[0];
 
       default:
@@ -140,7 +166,7 @@ public:
 
   /**
    * Return the name operation value.  This call is only valid for
-   * OP_NAME_FIRSTUPDATE or OP_NAME_UPDATE.
+   * OP_NAME_FIRSTUPDATE, OP_NAME_UPDATE or OP_NAME_DOI.
    * @return The name operation's value.
    */
   inline const valtype&
@@ -152,6 +178,7 @@ public:
         return args[2];
 
       case OP_NAME_UPDATE:
+      case OP_NAME_DOI:
         return args[1];
 
       default:
@@ -237,6 +264,9 @@ public:
    */
   static CScript buildNameUpdate (const CScript& addr, const valtype& name,
                                   const valtype& value);
+
+  static CScript buildNameDOI (const CScript& addr, const valtype& name,
+                               const valtype& value);
 
 };
 

@@ -56,6 +56,11 @@ CNameScript::CNameScript (const CScript& script)
         return;
       break;
 
+    case OP_NAME_DOI:
+      if (args.size () != 2)
+        return;
+      break;
+
     default:
       return;
     }
@@ -77,6 +82,10 @@ CNameScript::GetPrefix () const
                         << OP_2DROP << OP_2DROP;
     case OP_NAME_UPDATE:
       return CScript () << OP_NAME_UPDATE
+                        << getOpName () << getOpValue ()
+                        << OP_2DROP << OP_DROP;
+    case OP_NAME_DOI:
+      return CScript () << OP_NAME_DOI
                         << getOpName () << getOpValue ()
                         << OP_2DROP << OP_DROP;
     default:
@@ -124,6 +133,17 @@ CNameScript::buildNameUpdate (const CScript& addr, const valtype& name,
 {
   CNameScript op;
   op.op = OP_NAME_UPDATE;
+  op.args = {name, value};
+
+  return AddNamePrefix (addr, op.GetPrefix ());
+}
+
+CScript
+CNameScript::buildNameDOI (const CScript& addr, const valtype& name,
+                           const valtype& value)
+{
+  CNameScript op;
+  op.op = OP_NAME_DOI;
   op.args = {name, value};
 
   return AddNamePrefix (addr, op.GetPrefix ());
