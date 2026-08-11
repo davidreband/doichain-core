@@ -2009,7 +2009,7 @@ static UniValue encryptwallet(const JSONRPCRequest& request)
                 RPCExamples{
             "\nEncrypt your wallet\n"
             + HelpExampleCli("encryptwallet", "\"my pass phrase\"") +
-            "\nNow set the passphrase to use the wallet, such as for signing or sending namecoin\n"
+            "\nNow set the passphrase to use the wallet, such as for signing or sending doichain\n"
             + HelpExampleCli("walletpassphrase", "\"my pass phrase\"") +
             "\nNow we can do something like sign\n"
             + HelpExampleCli("signmessage", "\"address\" \"test message\"") +
@@ -2491,7 +2491,7 @@ static UniValue loadwallet(const JSONRPCRequest& request)
 {
             RPCHelpMan{"loadwallet",
                 "\nLoads a wallet from a wallet file or directory."
-                "\nNote that all wallet command-line options used when starting namecoind will be"
+                "\nNote that all wallet command-line options used when starting doichaind will be"
                 "\napplied to the new wallet (eg -rescan, etc).\n",
                 {
                     {"filename", RPCArg::Type::STR, RPCArg::Optional::NO, "The wallet directory or .dat file."},
@@ -4585,6 +4585,7 @@ extern RPCHelpMan name_list(); // in rpcnames.cpp
 extern RPCHelpMan name_new();
 extern UniValue name_firstupdate(const JSONRPCRequest& request);
 extern RPCHelpMan name_update();
+extern RPCHelpMan name_doi();
 extern RPCHelpMan sendtoname();
 
 Span<const CRPCCommand> GetWalletRPCCommands()
@@ -4662,6 +4663,7 @@ static const CRPCCommand commands[] =
     { "names",              "name_new",                         &name_new,                      {"name","options"} },
     { "names",              "name_firstupdate",                 &name_firstupdate,              {"name","rand","tx","value","options","allow_active"} },
     { "names",              "name_update",                      &name_update,                   {"name","value","options"} },
+    { "names",              "name_doi",                         &name_doi,                      {"name","value","options"} },
     { "names",              "sendtoname",                       &sendtoname,                    {"name","amount","comment","comment_to","subtractfeefromamount","replaceable"} },
 };
 // clang-format on

@@ -126,7 +126,7 @@ void DestinationAddressHelper::finalise ()
 
 /**
  * Sends a name output to the given name script.  This is the "final" step that
- * is common between name_new, name_firstupdate and name_update.  This method
+ * is common between name_new, name_firstupdate, name_update and name_doi.  This method
  * also implements the "sendCoins" option, if included.
  */
 UniValue
@@ -228,7 +228,7 @@ name_list ()
   for (const auto& item : pwallet->mapWallet)
     {
       const CWalletTx& tx = item.second;
-      if (!tx.tx->IsNamecoin ())
+      if (!tx.tx->IsDoichain ())
         continue;
 
       CNameScript nameOp;
@@ -249,7 +249,7 @@ name_list ()
             }
         }
 
-      if (nOut == -1 || !nameOp.isAnyUpdate ())
+    if (nOut == -1 || (!nameOp.isAnyUpdate () && !nameOp.isDoiRegistration()))
         continue;
 
       const valtype& name = nameOp.getOpName ();
@@ -541,8 +541,7 @@ name_firstupdate (const JSONRPCRequest& request)
   destHelper.setOptions (options);
 
   const CScript nameScript
-    = CNameScript::buildNameFirstupdate (destHelper.getScript (), name, value,
-                                         rand);
+    = CNameScript::buildNameFirstupdate (destHelper.getScript (), name, value, rand);
 
   const UniValue txidVal
       = SendNameOutput (request, *pwallet, nameScript, &txIn, options);
@@ -657,7 +656,130 @@ name_update ()
 }
   );
 }
+/* ************************************************************************** */
 
+RPCHelpMan
+name_doi ()
+{
+  NameOptionsHelp optHelp;
+  optHelp
+      .withNameEncoding ()
+      .withValueEncoding ()
+      .withWriteOptions ();
+
+  return RPCHelpMan ("name_doi",
+      "\nCreates or updates a name_doi record and possibly transfers it."
+          + HELP_REQUIRING_PASSPHRASE,
+      {
+          {"name", RPCArg::Type::STR, RPCArg::Optional::NO, "The name_doi record to create or update"},
+          {"value", RPCArg::Type::STR, RPCArg::Optional::NO, "Value for the name"},
+          optHelp.buildRpcArg (),
+      },
+      RPCResult {RPCResult::Type::STR_HEX, "", "the transaction ID"},
+      RPCExamples {
+          HelpExampleCli ("name_doi", "\"myname\", \"new-value\"")
+        + HelpExampleRpc ("name_doi", "\"myname\", \"new-value\"")
+      },
+      [&] (const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
+{
+  std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest (request);
+
+  if (!wallet)
+    return NullUniValue;
+  CWallet* const pwallet = wallet.get ();
+
+  RPCTypeCheck (request.params,
+                {UniValue::VSTR, UniValue::VSTR, UniValue::VOBJ});
+
+  UniValue options(UniValue::VOBJ);
+  if (request.params.size () >= 3)
+    options = request.params[2].get_obj ();
+
+  const valtype name = DecodeNameFromRPCOrThrow (request.params[0], options);
+  if (name.size () > MAX_NAME_LENGTH)
+    throw JSONRPCError (RPC_INVALID_PARAMETER, "the name is too long");
+
+  const valtype value = DecodeValueFromRPCOrThrow (request.params[1], options);
+  if (value.size () > MAX_VALUE_LENGTH_UI)
+    throw JSONRPCError (RPC_INVALID_PARAMETER, "the value is too long");
+
+  /* For finding the name output to spend, we first check if there are
+     pending operations on the name in the mempool.  If there are, then we
+     build upon the last one to get a valid chain.  If there are none, then we
+     look up the last outpoint from the name database instead.  */
+
+  const unsigned chainLimit = gArgs.GetArg ("-limitnamechains",
+                                            DEFAULT_NAME_CHAIN_LIMIT);
+  COutPoint outp;
+  CScript oldAddress;
+  CNameData oldData;
+  {
+    auto& mempool = EnsureMemPool (request.context);
+    LOCK (mempool.cs);
+
+    const unsigned pendingOps = mempool.pendingNameChainLength (name);
+    if (pendingOps >= chainLimit)
+      throw JSONRPCError (RPC_TRANSACTION_ERROR,
+                          "there are already too many pending operations"
+                          " on this name");
+
+
+	if (pendingOps > 0)
+      outp = mempool.lastNameOutput (name);
+
+  }
+
+  if (outp.IsNull ())
+    {
+      LOCK (cs_main);
+
+      const auto& coinsTip = ::ChainstateActive ().CoinsTip ();
+      coinsTip.GetName (name, oldData);
+
+      outp = oldData.getUpdateOutpoint ();
+      oldAddress = oldData.getAddress ();
+    } 
+
+  /* Make sure the results are valid at least up to the most recent block
+     the user could have gotten from another RPC command prior to now.  */
+  pwallet->BlockUntilSyncedToCurrentChain ();
+
+  LOCK (pwallet->cs_wallet);
+
+  EnsureWalletIsUnlocked (pwallet);
+
+  DestinationAddressHelper destHelper(*pwallet);
+  destHelper.setOptions (options);
+
+  if (!outp.IsNull ())
+    {
+      /* An existing name output was found, so this is an update.  */
+      const CTxIn txIn (outp);
+
+      const CScript script = destHelper.getScript ();
+      const CScript nameScript = CNameScript::buildNameDOI (script, name, value);
+
+      const UniValue txidVal
+          = SendNameOutput (request, *pwallet, nameScript, &txIn, options);
+      destHelper.finalise ();
+
+      return txidVal;
+    }
+  else
+    {
+      /* No previous name output, so this registers a new DOI.  */
+      const CScript script = destHelper.getScript ();
+      const CScript nameScript = CNameScript::buildNameDOI (script, name, value);
+
+      const UniValue txidVal
+          = SendNameOutput (request, *pwallet, nameScript, nullptr, options);
+      destHelper.finalise ();
+
+      return txidVal;
+    }
+}
+  );
+}
 /* ************************************************************************** */
 
 RPCHelpMan
@@ -695,7 +817,7 @@ sendtoname ()
 
   if (::ChainstateActive ().IsInitialBlockDownload ())
     throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD,
-                       "Namecoin is downloading blocks...");
+                       "Doichain is downloading blocks...");
 
   /* Make sure the results are valid at least up to the most recent block
      the user could have gotten from another RPC command prior to now.  */
@@ -707,7 +829,7 @@ sendtoname ()
      configured name/value encodings).  That would just add to the already
      long list of rarely used arguments.  Also, this function is inofficially
      deprecated anyway, see
-     https://github.com/namecoin/namecoin-core/issues/12.  */
+     https://github.com/doichain/doichain-core/issues/12.  */
   const UniValue NO_OPTIONS(UniValue::VOBJ);
 
   const valtype name = DecodeNameFromRPCOrThrow (request.params[0], NO_OPTIONS);

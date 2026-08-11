@@ -969,7 +969,7 @@ public:
 
     /**
      * Find the amount in the given tx input.  This must only be called with
-     * Namecoin inputs as used for CreateTransaction.
+     * Doichain inputs as used for CreateTransaction.
      */
     bool FindValueInNameInput (const CTxIn& nameInput,
                                CAmount& value, const CWalletTx*& walletTx,

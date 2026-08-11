@@ -178,7 +178,7 @@ Result CreateRateBumpTransaction(CWallet& wallet, const uint256& txid, const CCo
             CRecipient recipient = {output.scriptPubKey, output.nValue, false};
             recipients.push_back(recipient);
         } else {
-            /* FIXME: For Namecoin, this presumably strips off the name
+            /* FIXME: For Doichain, this presumably strips off the name
                prefix, and leads to an invalid tx.  */
             CTxDestination change_dest;
             ExtractDestination(output.scriptPubKey, change_dest);

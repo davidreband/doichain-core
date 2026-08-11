@@ -1544,11 +1544,13 @@ bool CWallet::DummySignInput(CTxIn &tx_in, const CTxOut &txout, bool use_max_sig
     std::unique_ptr<SigningProvider> provider = GetSolvingProvider(scriptPubKey);
     if (!provider) {
         // We don't know about this scriptpbuKey;
+    	LogPrintf("DummySignInput We don't know about this scriptpbuKey;!\n");
         return false;
     }
 
     if (!ProduceSignature(*provider, use_max_sig ? DUMMY_MAXIMUM_SIGNATURE_CREATOR : DUMMY_SIGNATURE_CREATOR, scriptPubKey, sigdata)) {
-        return false;
+    	LogPrintf("DummySignInput could not produce signature ProduceSignature!\n");
+    	return false;
     }
     UpdateInput(tx_in, sigdata);
     return true;
@@ -1562,6 +1564,7 @@ bool CWallet::DummySignTx(CMutableTransaction &txNew, const std::vector<CTxOut> 
     for (const auto& txout : txouts)
     {
         if (!DummySignInput(txNew.vin[nIn], txout, use_max_sig)) {
+        	LogPrintf("DummySignInput not existing returning false!\n");
             return false;
         }
 
@@ -1627,9 +1630,11 @@ int64_t CalculateMaximumSignedTxSize(const CTransaction &tx, const CWallet *wall
 {
     std::vector<CTxOut> txouts;
     for (const CTxIn& input : tx.vin) {
+    	LogPrintf("CalculateMaximumSignedTxSize:input found!\n");
         const auto mi = wallet->mapWallet.find(input.prevout.hash);
         // Can not estimate size without knowing the input details
         if (mi == wallet->mapWallet.end()) {
+        	LogPrintf("CalculateMaximumSignedTxSize:mapWallet without data\n");
             return -1;
         }
         assert(input.prevout.n < mi->second.tx->vout.size());
@@ -1643,6 +1648,7 @@ int64_t CalculateMaximumSignedTxSize(const CTransaction &tx, const CWallet *wall
 {
     CMutableTransaction txNew(tx);
     if (!wallet->DummySignTx(txNew, txouts, use_max_sig)) {
+    	LogPrintf("CalculateMaximumSignedTxSize:DummySignTx without data\n");
         return -1;
     }
     return GetVirtualTransactionSize(CTransaction(txNew));
@@ -1707,10 +1713,14 @@ void CWalletTx::GetAmounts(std::list<COutputEntry>& listReceived,
         // If we have a name script, set the "name" parameter.
         if (nameOp.isNameOp())
         {
-            if (nameOp.isAnyUpdate())
+            if (nameOp.isAnyUpdate() && !nameOp.isDoiRegistration())
                 output.nameOp = "update: " + EncodeNameForMessage(nameOp.getOpName());
-            else
-                output.nameOp = "new: " + HexStr(nameOp.getOpHash());
+            else{
+            	  if (nameOp.isDoiRegistration())
+            	      output.nameOp = "doi: " + EncodeNameForMessage(nameOp.getOpName());
+            	  else
+            		  output.nameOp = "new: " + HexStr(nameOp.getOpHash());
+            }
             output.amount = 0;
         }
 
@@ -2821,7 +2831,7 @@ bool CWallet::CreateTransactionInternal(
     ReserveDestination reservedest(this, change_type);
     int nChangePosRequest = nChangePosInOut;
     unsigned int nSubtractFeeFromAmount = 0;
-    bool isNamecoin = false;
+    bool isDoichain = false;
     for (const auto& recipient : vecSend)
     {
         if (nValue < 0 || recipient.nAmount < 0)
@@ -2835,7 +2845,7 @@ bool CWallet::CreateTransactionInternal(
             nSubtractFeeFromAmount++;
 
         if (CNameScript::isNameScript (recipient.scriptPubKey))
-            isNamecoin = true;
+            isDoichain = true;
     }
     if (vecSend.empty())
     {
@@ -2855,8 +2865,8 @@ bool CWallet::CreateTransactionInternal(
     }
 
     CMutableTransaction txNew;
-    if (isNamecoin)
-        txNew.SetNamecoin();
+    if (isDoichain)
+        txNew.SetDoichain();
 
     FeeCalculation feeCalc;
     CAmount nFeeNeeded;
@@ -3046,7 +3056,7 @@ bool CWallet::CreateTransactionInternal(
 
                 nBytes = CalculateMaximumSignedTxSize(CTransaction(txNew), this, coin_control.fAllowWatchOnly);
                 if (nBytes < 0) {
-                    error = _("Signing transaction failed");
+                    error = _("Signing transaction failed - max signed tx size to small");
                     return false;
                 }
 

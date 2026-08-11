@@ -41,7 +41,7 @@ WalletContext& EnsureWalletContext(const util::Ref& context);
 LegacyScriptPubKeyMan& EnsureLegacyScriptPubKeyMan(CWallet& wallet, bool also_create = false);
 
 /* These are private to rpcwallet.cpp upstream, but are used also from
-   rpcnames.cpp in Namecoin.  */
+   rpcnames.cpp in Doichain.  */
 UniValue SendMoney(CWallet* pwallet, const CCoinControl& coin_control,
                    const CTxIn* withInput,
                    std::vector<CRecipient>& recipients, mapValue_t map_value);
