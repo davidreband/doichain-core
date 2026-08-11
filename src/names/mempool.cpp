@@ -234,7 +234,7 @@ CNameMemPool::removeConflicts (const CTransaction& tx)
   AssertLockHeld (pool.cs);
 
 
-  if (!tx.IsDoichain ())
+  if (!tx.IsNamecoin ())
     return;
 
   for (const auto& txout : tx.vout)
@@ -391,7 +391,7 @@ CNameMemPool::checkTx (const CTransaction& tx) const
 {
   AssertLockHeld (pool.cs);
 
-  if (!tx.IsDoichain ())
+  if (!tx.IsNamecoin ())
     return true;
 
   for (const auto& txout : tx.vout)
@@ -428,11 +428,19 @@ CNameMemPool::checkTx (const CTransaction& tx) const
           break;
 
         case OP_NAME_DOI:
-          { //see OP_NAME_UPDATE - this should apply for OP_NAME_DOI too! no problem with multiple updates
+          {
+            /* Like NAME_UPDATE, several DOI operations on one name may be
+               pending at the same time.  But the d/ namespace stays with the
+               classic Namecoin workflow, so it must not be used for name_doi.
+
+               Note that the name is compared as raw bytes.  The original code
+               compared against EncodeNameForMessage(), which wraps the name in
+               single quotes, so the check never matched and d/ names were
+               accepted for name_doi.  */
+            static const valtype dPrefix{'d', '/'};
             const valtype& name = nameOp.getOpName ();
-            //check if a name_doi starts with d/
-            //(we want to keep namecoin functionality as it is but don't want to use name_doi for the d/  workflow
-            if (EncodeNameForMessage(name).rfind("d/", 0) == 0)
+            if (name.size () >= dPrefix.size ()
+                && std::equal (dPrefix.begin (), dPrefix.end (), name.begin ()))
               return false;
             break;
           }

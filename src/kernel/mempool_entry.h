@@ -104,7 +104,7 @@ public:
           m_modified_fee{nFee},
           lockPoints{lp}
     {
-        if (tx->IsDoichain())
+        if (tx->IsNamecoin())
         {
             for (const auto& txOut : tx->vout)
             {

@@ -191,12 +191,6 @@ public:
         fDefaultConsistencyChecks = false;
         m_is_mockable_chain = false;
 
-        checkpointData = {
-            {
-                {  0, uint256{"000006fdd8b4d786fd9bdde5bae9486c464e3aa4336c5f8415dfdd3fc1679134"}}
-            }
-        };
-
         m_assumeutxo_data = {};
 
         chainTxData = ChainTxData{
@@ -314,12 +308,6 @@ public:
 
         fDefaultConsistencyChecks = false;
         m_is_mockable_chain = false;
-
-        checkpointData = {
-            {
-                {  0, uint256{"0000cd7572b3ecc78b7cddf49eda95e718d4df77c236ca2e375125e111e7e9c4"}}
-            }
-        };
 
 
         m_assumeutxo_data = {

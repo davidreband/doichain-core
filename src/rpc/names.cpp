@@ -844,7 +844,7 @@ name_pending ()
   for (const CTxMemPoolEntry& entry : mempool.entryAll ())
     {
       const auto& tx = entry.GetTx ();
-      if (!tx.IsDoichain ())
+      if (!tx.IsNamecoin ())
         continue;
 
       for (size_t n = 0; n < tx.vout.size (); ++n)
@@ -902,7 +902,7 @@ void
 PerformNameRawtx (const unsigned nOut, const UniValue& nameOp,
                   CMutableTransaction& mtx, UniValue& result)
 {
-  mtx.SetDoichain ();
+  mtx.SetNamecoin ();
 
   if (nOut >= mtx.vout.size ())
     throw JSONRPCError (RPC_INVALID_PARAMETER, "vout is out of range");
