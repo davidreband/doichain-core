@@ -76,7 +76,7 @@ public:
         /* Don't apply the name operations and don't put the names into the
            UTXO set.  They are immediately unspendable.  This is used for the
            "d/wav" stealing output (which is not used later on) and also
-           for the NAME_FIRSTUPDATE's that are in non-Namecoin tx.  */
+           for the NAME_FIRSTUPDATE's that are in non-Doichain tx.  */
         BUG_FULLY_IGNORE,
     };
 

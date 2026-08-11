@@ -38,7 +38,7 @@ if ENABLE_ZMQ
 LIBBITCOIN_ZMQ=libbitcoin_zmq.a
 endif
 if BUILD_BITCOIN_LIBS
-LIBBITCOINCONSENSUS=libnamecoinconsensus.la
+LIBBITCOINCONSENSUS=libdoichainconsensus.la
 endif
 if ENABLE_WALLET
 LIBBITCOIN_WALLET=libbitcoin_wallet.a
@@ -83,22 +83,22 @@ TESTS =
 BENCHMARKS =
 
 if BUILD_BITCOIND
-  bin_PROGRAMS += namecoind
+  bin_PROGRAMS += doichaind
 endif
 
 if BUILD_BITCOIN_NODE
-  bin_PROGRAMS += namecoin-node
+  bin_PROGRAMS += doichain-node
 endif
 
 if BUILD_BITCOIN_CLI
-  bin_PROGRAMS += namecoin-cli
+  bin_PROGRAMS += doichain-cli
 endif
 if BUILD_BITCOIN_TX
-  bin_PROGRAMS += namecoin-tx
+  bin_PROGRAMS += doichain-tx
 endif
 if ENABLE_WALLET
 if BUILD_BITCOIN_WALLET
-  bin_PROGRAMS += namecoin-wallet
+  bin_PROGRAMS += doichain-wallet
 endif
 endif
 
@@ -472,7 +472,7 @@ libbitcoin_consensus_a_SOURCES = \
   primitives/transaction.h \
   pubkey.cpp \
   pubkey.h \
-  script/namecoinconsensus.cpp \
+  script/doichainconsensus.cpp \
   script/interpreter.cpp \
   script/interpreter.h \
   script/names.cpp \
@@ -614,48 +614,48 @@ bitcoin_bin_ldadd = \
 
 bitcoin_bin_ldadd += $(BOOST_LIBS) $(BDB_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
 
-namecoind_SOURCES = $(bitcoin_daemon_sources)
-namecoind_CPPFLAGS = $(bitcoin_bin_cppflags)
-namecoind_CXXFLAGS = $(bitcoin_bin_cxxflags)
-namecoind_LDFLAGS = $(bitcoin_bin_ldflags)
-namecoind_LDADD = $(LIBBITCOIN_SERVER) $(bitcoin_bin_ldadd)
+doichaind_SOURCES = $(bitcoin_daemon_sources)
+doichaind_CPPFLAGS = $(bitcoin_bin_cppflags)
+doichaind_CXXFLAGS = $(bitcoin_bin_cxxflags)
+doichaind_LDFLAGS = $(bitcoin_bin_ldflags)
+doichaind_LDADD = $(LIBBITCOIN_SERVER) $(bitcoin_bin_ldadd)
 
-namecoin_node_SOURCES = $(bitcoin_daemon_sources)
-namecoin_node_CPPFLAGS = $(bitcoin_bin_cppflags)
-namecoin_node_CXXFLAGS = $(bitcoin_bin_cxxflags)
-namecoin_node_LDFLAGS = $(bitcoin_bin_ldflags)
-namecoin_node_LDADD = $(LIBBITCOIN_SERVER) $(bitcoin_bin_ldadd)
+doichain_node_SOURCES = $(bitcoin_daemon_sources)
+doichain_node_CPPFLAGS = $(bitcoin_bin_cppflags)
+doichain_node_CXXFLAGS = $(bitcoin_bin_cxxflags)
+doichain_node_LDFLAGS = $(bitcoin_bin_ldflags)
+doichain_node_LDADD = $(LIBBITCOIN_SERVER) $(bitcoin_bin_ldadd)
 
 # bitcoin-cli binary #
-namecoin_cli_SOURCES = bitcoin-cli.cpp
-namecoin_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
-namecoin_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-namecoin_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
+doichain_cli_SOURCES = bitcoin-cli.cpp
+doichain_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
+doichain_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+doichain_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
 
 if TARGET_WINDOWS
-namecoin_cli_SOURCES += bitcoin-cli-res.rc
+doichain_cli_SOURCES += bitcoin-cli-res.rc
 endif
 
-namecoin_cli_LDADD = \
+doichain_cli_LDADD = \
   $(LIBBITCOIN_CLI) \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_CRYPTO)
 
-namecoin_cli_LDADD += $(BOOST_LIBS) $(EVENT_LIBS)
+doichain_cli_LDADD += $(BOOST_LIBS) $(EVENT_LIBS)
 #
 
 # bitcoin-tx binary #
-namecoin_tx_SOURCES = bitcoin-tx.cpp
-namecoin_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-namecoin_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-namecoin_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
+doichain_tx_SOURCES = bitcoin-tx.cpp
+doichain_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+doichain_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+doichain_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
 
 if TARGET_WINDOWS
-namecoin_tx_SOURCES += bitcoin-tx-res.rc
+doichain_tx_SOURCES += bitcoin-tx-res.rc
 endif
 
-namecoin_tx_LDADD = \
+doichain_tx_LDADD = \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UTIL) \
@@ -663,34 +663,34 @@ namecoin_tx_LDADD = \
   $(LIBBITCOIN_CRYPTO) \
   $(LIBSECP256K1)
 
-namecoin_tx_LDADD += $(BOOST_LIBS)
+doichain_tx_LDADD += $(BOOST_LIBS)
 #
 
 # bitcoin-wallet binary #
-namecoin_wallet_SOURCES = bitcoin-wallet.cpp
-namecoin_wallet_CPPFLAGS = $(bitcoin_bin_cppflags)
-namecoin_wallet_CXXFLAGS = $(bitcoin_bin_cxxflags)
-namecoin_wallet_LDFLAGS = $(bitcoin_bin_ldflags)
-namecoin_wallet_LDADD = $(LIBBITCOIN_WALLET_TOOL) $(bitcoin_bin_ldadd)
+doichain_wallet_SOURCES = bitcoin-wallet.cpp
+doichain_wallet_CPPFLAGS = $(bitcoin_bin_cppflags)
+doichain_wallet_CXXFLAGS = $(bitcoin_bin_cxxflags)
+doichain_wallet_LDFLAGS = $(bitcoin_bin_ldflags)
+doichain_wallet_LDADD = $(LIBBITCOIN_WALLET_TOOL) $(bitcoin_bin_ldadd)
 
 if TARGET_WINDOWS
-namecoin_wallet_SOURCES += bitcoin-wallet-res.rc
+doichain_wallet_SOURCES += bitcoin-wallet-res.rc
 endif
 #
 
 # bitcoinconsensus library #
 if BUILD_BITCOIN_LIBS
-include_HEADERS = script/namecoinconsensus.h
-libnamecoinconsensus_la_SOURCES = support/cleanse.cpp $(crypto_libbitcoin_crypto_base_a_SOURCES) $(libnamecoin_consensus_a_SOURCES)
+include_HEADERS = script/doichainconsensus.h
+libdoichainconsensus_la_SOURCES = support/cleanse.cpp $(crypto_libbitcoin_crypto_base_a_SOURCES) $(libdoichain_consensus_a_SOURCES)
 
 if GLIBC_BACK_COMPAT
-  libnamecoinconsensus_la_SOURCES += compat/glibc_compat.cpp
+  libdoichainconsensus_la_SOURCES += compat/glibc_compat.cpp
 endif
 
-libnamecoinconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
-libnamecoinconsensus_la_LIBADD = $(LIBSECP256K1)
-libnamecoinconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_BITCOIN_INTERNAL
-libnamecoinconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libdoichainconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
+libdoichainconsensus_la_LIBADD = $(LIBSECP256K1)
+libdoichainconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_BITCOIN_INTERNAL
+libdoichainconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
 endif
 #

@@ -218,11 +218,11 @@ bool BlockAssembler::TestPackage(uint64_t packageSize, int64_t packageSigOpsCost
 // - transaction finality (locktime)
 // - premature witness (in case segwit transactions are added to mempool before
 //   segwit activation)
-// - Namecoin maturity conditions
+// - Doichain maturity conditions
 bool BlockAssembler::TestPackageTransactions(const CTxMemPool::setEntries& package)
 {
     for (CTxMemPool::txiter it : package) {
-        if (!TxAllowedForNamecoin(it->GetTx()))
+        if (!TxAllowedForDoichain(it->GetTx()))
             return false;
         if (!IsFinalTx(it->GetTx(), nHeight, nLockTimeCutoff))
             return false;
@@ -233,9 +233,9 @@ bool BlockAssembler::TestPackageTransactions(const CTxMemPool::setEntries& packa
 }
 
 bool
-BlockAssembler::TxAllowedForNamecoin (const CTransaction& tx) const
+BlockAssembler::TxAllowedForDoichain (const CTransaction& tx) const
 {
-  if (!tx.IsNamecoin ())
+  if (!tx.IsDoichain ())
     return true;
 
   bool nameOutFound = false;

@@ -64,7 +64,7 @@ static bool AppInit(int argc, char* argv[])
         if (args.IsArgSet("-version")) {
             strUsage += FormatParagraph(LicenseInfo()) + "\n";
         } else {
-            strUsage += "\nUsage:  namecoind [options]                     Start " PACKAGE_NAME "\n";
+            strUsage += "\nUsage:  doichaind [options]                     Start " PACKAGE_NAME "\n";
             strUsage += "\n" + args.GetHelpMessage();
         }
 
@@ -91,7 +91,7 @@ static bool AppInit(int argc, char* argv[])
         // Error out when loose non-argument tokens are encountered on command line
         for (int i = 1; i < argc; i++) {
             if (!IsSwitchChar(argv[i][0])) {
-                return InitError(Untranslated(strprintf("Command line contains unexpected token '%s', see namecoind -h for a list of options.\n", argv[i])));
+                return InitError(Untranslated(strprintf("Command line contains unexpected token '%s', see doichaind -h for a list of options.\n", argv[i])));
             }
         }
 

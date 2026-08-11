@@ -197,11 +197,11 @@ private:
     int UpdatePackagesForAdded(const CTxMemPool::setEntries& alreadyAdded, indexed_modified_transaction_set& mapModifiedTx) EXCLUSIVE_LOCKS_REQUIRED(m_mempool.cs);
     
     /**
-     * Verify if a tx can be added from a Namecoin perspective.  This may not
+     * Verify if a tx can be added from a Doichain perspective.  This may not
      * (yet) be the case if it is a NAME_FIRSTUPDATE with a not-yet-mature
      * NAME_NEW.  Those are allowed in the mempool, but not in blocks.
      */
-    bool TxAllowedForNamecoin(const CTransaction& tx) const;
+    bool TxAllowedForDoichain(const CTransaction& tx) const;
     /** Check DB lock limit.  */
     bool DbLockLimitOk(const CTxMemPool::setEntries& candidates) const;
 };

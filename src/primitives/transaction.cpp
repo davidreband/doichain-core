@@ -65,7 +65,7 @@ uint256 CMutableTransaction::GetHash() const
     return SerializeHash(*this, SER_GETHASH, SERIALIZE_TRANSACTION_NO_WITNESS);
 }
 
-void CMutableTransaction::SetNamecoin()
+void CMutableTransaction::SetDoichain()
 {
     assert (nVersion == CTransaction::CURRENT_VERSION);
     nVersion = CTransaction::NAMECOIN_VERSION;
