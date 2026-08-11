@@ -10,7 +10,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-// FIXME: Add tests with Namecoin prefix.
+// FIXME: Add tests with Doichain prefix.
 
 BOOST_FIXTURE_TEST_SUITE(script_standard_tests, BasicTestingSetup)
 

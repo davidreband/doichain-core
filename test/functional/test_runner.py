@@ -232,7 +232,7 @@ BASE_SCRIPTS = [
     'wallet_coinbase_category.py',
     'feature_filelock.py',
     'feature_loadblock.py',
-    # FIXME: Reenable with data created for Namecoin.
+    # FIXME: Reenable with data created for Doichain.
     #'p2p_dos_header_tree.py',
     'p2p_unrequested_blocks.py',
     'p2p_blockfilters.py',
@@ -445,8 +445,8 @@ def run_tests(*, test_list, src_dir, build_dir, tmpdir, jobs=1, enable_coverage=
     # Warn if bitcoind is already running
     try:
         # pgrep exits with code zero when one or more matching processes found
-        if subprocess.run(["pgrep", "-x", "namecoind"], stdout=subprocess.DEVNULL).returncode == 0:
-            print("%sWARNING!%s There is already a namecoind process running on this system. Tests may fail unexpectedly due to resource contention!" % (BOLD[1], BOLD[0]))
+        if subprocess.run(["pgrep", "-x", "doichaind"], stdout=subprocess.DEVNULL).returncode == 0:
+            print("%sWARNING!%s There is already a doichaind process running on this system. Tests may fail unexpectedly due to resource contention!" % (BOLD[1], BOLD[0]))
     except OSError:
         # pgrep not supported
         pass

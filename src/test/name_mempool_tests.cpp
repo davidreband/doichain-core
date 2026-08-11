@@ -121,7 +121,7 @@ public:
   Tx (const CScript& out)
   {
     CMutableTransaction mtx;
-    mtx.SetNamecoin ();
+    mtx.SetDoichain ();
     mtx.vout.push_back (CTxOut (COIN, out));
 
     return CTransaction (mtx);
@@ -147,7 +147,7 @@ BOOST_FIXTURE_TEST_CASE (invalid_tx, NameMempoolTestSetup)
   /* Invalid transactions should not crash / assert fail the mempool check.  */
 
   CMutableTransaction mtx;
-  mtx.SetNamecoin ();
+  mtx.SetDoichain ();
   mempool.checkNameOps (CTransaction (mtx));
 
   mtx.vout.push_back (CTxOut (COIN, NewScript (ADDR, "foo", 'a')));
@@ -193,7 +193,7 @@ BOOST_FIXTURE_TEST_CASE (pendingChainLength_lastNameOutput,
      transactions with matching inputs and outputs.  */
 
   CMutableTransaction mtx;
-  mtx.SetNamecoin ();
+  mtx.SetDoichain ();
   mtx.vout.push_back (CTxOut (COIN, FirstScript (ADDR, "chain", 'a')));
   mtx.vout.push_back (CTxOut (COIN, ADDR));
   mtx.vout.push_back (CTxOut (COIN, OTHER_ADDR));

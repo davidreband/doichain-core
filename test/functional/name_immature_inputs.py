@@ -51,7 +51,7 @@ class NameImmatureInputsTest (NameTestFramework):
     # We can do that by constructing it using the raw tx API.
     #
     # That previously failed:
-    #   https://github.com/namecoin/namecoin-core/issues/50
+    #   https://github.com/doichain/doichain-core/issues/50
 
     addr = self.nodes[0].getnewaddress ()
     new = self.nodes[0].name_new ("b", {"destAddress": addr})

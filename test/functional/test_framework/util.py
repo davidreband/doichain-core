@@ -23,8 +23,8 @@ from io import BytesIO
 
 logger = logging.getLogger("TestFramework.utils")
 
-# Added in Namecoin for easier rebranding to other projects.
-config_file = "namecoin.conf"
+# Added in Doichain for easier rebranding to other projects.
+config_file = "doichain.conf"
 
 # Assert functions
 ##################

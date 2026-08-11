@@ -75,7 +75,7 @@ VERSION_AUXPOW = (1 << 8)
 VERSION_CHAIN_START = (1 << 16)
 CHAIN_ID = 1
 
-# Namecoin tx version
+# Doichain tx version
 NAMECOIN_TX_VERSION = 0x7100
 
 # Serialization/deserialization tools

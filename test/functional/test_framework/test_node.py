@@ -2,7 +2,7 @@
 # Copyright (c) 2017-2020 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-"""Class for namecoind node under test"""
+"""Class for doichaind node under test"""
 
 import contextlib
 import decimal
@@ -51,7 +51,7 @@ class ErrorMatch(Enum):
 
 
 class TestNode():
-    """A class for representing a namecoind node under test.
+    """A class for representing a doichaind node under test.
 
     This class contains:
 
@@ -186,9 +186,9 @@ class TestNode():
             extra_args = self.extra_args
 
         # Set the value of -minrelaytxfee and -mintxfee to the defaults used
-        # in upstream Bitcoin (rather than the one from Namecoin) unless an
+        # in upstream Bitcoin (rather than the one from Doichain) unless an
         # explicit value is given.  This makes sure that tx fees hardcoded in
-        # some tests are adequate and do not need changes for Namecoin.
+        # some tests are adequate and do not need changes for Doichain.
         explicit_fees = set ()
         fee_args = ["-minrelaytxfee", "-mintxfee"]
         for arg in extra_args:
@@ -226,7 +226,7 @@ class TestNode():
         self.process = subprocess.Popen(self.args + extra_args, env=subp_env, stdout=stdout, stderr=stderr, cwd=cwd, **kwargs)
 
         self.running = True
-        self.log.debug("namecoind started, waiting for RPC to come up")
+        self.log.debug("doichaind started, waiting for RPC to come up")
 
         if self.start_perf:
             self._start_perf()
@@ -238,7 +238,7 @@ class TestNode():
         for _ in range(poll_per_s * self.rpc_timeout):
             if self.process.poll() is not None:
                 raise FailedToStartError(self._node_msg(
-                    'namecoind exited with status {} during initialization'.format(self.process.returncode)))
+                    'doichaind exited with status {} during initialization'.format(self.process.returncode)))
             try:
                 rpc = get_rpc_proxy(
                     rpc_url(self.datadir, self.index, self.chain, self.rpchost),
@@ -296,7 +296,7 @@ class TestNode():
                 if "No RPC credentials" not in str(e):
                     raise
             time.sleep(1.0 / poll_per_s)
-        self._raise_assertion_error("Unable to connect to namecoind after {}s".format(self.rpc_timeout))
+        self._raise_assertion_error("Unable to connect to doichaind after {}s".format(self.rpc_timeout))
 
     def wait_for_cookie_credentials(self):
         """Ensures auth cookie credentials can be read, e.g. for testing CLI with -rpcwait before RPC connection is up."""
@@ -506,7 +506,7 @@ class TestNode():
                 self.stop_node()
                 self.wait_until_stopped()
             except FailedToStartError as e:
-                self.log.debug('namecoind failed to start: %s', e)
+                self.log.debug('doichaind failed to start: %s', e)
                 self.running = False
                 self.process = None
                 # Check stderr for expected message
@@ -527,9 +527,9 @@ class TestNode():
                                 'Expected message "{}" does not fully match stderr:\n"{}"'.format(expected_msg, stderr))
             else:
                 if expected_msg is None:
-                    assert_msg = "namecoind should have exited with an error"
+                    assert_msg = "doichaind should have exited with an error"
                 else:
-                    assert_msg = "namecoind should have exited with expected error " + expected_msg
+                    assert_msg = "doichaind should have exited with expected error " + expected_msg
                 self._raise_assertion_error(assert_msg)
 
     def add_p2p_connection(self, p2p_conn, *, wait_for_verack=True, **kwargs):
@@ -613,7 +613,7 @@ class TestNodeCLI():
         self.binary = binary
         self.datadir = datadir
         self.input = None
-        self.log = logging.getLogger('TestFramework.namecoincli')
+        self.log = logging.getLogger('TestFramework.doichaincli')
 
     def __call__(self, *options, input=None):
         # TestNodeCLI is callable with bitcoin-cli command-line options
@@ -638,14 +638,14 @@ class TestNodeCLI():
         """Run bitcoin-cli command. Deserializes returned string as python object."""
         pos_args = [arg_to_cli(arg) for arg in args]
         named_args = [str(key) + "=" + arg_to_cli(value) for (key, value) in kwargs.items()]
-        assert not (pos_args and named_args), "Cannot use positional arguments and named arguments in the same namecoin-cli call"
+        assert not (pos_args and named_args), "Cannot use positional arguments and named arguments in the same doichain-cli call"
         p_args = [self.binary, "-datadir=" + self.datadir] + self.options
         if named_args:
             p_args += ["-named"]
         if command is not None:
             p_args += [command]
         p_args += pos_args + named_args
-        self.log.debug("Running namecoin-cli {}".format(p_args[2:]))
+        self.log.debug("Running doichain-cli {}".format(p_args[2:]))
         process = subprocess.Popen(p_args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
         cli_stdout, cli_stderr = process.communicate(input=self.input)
         returncode = process.poll()

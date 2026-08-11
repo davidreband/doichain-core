@@ -479,7 +479,7 @@ class FullBlockTest(BitcoinTestFramework):
         b39_outputs += 1
 
         # Until block is full, add tx's with 1 satoshi to p2sh_script, the rest to OP_TRUE
-        # In Namecoin, we have to respect the BDB lock limit as well.
+        # In Doichain, we have to respect the BDB lock limit as well.
         # TODO: Get rid of this change once the lock limit has been removed.
         tx_new = None
         tx_last = tx
@@ -507,7 +507,7 @@ class FullBlockTest(BitcoinTestFramework):
         self.send_blocks([b39], True)
         self.save_spendable_output()
 
-        # Tests for P2SH sigop limits have been removed in Namecoin because
+        # Tests for P2SH sigop limits have been removed in Doichain because
         # they fail the BDB lock limit.
         # TODO: Add them back once the limit is gone.
 

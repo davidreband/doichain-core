@@ -322,7 +322,7 @@ class MempoolAcceptanceTest(BitcoinTestFramework):
             rawtxs=[tx.serialize().hex()],
         )
 
-        # FIXME: Enable once Namecoin has BIP68 enabled.
+        # FIXME: Enable once Doichain has BIP68 enabled.
         return
         self.log.info('A transaction that is locked by BIP68 sequence logic')
         tx.deserialize(BytesIO(hex_str_to_bytes(raw_tx_reference)))

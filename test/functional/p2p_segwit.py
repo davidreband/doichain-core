@@ -271,7 +271,7 @@ class SegWitTest(BitcoinTestFramework):
 
         self.test_non_witness_transaction()
         # Upstream Bitcoin backdated the script verification softfork,
-        # which we cannot do yet until segwit activates on Namecoin.
+        # which we cannot do yet until segwit activates on Doichain.
         #self.test_v0_outputs_arent_spendable()
         self.test_block_relay()
         self.test_getblocktemplate_before_lockin()
