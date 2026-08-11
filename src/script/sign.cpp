@@ -11,6 +11,7 @@
 #include <script/signingprovider.h>
 #include <script/standard.h>
 #include <uint256.h>
+#include <util/system.h>
 
 typedef std::vector<unsigned char> valtype;
 
@@ -208,6 +209,7 @@ bool ProduceSignature(const SigningProvider& provider, const BaseSignatureCreato
 
     if (solved && whichType == TxoutType::SCRIPTHASH)
     {
+
         // Solver returns the subscript that needs to be evaluated;
         // the final scriptSig is the signatures from that
         // and then the serialized subscript:
@@ -245,6 +247,7 @@ bool ProduceSignature(const SigningProvider& provider, const BaseSignatureCreato
         result.push_back(std::vector<unsigned char>(subscript.begin(), subscript.end()));
     }
     sigdata.scriptSig = PushAll(result);
+
 
     // Test solution
     sigdata.complete = solved && VerifyScript(sigdata.scriptSig, fromPubKey, &sigdata.scriptWitness, STANDARD_SCRIPT_VERIFY_FLAGS, creator.Checker());

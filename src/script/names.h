@@ -57,6 +57,7 @@ public:
       case OP_NAME_NEW:
       case OP_NAME_FIRSTUPDATE:
       case OP_NAME_UPDATE:
+      case OP_NAME_DOI:
         return true;
 
       case OP_NOP:
@@ -85,12 +86,37 @@ public:
   inline opcodetype
   getNameOp () const
   {
+    
     switch (op)
       {
       case OP_NAME_NEW:
       case OP_NAME_FIRSTUPDATE:
       case OP_NAME_UPDATE:
+      case OP_NAME_DOI:
         return op;
+
+      default:
+        return op;
+        //assert (false);
+      }
+  }
+
+  /**
+   * Return whether this is a name update (including first updates).  I. e.,
+   * whether this creates a name index update/entry.
+   * @return True iff this is NAME_FIRSTUPDATE or NAME_UPDATE.
+   */
+  inline bool
+  isDoiRegistration () const
+  {
+    switch (op)
+      {
+      case OP_NAME_DOI:
+    	  return true;
+      case OP_NAME_NEW:
+      case OP_NAME_FIRSTUPDATE:
+      case OP_NAME_UPDATE:
+        return false;
 
       default:
         assert (false);
@@ -112,6 +138,7 @@ public:
 
       case OP_NAME_FIRSTUPDATE:
       case OP_NAME_UPDATE:
+      case OP_NAME_DOI: 
         return true;
 
       default:
@@ -131,6 +158,7 @@ public:
       {
       case OP_NAME_FIRSTUPDATE:
       case OP_NAME_UPDATE:
+      case OP_NAME_DOI:
         return args[0];
 
       default:
@@ -152,6 +180,9 @@ public:
         return args[2];
 
       case OP_NAME_UPDATE:
+        return args[1];
+
+      case OP_NAME_DOI:
         return args[1];
 
       default:
@@ -226,6 +257,16 @@ public:
    */
   static CScript buildNameUpdate (const CScript& addr, const valtype& name,
                                   const valtype& value);
+
+  /**
+   * Build a NAME_DOI transaction.
+   * @param addr The address script to append.
+   * @param name The name to firstupdate.
+   * @param value The value to set it to.
+   * @return The full NAME_DOI script.
+   */
+  static CScript buildNameDOI  (const CScript& addr, const valtype& name, 
+                                const valtype& value);
 
 };
 
