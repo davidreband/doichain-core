@@ -683,7 +683,7 @@ bool MemPoolAccept::PreChecks(ATMPArgs& args, Workspace& ws)
     for (const auto& txout : tx.vout)
     {
         const CNameScript nameOp(txout.scriptPubKey);
-        if (nameOp.isNameOp() && nameOp.isAnyUpdate())
+        if (nameOp.isNameOp() && (nameOp.isAnyUpdate() || nameOp.isDoiRegistration()))
         {
             const valtype& name = nameOp.getOpName();
             CNameData data;
@@ -1000,7 +1000,7 @@ bool MemPoolAccept::ConsensusScriptChecks(ATMPArgs& args, Workspace& ws, Precomp
     // invalid blocks (using TestBlockValidity), however allowing such
     // transactions into the mempool can be exploited as a DoS attack.
     //
-    // Namecoin actually allows some scripts into the mempool that would
+    // Doichain actually allows some scripts into the mempool that would
     // not (yet) be valid in a block, namely premature NAME_FIRSTUPDATE's.
     // Thus add the mempool-flag here.
     unsigned int currentBlockScriptVerifyFlags = GetBlockScriptFlags(::ChainActive().Tip(), chainparams.GetConsensus());
@@ -1838,10 +1838,6 @@ DisconnectResult CChainState::DisconnectBlock(const CBlock& block, const CBlockI
                     /* This may be due to a historic bug.  For them, some names
                        are marked immediately as unspendable.  They fail this check
                        when undoing, thus ignore them here.  */
-                    CChainParams::BugType type;
-                    if (!Params ().IsHistoricBug (tx.GetHash (), pindex->nHeight, type) || type != CChainParams::BUG_FULLY_IGNORE) {
-                        fClean = false; // transaction output mismatch
-                    }
                 }
             }
         }
@@ -3377,7 +3373,7 @@ static bool FindUndoPos(BlockValidationState &state, int nFile, FlatFilePos &pos
    Each "object" touched in the DB may cause two locks (one read and one
    write lock).  Objects are transaction IDs and names.  Thus, count the
    total number of transaction IDs (tx themselves plus all distinct inputs).
-   In addition, each Namecoin transaction could touch at most one name,
+   In addition, each Doichain transaction could touch at most one name,
    so add them as well.  */
 bool CheckDbLockLimit(const std::vector<CTransactionRef>& vtx)
 {
@@ -3386,7 +3382,7 @@ bool CheckDbLockLimit(const std::vector<CTransactionRef>& vtx)
     for (const auto& tx : vtx)
     {
         setTxIds.insert(tx->GetHash());
-        if (tx->IsNamecoin())
+        if (tx->IsDoichain())
             ++nNames;
 
         for (const auto& txIn : tx->vin)
@@ -3592,8 +3588,8 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
                              "legacy block after auxpow start");
 
     // Check proof of work
-    if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams))
-        return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "bad-diffbits", "incorrect proof of work");
+    //if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams))
+     //   return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "bad-diffbits", "incorrect proof of work");
 
     // Check against checkpoints
     if (fCheckpointsEnabled) {

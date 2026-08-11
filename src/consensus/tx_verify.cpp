@@ -13,6 +13,7 @@
 // TODO remove the following dependencies
 #include <chain.h>
 #include <coins.h>
+#include <util/system.h>
 #include <util/moneystr.h>
 
 bool IsFinalTx(const CTransaction &tx, int nBlockHeight, int64_t nBlockTime)
@@ -165,10 +166,9 @@ bool Consensus::CheckTxInputs(const CTransaction& tx, TxValidationState& state, 
            was added by CheckNameTransaction already.  */
         if (state.IsValid () || state.GetRejectReason () == "")
             state.Invalid (TxValidationResult::TX_CONSENSUS,
-                           "tx-invalid-nameop", "Tx invalid for Namecoin");
+                           "tx-invalid-nameop", "Tx invalid for Doichain");
         return false;
       }
-
     // are the actual inputs available?
     if (!inputs.HaveInputs(tx)) {
         return state.Invalid(TxValidationResult::TX_MISSING_INPUTS, "bad-txns-inputs-missingorspent",

@@ -333,8 +333,9 @@ bool CBlockTreeDB::WriteBatchSync(const std::vector<std::pair<int, const CBlockF
     return WriteBatch(batch, true);
 }
 
-bool CCoinsViewDB::ValidateNameDB(ChainstateManager& chainman) const
+bool CCoinsViewDB::ValidateNameDB(ChainstateManager& chainman, const std::function<void()>& interruption_point) const
 {
+
     const uint256 blockHash = GetBestBlock();
     int nHeight;
     if (blockHash.IsNull())
@@ -360,7 +361,7 @@ bool CCoinsViewDB::ValidateNameDB(ChainstateManager& chainman) const
 
     for (; pcursor->Valid(); pcursor->Next())
     {
-        boost::this_thread::interruption_point();
+        interruption_point();
         char chType;
         if (!pcursor->GetKey(chType))
             continue;
@@ -376,10 +377,10 @@ bool CCoinsViewDB::ValidateNameDB(ChainstateManager& chainman) const
             if (!coin.out.IsNull())
             {
                 const CNameScript nameOp(coin.out.scriptPubKey);
-                if (nameOp.isNameOp() && nameOp.isAnyUpdate())
+                if (nameOp.isNameOp() && (nameOp.isAnyUpdate() || nameOp.isDoiRegistration()))
                 {
                     const valtype& name = nameOp.getOpName();
-                    if (namesInUTXO.count(name) > 0)
+                    if (namesInUTXO.count(name) > 0 && !nameOp.isDoiRegistration())
                         return error("%s : name %s duplicated in UTXO set",
                                      __func__, EncodeNameForMessage(name));
                     namesInUTXO.insert(nameOp.getOpName());
@@ -390,11 +391,11 @@ bool CCoinsViewDB::ValidateNameDB(ChainstateManager& chainman) const
 
         case DB_NAME:
         {
+
             std::pair<char, valtype> key;
             if (!pcursor->GetKey(key) || key.first != DB_NAME)
                 return error("%s : failed to read DB_NAME key", __func__);
             const valtype& name = key.second;
-
             CNameData data;
             if (!pcursor->GetValue(data))
                 return error("%s : failed to read name value", __func__);
@@ -408,7 +409,7 @@ bool CCoinsViewDB::ValidateNameDB(ChainstateManager& chainman) const
                how the UTXO set is cleared in ExpireNames.  */
             assert(namesInDB.count(name) == 0);
             if (!data.isExpired(nHeight + 1))
-                namesInDB.insert(name);
+            	namesInDB.insert(name);
             break;
         }
 
