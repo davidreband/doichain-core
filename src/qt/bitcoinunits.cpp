@@ -42,10 +42,10 @@ QString BitcoinUnits::longName(int unit)
 {
     switch(unit)
     {
-    case BTC: return QString("NMC");
-    case mBTC: return QString("mNMC");
-    case uBTC: return QString::fromUtf8("µNMC");
-    case SAT: return QString("Satoshi (sat)");
+    case BTC: return QString("DOI");
+    case mBTC: return QString("mDOI");
+    case uBTC: return QString::fromUtf8("µDOI");
+    case SAT: return QString("Schwartz (swarz)");
     default: return QString("???");
     }
 }
@@ -64,9 +64,9 @@ QString BitcoinUnits::description(int unit)
 {
     switch(unit)
     {
-    case BTC: return QString("Namecoins");
-    case mBTC: return QString("Milli-Namecoins (1 / 1" THIN_SP_UTF8 "000)");
-    case uBTC: return QString("Micro-Namecoins (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+    case BTC: return QString("Doichains");
+    case mBTC: return QString("Milli-Doichains (1 / 1" THIN_SP_UTF8 "000)");
+    case uBTC: return QString("Micro-Doichains (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
     case SAT: return QString("Satoshi (sat) (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
     default: return QString("???");
     }
