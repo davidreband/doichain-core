@@ -174,6 +174,11 @@ public:
     {
         return nameOp.isNameOp() && nameOp.getNameOp() == OP_NAME_UPDATE;
     }
+    inline bool
+    isNameDoi() const
+    {
+        return nameOp.isNameOp() && nameOp.getNameOp() == OP_NAME_DOI;
+    }
     inline const valtype&
     getNameNewHash() const
     {
@@ -804,7 +809,12 @@ public:
         AssertLockHeld(cs);
         return names.updatesName(name);
     }
-
+    inline bool
+	registersDoi(const valtype& name) const
+    {
+        AssertLockHeld(cs);
+        return names.registersDoi(name);
+    }
     unsigned
     pendingNameChainLength (const valtype& name) const
     {
