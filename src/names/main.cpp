@@ -186,8 +186,8 @@ CheckNameTransaction (const CTransaction& tx, unsigned nHeight,
   /* Now that we have ruled out NAME_NEW, check that we have a previous
      name input that is being updated.  */
 
-  assert (nameOpOut.isAnyUpdate ());
-  if (nameIn == -1)
+  assert (nameOpOut.isAnyUpdate () || nameOpOut.isDoiRegistration ());
+  if (params.fRequireNameInputForUpdate && nameIn == -1)
     return state.Invalid (TxValidationResult::TX_CONSENSUS,
                           "tx-nameupdate-without-name-input",
                           "Name update has no previous name input");
@@ -236,6 +236,50 @@ CheckNameTransaction (const CTransaction& tx, unsigned nHeight,
                               "NAME_UPDATE on an expired name");
       assert (inHeight == oldName.getHeight ());
       assert (tx.vin[nameIn].prevout == oldName.getUpdateOutpoint ());
+
+      return true;
+    }
+
+  /* Process NAME_DOI, the Doichain-specific operation.  */
+
+  if (nameOpOut.getNameOp () == OP_NAME_DOI)
+    {
+      /* With a name input, this updates an existing DOI.  */
+      if (nameIn != -1)
+        {
+          CNameData oldName;
+          if (!view.GetName (name, oldName))
+            return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                                  "tx-nameupdate-nonexistant",
+                                  "NAME_DOI name does not exist");
+
+          if (nameOpIn.getNameOp () != OP_NAME_DOI)
+            return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                                  "tx-name-doi-not-name-doi-input",
+                                  "NAME_DOI input is not a OP_NAME_DOI");
+
+          return true;
+        }
+
+      /* Without a name input, this registers a new DOI.  Overwriting an
+         existing one was allowed early in the chain's history and is meant
+         to be rejected from height 170'000 on.
+
+         FIXME: This guard never triggers.  coinIn is only assigned when a
+         name input exists, and we are in the nameIn == -1 branch here, so
+         coinIn.nHeight is always 0.  The behaviour is carried over from
+         the 0.20 code unchanged on purpose; changing it would change
+         consensus.  */
+      CNameData oldName;
+      if (view.GetName (name, oldName))
+        {
+          const unsigned inHeight = coinIn.nHeight;
+          if (inHeight > 170000)
+            return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                                  "tx-name-doi-name-used",
+                                  "NAME_DOI name is already used - please use"
+                                  " correct inputs if its an name_doi update");
+        }
 
       return true;
     }
