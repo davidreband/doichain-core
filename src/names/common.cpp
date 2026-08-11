@@ -15,7 +15,7 @@ void
 CNameData::fromScript (unsigned h, const COutPoint& out,
                        const CNameScript& script)
 {
-  assert (script.isAnyUpdate ());
+  assert (script.isAnyUpdate () || script.isDoiRegistration());
   value = script.getOpValue ();
   nHeight = h;
   prevout = out;

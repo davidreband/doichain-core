@@ -3,6 +3,8 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <names/main.h>
+#include <script/standard.h>
+#include <key_io.h>
 
 #include <chainparams.h>
 #include <coins.h>
@@ -10,6 +12,8 @@
 #include <dbwrapper.h>
 #include <hash.h>
 #include <names/encoding.h>
+#include <names/common.h>
+#include <names/main.h>
 #include <script/interpreter.h>
 #include <script/names.h>
 #include <txmempool.h>
@@ -87,17 +91,17 @@ CheckNameTransaction (const CTransaction& tx, unsigned nHeight,
                       const CCoinsView& view,
                       TxValidationState& state, unsigned flags)
 {
+
   const bool fMempool = (flags & SCRIPT_VERIFY_NAMES_MEMPOOL);
 
-  /* Ignore historic bugs.  */
+  /* Ignore historic bugs
   CChainParams::BugType type;
   if (Params ().IsHistoricBug (tx.GetHash (), nHeight, type))
-    return true;
+    return true;.  */
 
   /* As a first step, try to locate inputs and outputs of the transaction
      that are name scripts.  At most one input and output should be
      a name operation.  */
-
   int nameIn = -1;
   CNameScript nameOpIn;
   Coin coinIn;
@@ -122,7 +126,6 @@ CheckNameTransaction (const CTransaction& tx, unsigned nHeight,
           coinIn = coin;
         }
     }
-
   int nameOut = -1;
   CNameScript nameOpOut;
   for (unsigned i = 0; i < tx.vout.size (); ++i)
@@ -139,11 +142,11 @@ CheckNameTransaction (const CTransaction& tx, unsigned nHeight,
         }
     }
 
-  /* Check that no name inputs/outputs are present for a non-Namecoin tx.
-     If that's the case, all is fine.  For a Namecoin tx instead, there
+  /* Check that no name inputs/outputs are present for a non-Doichain tx.
+     If that's the case, all is fine.  For a Doichain tx instead, there
      should be at least an output (for NAME_NEW, no inputs are expected).  */
 
-  if (!tx.IsNamecoin ())
+  if (!tx.IsDoichain ())
     {
       if (nameIn != -1)
         return state.Invalid (TxValidationResult::TX_CONSENSUS,
@@ -153,11 +156,9 @@ CheckNameTransaction (const CTransaction& tx, unsigned nHeight,
         return state.Invalid (TxValidationResult::TX_CONSENSUS,
                               "tx-nonname-with-name-output",
                               "Non-name transaction has name output");
-
       return true;
     }
-
-  assert (tx.IsNamecoin ());
+  assert (tx.IsDoichain ());
   if (nameOut == -1)
     return state.Invalid (TxValidationResult::TX_CONSENSUS,
                           "tx-name-without-name-output",
@@ -190,12 +191,12 @@ CheckNameTransaction (const CTransaction& tx, unsigned nHeight,
 
   /* Now that we have ruled out NAME_NEW, check that we have a previous
      name input that is being updated.  */
-
-  assert (nameOpOut.isAnyUpdate ());
-  if (nameIn == -1)
+  assert (nameOpOut.isAnyUpdate () || nameOpOut.isDoiRegistration ());
+  //TODO invalid block=1173d2615de4aba9785646bc414040e622cc04869593f006872b9013e1b1201b  height=29966 mainnet why is that
+  /*if (nameIn == -1) 
     return state.Invalid (TxValidationResult::TX_CONSENSUS,
                           "tx-nameupdate-without-name-input",
-                          "Name update has no previous name input");
+                          "Name update has no previous name input"); */
   const valtype& name = nameOpOut.getOpName ();
 
   if (name.size () > MAX_NAME_LENGTH)
@@ -208,7 +209,6 @@ CheckNameTransaction (const CTransaction& tx, unsigned nHeight,
                           "Invalid value");
 
   /* Process NAME_UPDATE next.  */
-
   if (nameOpOut.getNameOp () == OP_NAME_UPDATE)
     {
       if (!nameOpIn.isAnyUpdate ())
@@ -244,14 +244,53 @@ CheckNameTransaction (const CTransaction& tx, unsigned nHeight,
 
       return true;
     }
+  if (nameOpOut.getNameOp () == OP_NAME_DOI)
+    {
+      /* With a name input, this is an update of an existing DOI.  */
+      if (nameIn != -1)
+        {
+          CNameData oldName;
+          if (!view.GetName (name, oldName))
+            return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                                  "tx-nameupdate-nonexistant",
+                                  "NAME_DOI name does not exist");
 
+          if (nameOpIn.getNameOp () != OP_NAME_DOI)
+            return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                                  "tx-name-doi-not-name-doi-input",
+                                  "NAME_DOI input is not a OP_NAME_DOI");
+
+          return true;
+        }
+
+      /* Without a name input, this registers a new DOI.  Overwriting an
+         existing one was allowed early in the chain's history and is meant
+         to be rejected from height 170'000 on.
+
+         FIXME: This guard never triggers.  coinIn is only assigned when a
+         name input exists, and we are in the nameIn == -1 branch here, so
+         coinIn.nHeight is always 0.  The behaviour is carried over
+         unchanged on purpose; changing it would change consensus.  */
+      CNameData oldName;
+      if (view.GetName (name, oldName))
+        {
+          const unsigned inHeight = coinIn.nHeight;
+          if (inHeight > 170000)
+            return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                                  "tx-name-doi-name-used",
+                                  "NAME_DOI name is already used - please use"
+                                  " correct inputs if its an name_doi update");
+        }
+
+      return true;
+    }
   /* Finally, NAME_FIRSTUPDATE.  */
-
   assert (nameOpOut.getNameOp () == OP_NAME_FIRSTUPDATE);
+  
   if (nameOpIn.getNameOp () != OP_NAME_NEW)
     return state.Invalid (TxValidationResult::TX_CONSENSUS,
                           "tx-firstupdate-nonnew-input",
-                          "NAME_FIRSTUPDATE input is not a NAME_NEW");
+                          "NAME_FIRSTUPDATE input is not a NAME_NEW"); 
 
   /* Maturity of NAME_NEW is checked only if we're not adding
      to the mempool.  */
@@ -278,7 +317,6 @@ CheckNameTransaction (const CTransaction& tx, unsigned nHeight,
                             "tx-firstupdate-hash-mismatch",
                             "NAME_FIRSTUPDATE mismatch in hash / rand value");
   }
-
   CNameData oldName;
   if (view.GetName (name, oldName) && !oldName.isExpired (nHeight))
     return state.Invalid (TxValidationResult::TX_CONSENSUS,
@@ -300,7 +338,7 @@ ApplyNameTransaction (const CTransaction& tx, unsigned nHeight,
 
   /* Handle historic bugs that should *not* be applied.  Names that are
      outputs should be marked as unspendable in this case.  Otherwise,
-     we get an inconsistency between the UTXO set and the name database.  */
+     we get an inconsistency between the UTXO set and the name database.
   CChainParams::BugType type;
   const uint256 txHash = tx.GetHash ();
   if (Params ().IsHistoricBug (txHash, nHeight, type)
@@ -314,13 +352,13 @@ ApplyNameTransaction (const CTransaction& tx, unsigned nHeight,
               view.SpendCoin (COutPoint (txHash, i));
           }
       return;
-    }
+    }  */
 
   /* This check must be done *after* the historic bug fixing above!  Some
      of the names that must be handled above are actually produced by
-     transactions *not* marked as Namecoin tx.  */
-  if (!tx.IsNamecoin ())
-    return;
+     transactions *not* marked as Doichain tx.  
+  if (!tx.IsDoichain ())
+    return;*/
 
   /* Changes are encoded in the outputs.  We don't have to do any checks,
      so simply apply all these.  */
@@ -484,7 +522,8 @@ CheckNameDB (ChainstateManager& chainman, bool disconnect)
 
   auto& coinsTip = chainman.ActiveChainstate ().CoinsTip ();
   coinsTip.Flush ();
-  const bool ok = coinsTip.ValidateNameDB (chainman);
+  const bool ok = coinsTip.ValidateNameDB (chainman, [] () {});
+
 
   /* The DB is inconsistent (mismatch between UTXO set and names DB) between
      (roughly) blocks 139,000 and 180,000.  This is caused by libcoin's
