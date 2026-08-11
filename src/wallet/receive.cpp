@@ -224,7 +224,9 @@ void CachedTxGetAmounts(const CWallet& wallet, const CWalletTx& wtx,
         // If we have a name script, set the "name" parameter.
         if (nameOp.isNameOp())
         {
-            if (nameOp.isAnyUpdate())
+            if (nameOp.isDoiRegistration())
+                output.nameOp = "doi: " + EncodeNameForMessage(nameOp.getOpName());
+            else if (nameOp.isAnyUpdate())
                 output.nameOp = "update: " + EncodeNameForMessage(nameOp.getOpName());
             else
                 output.nameOp = "new: " + HexStr(nameOp.getOpHash());
