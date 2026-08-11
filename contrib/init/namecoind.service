@@ -1,53 +1,53 @@
 # It is not recommended to modify this file in-place, because it will
 # be overwritten during package upgrades. If you want to add further
 # options or overwrite existing ones then use
-# $ systemctl edit namecoind.service
+# $ systemctl edit doichaind.service
 # See "man systemd.service" for details.
 
 # Note that almost all daemon options could be specified in
-# /etc/namecoin/namecoin.conf, but keep in mind those explicitly
+# /etc/doichain/doichain.conf, but keep in mind those explicitly
 # specified as arguments in ExecStart= will override those in the
 # config file.
 
 [Unit]
-Description=Namecoin daemon
+Description=Doichain daemon
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/namecoind -daemon \
-                            -pid=/run/namecoind/namecoind.pid \
-                            -conf=/etc/namecoin/namecoin.conf \
-                            -datadir=/var/lib/namecoind
+ExecStart=/usr/bin/doichaind -daemon \
+                            -pid=/run/doichaind/doichaind.pid \
+                            -conf=/etc/doichain/doichain.conf \
+                            -datadir=/var/lib/doichaind
 
 # Make sure the config directory is readable by the service user
 PermissionsStartOnly=true
-ExecStartPre=/bin/chgrp namecoin /etc/namecoin
+ExecStartPre=/bin/chgrp doichain /etc/doichain
 
 # Process management
 ####################
 
 Type=forking
-PIDFile=/run/namecoind/namecoind.pid
+PIDFile=/run/doichaind/doichaind.pid
 Restart=on-failure
 TimeoutStopSec=600
 
 # Directory creation and permissions
 ####################################
 
-# Run as namecoin:namecoin
-User=namecoin
-Group=namecoin
+# Run as doichain:doichain
+User=doichain
+Group=doichain
 
-# /run/namecoind
-RuntimeDirectory=namecoind
+# /run/doichaind
+RuntimeDirectory=doichaind
 RuntimeDirectoryMode=0710
 
-# /etc/namecoin
-ConfigurationDirectory=namecoin
+# /etc/doichain
+ConfigurationDirectory=doichain
 ConfigurationDirectoryMode=0710
 
-# /var/lib/namecoind
-StateDirectory=namecoind
+# /var/lib/doichaind
+StateDirectory=doichaind
 StateDirectoryMode=0710
 
 # Hardening measures

@@ -2,26 +2,26 @@
 
 # backward compatibility for existing gentoo layout 
 #
-if [ -d "/var/lib/namecoin/.namecoin" ]; then
-	NAMECOIND_DEFAULT_DATADIR="/var/lib/namecoin/.namecoin"
+if [ -d "/var/lib/doichain/.doichain" ]; then
+	NAMECOIND_DEFAULT_DATADIR="/var/lib/doichain/.doichain"
 else
-	NAMECOIND_DEFAULT_DATADIR="/var/lib/namecoind"
+	NAMECOIND_DEFAULT_DATADIR="/var/lib/doichaind"
 fi
 
-NAMECOIND_CONFIGFILE=${NAMECOIND_CONFIGFILE:-/etc/namecoin/namecoin.conf}
-NAMECOIND_PIDDIR=${NAMECOIND_PIDDIR:-/var/run/namecoind}
-NAMECOIND_PIDFILE=${NAMECOIND_PIDFILE:-${NAMECOIND_PIDDIR}/namecoind.pid}
+NAMECOIND_CONFIGFILE=${NAMECOIND_CONFIGFILE:-/etc/doichain/doichain.conf}
+NAMECOIND_PIDDIR=${NAMECOIND_PIDDIR:-/var/run/doichaind}
+NAMECOIND_PIDFILE=${NAMECOIND_PIDFILE:-${NAMECOIND_PIDDIR}/doichaind.pid}
 NAMECOIND_DATADIR=${NAMECOIND_DATADIR:-${NAMECOIND_DEFAULT_DATADIR}}
-NAMECOIND_USER=${NAMECOIND_USER:-${NAMECOIN_USER:-namecoin}}
-NAMECOIND_GROUP=${NAMECOIND_GROUP:-namecoin}
-NAMECOIND_BIN=${NAMECOIND_BIN:-/usr/bin/namecoind}
+NAMECOIND_USER=${NAMECOIND_USER:-${NAMECOIN_USER:-doichain}}
+NAMECOIND_GROUP=${NAMECOIND_GROUP:-doichain}
+NAMECOIND_BIN=${NAMECOIND_BIN:-/usr/bin/doichaind}
 NAMECOIND_NICE=${NAMECOIND_NICE:-${NICELEVEL:-0}}
 NAMECOIND_OPTS="${NAMECOIND_OPTS:-${NAMECOIN_OPTS}}"
 
-name="Namecoin Core Daemon"
-description="Namecoin distributed name-value store P2P network daemon"
+name="Doichain Core Daemon"
+description="Doichain distributed name-value store P2P network daemon"
 
-command="/usr/bin/namecoind"
+command="/usr/bin/doichaind"
 command_args="-pid=\"${NAMECOIND_PIDFILE}\" \
 		-conf=\"${NAMECOIND_CONFIGFILE}\" \
 		-datadir=\"${NAMECOIND_DATADIR}\" \
@@ -71,7 +71,7 @@ checkconfig()
 {
 	if ! grep -qs '^rpcpassword=' "${NAMECOIND_CONFIGFILE}" ; then
 		eerror ""
-		eerror "ERROR: You must set a secure rpcpassword to run namecoind."
+		eerror "ERROR: You must set a secure rpcpassword to run doichaind."
 		eerror "The setting must appear in ${NAMECOIND_CONFIGFILE}"
 		eerror ""
 		eerror "This password is security critical to securing wallets "
@@ -84,7 +84,7 @@ checkconfig()
 		eerror "It is recommended that you also set alertnotify so you are "
 		eerror "notified of problems:"
 		eerror ""
-		eerror "ie: alertnotify=echo %%s | mail -s \"Namecoin Alert\"" \
+		eerror "ie: alertnotify=echo %%s | mail -s \"Doichain Alert\"" \
 			"admin@foo.com"
 		eerror ""
 		return 1

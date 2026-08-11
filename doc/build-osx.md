@@ -43,17 +43,17 @@ from the root of the repository.
 
 **Note**: You only need Berkeley DB if the wallet is enabled (see [*Disable-wallet mode*](/doc/build-osx.md#disable-wallet-mode)).
 
-## Build Namecoin Core
+## Build Doichain Core
 
-1. Clone the Namecoin Core source code:
+1. Clone the Doichain Core source code:
     ```shell
-    git clone https://github.com/namecoin/namecoin-core
-    cd namecoin-core
+    git clone https://github.com/doichain/doichain-core
+    cd doichain-core
     ```
 
-2.  Build Namecoin Core:
+2.  Build Doichain Core:
 
-    Configure and build the headless Namecoin Core binaries as well as the GUI (if Qt is found).
+    Configure and build the headless Doichain Core binaries as well as the GUI (if Qt is found).
 
     You can disable the GUI build by passing `--without-gui` to configure.
     ```shell
@@ -84,18 +84,18 @@ In this case there is no dependency on Berkeley DB 4.8.
 Mining is also possible in disable-wallet mode using the `getblocktemplate` RPC call.
 
 ## Running
-Namecoin Core is now available at `./src/namecoind`
+Doichain Core is now available at `./src/doichaind`
 
 Before running, you may create an empty configuration file:
 ```shell
 mkdir -p "/Users/${USER}/Library/Application Support/Bitcoin"
 
-touch "/Users/${USER}/Library/Application Support/Namecoin/namecoin.conf"
+touch "/Users/${USER}/Library/Application Support/Doichain/doichain.conf"
 
-chmod 600 "/Users/${USER}/Library/Application Support/Namecoin/namecoin.conf"
+chmod 600 "/Users/${USER}/Library/Application Support/Doichain/doichain.conf"
 ```
 
-The first time you run namecoind, it will start downloading the blockchain. This process could
+The first time you run doichaind, it will start downloading the blockchain. This process could
 take several hours.
 
 You can monitor the download process by looking at the debug.log file:
@@ -105,9 +105,9 @@ tail -f $HOME/Library/Application\ Support/Bitcoin/debug.log
 
 ## Other commands:
 ```shell
-./src/namecoind -daemon      # Starts the namecoin daemon.
-./src/namecoin-cli --help    # Outputs a list of command-line options.
-./src/namecoin-cli help      # Outputs a list of RPC commands when the daemon is running.
+./src/doichaind -daemon      # Starts the doichain daemon.
+./src/doichain-cli --help    # Outputs a list of command-line options.
+./src/doichain-cli help      # Outputs a list of RPC commands when the daemon is running.
 ```
 
 ## Notes

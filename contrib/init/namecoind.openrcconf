@@ -1,31 +1,31 @@
-# /etc/conf.d/namecoind: config file for /etc/init.d/namecoind
+# /etc/conf.d/doichaind: config file for /etc/init.d/doichaind
 
 # Config file location
-#BITCOIND_CONFIGFILE="/etc/namecoin/namecoin.conf"
+#BITCOIND_CONFIGFILE="/etc/doichain/doichain.conf"
 
 # What directory to write pidfile to?  (created and owned by $BITCOIND_USER)
-#BITCOIND_PIDDIR="/var/run/namecoind"
+#BITCOIND_PIDDIR="/var/run/doichaind"
 
 # What filename to give the pidfile
-#BITCOIND_PIDFILE="${BITCOIND_PIDDIR}/namecoind.pid"
+#BITCOIND_PIDFILE="${BITCOIND_PIDDIR}/doichaind.pid"
 
-# Where to write namecoind data (be mindful that the blockchain is large)
-#BITCOIND_DATADIR="/var/lib/namecoind"
+# Where to write doichaind data (be mindful that the blockchain is large)
+#BITCOIND_DATADIR="/var/lib/doichaind"
 
-# User and group to own namecoind process
-#BITCOIND_USER="namecoin"
-#BITCOIND_GROUP="namecoin"
+# User and group to own doichaind process
+#BITCOIND_USER="doichain"
+#BITCOIND_GROUP="doichain"
 
-# Path to namecoind executable
-#BITCOIND_BIN="/usr/bin/namecoind"
+# Path to doichaind executable
+#BITCOIND_BIN="/usr/bin/doichaind"
 
-# Nice value to run namecoind under
+# Nice value to run doichaind under
 #BITCOIND_NICE=0
 
 # Additional options (avoid -conf and -datadir, use flags above)
 #BITCOIND_OPTS=""
 
-# The timeout in seconds OpenRC will wait for namecoind to terminate
+# The timeout in seconds OpenRC will wait for doichaind to terminate
 # after a SIGTERM has been raised.
 # Note that this will be mapped as argument to start-stop-daemon's
 # '--retry' option, which means you can specify a retry schedule

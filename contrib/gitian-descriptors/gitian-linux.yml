@@ -1,5 +1,5 @@
 ---
-name: "namecoin-core-linux-0.21"
+name: "doichain-core-linux-0.21"
 enable_cache: true
 distro: "ubuntu"
 suites:
@@ -31,8 +31,8 @@ packages:
 - "binutils-riscv64-linux-gnu"
 - "g++-8-riscv64-linux-gnu"
 remotes:
-- "url": "https://github.com/namecoin/namecoin-core.git"
-  "dir": "namecoin"
+- "url": "https://github.com/doichain/doichain-core.git"
+  "dir": "doichain"
 files: []
 script: |
   set -e -o pipefail
@@ -91,7 +91,7 @@ script: |
   create_per-host_faketime_wrappers "2000-01-01 12:00:00"
   export PATH=${WRAP_DIR}:${PATH}
 
-  cd namecoin
+  cd doichain
   BASEPREFIX="${PWD}/depends"
   # Build dependencies for each host
   for i in $HOSTS; do

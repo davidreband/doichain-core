@@ -1,37 +1,37 @@
-Namecoin Core
+Doichain Core
 ==============
 
 Setup
 ---------------------
-[Namecoin Core](http://namecoin.org/) is the official Namecoin client and it builds the backbone of the network. However, it downloads and stores the entire history of Namecoin transactions (which is currently several GBs); depending on the speed of your computer and network connection, the synchronization process can take anywhere from a few hours to a day or more.
+[Doichain Core](http://doichain.org/) is the official Doichain client and it builds the backbone of the network. However, it downloads and stores the entire history of Doichain transactions (which is currently several GBs); depending on the speed of your computer and network connection, the synchronization process can take anywhere from a few hours to a day or more.
 
-To download Namecoin Core, visit [namecoin.org](https://namecoin.org/download/).
+To download Doichain Core, visit [doichain.org](https://doichain.org/download/).
 
 Running
 ---------------------
-The following are some helpful notes on how to run Namecoin Core on your native platform.
+The following are some helpful notes on how to run Doichain Core on your native platform.
 
 ### Unix
 
 Unpack the files into a directory and run:
 
-- `bin/namecoin-qt` (GUI) or
-- `bin/namecoind` (headless)
+- `bin/doichain-qt` (GUI) or
+- `bin/doichaind` (headless)
 
 ### Windows
 
-Unpack the files into a directory, and then run namecoin-qt.exe.
+Unpack the files into a directory, and then run doichain-qt.exe.
 
 ### macOS
 
-Drag Namecoin-Qt to your applications folder, and then run Namecoin-Qt.
+Drag Doichain-Qt to your applications folder, and then run Doichain-Qt.
 
 ### Need Help?
 
-* See the documentation at the [Namecoin Site](https://namecoin.org)
+* See the documentation at the [Doichain Site](https://doichain.org)
 for help and more information.
-* Ask for help on [#namecoin](http://webchat.freenode.net?channels=namecoin) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net?channels=namecoin).
-* Ask for help on the [Namecoin forums](https://forum.namecoin.info/index.php), in the [Technical Support board](https://forum.namecoin.info/viewforum.php?f=7).
+* Ask for help on [#doichain](http://webchat.freenode.net?channels=doichain) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net?channels=doichain).
+* Ask for help on the [Doichain forums](https://forum.doichain.info/index.php), in the [Technical Support board](https://forum.doichain.info/viewforum.php?f=7).
 
 Building
 ---------------------
@@ -48,7 +48,7 @@ The following are developer notes on how to build Bitcoin Core on your native pl
 
 Development
 ---------------------
-The Namecoin repo's [root README](https://github.com/namecoin/namecore/blob/master/README.md) contains relevant information on the development process and automated testing.
+The Doichain repo's [root README](https://github.com/doichain/namecore/blob/master/README.md) contains relevant information on the development process and automated testing.
 
 - [Developer Notes](developer-notes.md)
 - [Productivity Notes](productivity.md)
@@ -65,8 +65,8 @@ The Namecoin repo's [root README](https://github.com/namecoin/namecore/blob/mast
 - [Benchmarking](benchmarking.md)
 
 ### Resources
-* Discuss on the [Namecoin forums](https://forum.namecoin.info/), in the [Development & Technical Discussion board](https://forum.namecoin.info/viewforum.php?f=8).
-* Discuss on [#namecoin-dev](http://webchat.freenode.net/?channels=namecoin-dev) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net/?channels=namecoin-dev).
+* Discuss on the [Doichain forums](https://forum.doichain.info/), in the [Development & Technical Discussion board](https://forum.doichain.info/viewforum.php?f=8).
+* Discuss on [#doichain-dev](http://webchat.freenode.net/?channels=doichain-dev) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net/?channels=doichain-dev).
 
 ### Miscellaneous
 - [Assets Attribution](assets-attribution.md)

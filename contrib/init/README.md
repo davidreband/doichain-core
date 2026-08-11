@@ -1,11 +1,11 @@
 Sample configuration files for:
 ```
-SystemD: namecoind.service
-Upstart: namecoind.conf
-OpenRC:  namecoind.openrc
-         namecoind.openrcconf
-CentOS:  namecoind.init
-macOS:   org.namecoin.namecoind.plist
+SystemD: doichaind.service
+Upstart: doichaind.conf
+OpenRC:  doichaind.openrc
+         doichaind.openrcconf
+CentOS:  doichaind.init
+macOS:   org.doichain.doichaind.plist
 ```
 have been made available to assist packagers in creating node packages here.
 

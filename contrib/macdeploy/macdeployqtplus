@@ -154,7 +154,7 @@ class FrameworkInfo(object):
 class ApplicationBundleInfo(object):
     def __init__(self, path: str):
         self.path = path
-        appName = "Namecoin-Qt"
+        appName = "Doichain-Qt"
         self.binaryPath = os.path.join(path, "Contents", "MacOS", appName)
         if not os.path.exists(self.binaryPath):
             raise RuntimeError("Could not find bundle binary for " + path)
@@ -585,8 +585,10 @@ if len(config.fancy) == 1:
             sys.stderr.write("Error: Could not find fancy disk image plist at \"{}\"\n".format(p))
         sys.exit(1)
     
+    print(p)
     try:
-        fancy = plistlib.readPlist(p)
+        with open(p, 'rb') as fp:
+            fancy = plistlib.load(fp, fmt=plistlib.FMT_XML)
     except:
         if verbose >= 1:
             sys.stderr.write("Error: Could not parse fancy disk image plist at \"{}\"\n".format(p))
@@ -638,7 +640,7 @@ else:
 
 # ------------------------------------------------
 
-target = os.path.join("dist", "Namecoin-Qt.app")
+target = os.path.join("dist", "Doichain-Qt.app")
 
 if verbose >= 2:
     print("+ Copying source bundle +")

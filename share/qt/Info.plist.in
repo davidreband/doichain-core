@@ -29,16 +29,16 @@
   <string>????</string>
 
   <key>CFBundleExecutable</key>
-  <string>Namecoin-Qt</string>
+  <string>Doichain-Qt</string>
 
   <key>CFBundleName</key>
-  <string>Namecoin-Qt</string>
+  <string>Doichain-Qt</string>
 
   <key>LSHasLocalizedDisplayName</key>
   <true/>
 
   <key>CFBundleIdentifier</key>
-  <string>org.namecoin.Namecoin-Qt</string>
+  <string>org.doichain.Doichain-Qt</string>
 
   <key>CFBundleURLTypes</key>
   <array>
@@ -46,10 +46,10 @@
       <key>CFBundleTypeRole</key>
       <string>Editor</string>
       <key>CFBundleURLName</key>
-      <string>org.namecoin.NamecoinPayment</string>
+      <string>org.doichain.DoichainPayment</string>
       <key>CFBundleURLSchemes</key>
       <array>
-        <string>namecoin</string>
+        <string>doichain</string>
       </array>
     </dict>
   </array>

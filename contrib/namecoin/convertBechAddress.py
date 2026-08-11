@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-#   Convert Address - convert Bitcoin to Namecoin bech32 addresses
+#   Convert Address - convert Bitcoin to Doichain bech32 addresses
 #   Copyright (C) 2018  Daniel Kraft <d@domob.eu>
 #
 #   This program is free software: you can redistribute it and/or modify

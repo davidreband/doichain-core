@@ -1,23 +1,23 @@
-Namecoin Core integration/staging tree
+Doichain Core integration/staging tree
 =====================================
 
-[![Build Status](https://travis-ci.org/namecoin/namecoin-core.svg?branch=master)](https://travis-ci.org/namecoin/namecoin-core)
+[![Build Status](https://travis-ci.org/doichain/doichain-core.svg?branch=master)](https://travis-ci.org/doichain/doichain-core)
 
-https://namecoin.org
+https://doichain.org
 
-What is Namecoin? 
+What is Doichain? 
 ----------------
 
-Namecoin is a decentralized open source information registration and transfer system based on the Bitcoin cryptocurrency.
+Doichain is a decentralized open source information registration and transfer system based on the Bitcoin cryptocurrency.
 
 What does it do?
 ----------------
 
 * Securely record and transfer arbitrary names (keys).
 * Attach a value (data) to the names (up to 520 bytes, more in the future).
-* Transact namecoins, the digital currency (ℕ, NMC).
+* Transact doichains, the digital currency (ℕ, NMC).
 
-Namecoin was the first fork of Bitcoin and still is one of the most innovative altcoins. It was first to implement merged mining and a decentralized DNS. Namecoin squares Zooko's Triangle!
+Doichain was the first fork of Bitcoin and still is one of the most innovative altcoins. It was first to implement merged mining and a decentralized DNS. Doichain squares Zooko's Triangle!
 
 What can it be used for?
 ----------------
@@ -29,29 +29,29 @@ What can it be used for?
 * File signatures, Voting, bonds/stocks,/shares, web of trust, escrow and notary services (to be implemented).
 
 For more information, as well as an immediately useable, binary version of
-the Namecoin Core software, see https://www.namecoin.org/download.
+the Doichain Core software, see https://www.doichain.org/download.
 
 License
 -------
 
-Namecoin Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
+Doichain Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
 information or see https://opensource.org/licenses/MIT.
 
 Development Process
 -------------------
 
 The `master` branch is regularly built (see doc/build-*.md for instructions) and tested, but is not guaranteed to be
-completely stable. [Tags](https://github.com/namecoin/namecoin-core/tags) are created
-regularly to indicate new official, stable release versions of Namecoin Core.
+completely stable. [Tags](https://github.com/doichain/doichain-core/tags) are created
+regularly to indicate new official, stable release versions of Doichain Core.
 
 The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md)
 and useful hints for developers can be found in [doc/developer-notes.md](doc/developer-notes.md).
 
-The developer [forum](https://forum.namecoin.info/viewforum.php?f=4)
+The developer [forum](https://forum.doichain.info/viewforum.php?f=4)
 should be used to discuss complicated or controversial changes before working
 on a patch set.
 
-Developer IRC can be found on Freenode at #namecoin-dev.
+Developer IRC can be found on Freenode at #doichain-dev.
 
 Testing
 -------
@@ -84,7 +84,7 @@ not straightforward.
 Translations
 ------------
 
-**Translation workflow is not yet set up for Namecoin Core.  For strings which are common to Bitcoin Core, see below.**
+**Translation workflow is not yet set up for Doichain Core.  For strings which are common to Bitcoin Core, see below.**
 
 Changes to translations as well as new translations can be submitted to
 [Bitcoin Core's Transifex page](https://www.transifex.com/bitcoin/bitcoin/).

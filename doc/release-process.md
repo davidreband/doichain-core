@@ -5,13 +5,13 @@ Release Process
 
 ### Before every release candidate
 
-* Update manpages, see [gen-manpages.sh](https://github.com/namecoin/namecoin/blob/master/contrib/devtools/README.md#gen-manpagessh).
-* ( **Not in Namecoin yet.** ) Update translations (ping wumpus on IRC) see [translation_process.md](https://github.com/bitcoin/bitcoin/blob/master/doc/translation_process.md#synchronising-translations).
+* Update manpages, see [gen-manpages.sh](https://github.com/doichain/doichain/blob/master/contrib/devtools/README.md#gen-manpagessh).
+* ( **Not in Doichain yet.** ) Update translations (ping wumpus on IRC) see [translation_process.md](https://github.com/bitcoin/bitcoin/blob/master/doc/translation_process.md#synchronising-translations).
 * Update release candidate version in `configure.ac` (`CLIENT_VERSION_RC`).
 
 ### Before every major and minor release
 
-* ( **Not in Namecoin yet.** ) Update [bips.md](bips.md) to account for changes since the last release (don't forget to bump the version number on the first line).
+* ( **Not in Doichain yet.** ) Update [bips.md](bips.md) to account for changes since the last release (don't forget to bump the version number on the first line).
 * Update version in `configure.ac` (don't forget to set `CLIENT_VERSION_RC` to `0`).
 * Write release notes (see "Write the release notes" below).
 
@@ -62,16 +62,16 @@ If you're using the automated script (found in [contrib/gitian-build.py](/contri
 Check out the source code in the following directory hierarchy.
 
     cd /path/to/your/toplevel/build
-    git clone https://github.com/namecoin/gitian.sigs.git
-    #git clone https://github.com/namecoin/namecoin-detached-sigs.git # Namecoin doesn't use detached sigs yet, so don't do this.
+    git clone https://github.com/doichain/gitian.sigs.git
+    #git clone https://github.com/doichain/doichain-detached-sigs.git # Doichain doesn't use detached sigs yet, so don't do this.
     git clone https://github.com/devrandom/gitian-builder.git
-    git clone https://github.com/namecoin/namecoin-core.git
+    git clone https://github.com/doichain/doichain-core.git
 
 ### Write the release notes
 
 Open a draft of the release notes for collaborative editing at https://github.com/bitcoin-core/bitcoin-devwiki/wiki.
 
-( **Not in Namecoin yet.** )
+( **Not in Doichain yet.** )
 For the period during which the notes are being edited on the wiki, the version on the branch should be wiped and replaced with a link to the wiki which should be used for all announcements until `-final`.
 
 Write the release notes. `git shortlog` helps a lot, for example:
@@ -95,7 +95,7 @@ If you're using the automated script (found in [contrib/gitian-build.py](/contri
 
 Setup Gitian descriptors:
 
-    pushd ./namecoin-core
+    pushd ./doichain-core
     export SIGNER="(your Gitian key, ie bluematt, sipa, etc)"
     export VERSION=(new version, e.g. 0.20.0)
     git fetch
@@ -131,7 +131,7 @@ NOTE: Gitian is sometimes unable to download files. If you have errors, try the 
 By default, Gitian will fetch source files as needed. To cache them ahead of time, make sure you have checked out the tag you want to build in bitcoin, then:
 
     pushd ./gitian-builder
-    make -C ../namecoin-core/depends download SOURCES_PATH=`pwd`/cache/common
+    make -C ../doichain-core/depends download SOURCES_PATH=`pwd`/cache/common
     popd
 
 Only missing files will be fetched, so this is safe to re-run for each build.
@@ -139,47 +139,47 @@ Only missing files will be fetched, so this is safe to re-run for each build.
 NOTE: Offline builds must use the --url flag to ensure Gitian fetches only from local URLs. For example:
 
     pushd ./gitian-builder
-    ./bin/gbuild --url namecoin=/path/to/namecoin,signature=/path/to/sigs {rest of arguments}
+    ./bin/gbuild --url doichain=/path/to/doichain,signature=/path/to/sigs {rest of arguments}
     popd
 
 The gbuild invocations below <b>DO NOT DO THIS</b> by default.
 
-### Build and sign Namecoin Core for Linux, Windows, and macOS:
+### Build and sign Doichain Core for Linux, Windows, and macOS:
 
     pushd ./gitian-builder
-    ./bin/gbuild --num-make 2 --memory 3000 --commit namecoin=nc${VERSION} ../namecoin-core/contrib/gitian-descriptors/gitian-linux.yml
-    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-linux --destination ../gitian.sigs/ ../namecoin-core/contrib/gitian-descriptors/gitian-linux.yml
-    mv build/out/namecoin-*.tar.gz build/out/src/namecoin-*.tar.gz ../
+    ./bin/gbuild --num-make 2 --memory 3000 --commit doichain=nc${VERSION} ../doichain-core/contrib/gitian-descriptors/gitian-linux.yml
+    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-linux --destination ../gitian.sigs/ ../doichain-core/contrib/gitian-descriptors/gitian-linux.yml
+    mv build/out/doichain-*.tar.gz build/out/src/doichain-*.tar.gz ../
 
-    ./bin/gbuild --num-make 2 --memory 3000 --commit namecoin=nc${VERSION} ../namecoin-core/contrib/gitian-descriptors/gitian-win.yml
-    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-win-unsigned --destination ../gitian.sigs/ ../namecoin-core/contrib/gitian-descriptors/gitian-win.yml
-    mv build/out/namecoin-*-win-unsigned.tar.gz inputs/namecoin-win-unsigned.tar.gz
-    mv build/out/namecoin-*.zip build/out/namecoin-*.exe ../
+    ./bin/gbuild --num-make 2 --memory 3000 --commit doichain=nc${VERSION} ../doichain-core/contrib/gitian-descriptors/gitian-win.yml
+    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-win-unsigned --destination ../gitian.sigs/ ../doichain-core/contrib/gitian-descriptors/gitian-win.yml
+    mv build/out/doichain-*-win-unsigned.tar.gz inputs/doichain-win-unsigned.tar.gz
+    mv build/out/doichain-*.zip build/out/doichain-*.exe ../
 
-    ./bin/gbuild --num-make 2 --memory 3000 --commit namecoin=nc${VERSION} ../namecoin-core/contrib/gitian-descriptors/gitian-osx.yml
-    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../namecoin-core/contrib/gitian-descriptors/gitian-osx.yml
-    mv build/out/namecoin-*-osx-unsigned.tar.gz inputs/namecoin-osx-unsigned.tar.gz
-    mv build/out/namecoin-*.tar.gz build/out/namecoin-*.dmg ../
+    ./bin/gbuild --num-make 2 --memory 3000 --commit doichain=nc${VERSION} ../doichain-core/contrib/gitian-descriptors/gitian-osx.yml
+    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../doichain-core/contrib/gitian-descriptors/gitian-osx.yml
+    mv build/out/doichain-*-osx-unsigned.tar.gz inputs/doichain-osx-unsigned.tar.gz
+    mv build/out/doichain-*.tar.gz build/out/doichain-*.dmg ../
     popd
 
 Build output expected:
 
-  1. source tarball (`namecoin-${VERSION}.tar.gz`)
-  2. linux 32-bit and 64-bit dist tarballs (`namecoin-${VERSION}-linux[32|64].tar.gz`)
-  3. windows 32-bit and 64-bit unsigned installers and dist zips (`namecoin-${VERSION}-win[32|64]-setup-unsigned.exe`, `namecoin-${VERSION}-win[32|64].zip`)
-  4. macOS unsigned installer and dist tarball (`namecoin-${VERSION}-osx-unsigned.dmg`, `namecoin-${VERSION}-osx64.tar.gz`)
+  1. source tarball (`doichain-${VERSION}.tar.gz`)
+  2. linux 32-bit and 64-bit dist tarballs (`doichain-${VERSION}-linux[32|64].tar.gz`)
+  3. windows 32-bit and 64-bit unsigned installers and dist zips (`doichain-${VERSION}-win[32|64]-setup-unsigned.exe`, `doichain-${VERSION}-win[32|64].zip`)
+  4. macOS unsigned installer and dist tarball (`doichain-${VERSION}-osx-unsigned.dmg`, `doichain-${VERSION}-osx64.tar.gz`)
   5. Gitian signatures (in `gitian.sigs/${VERSION}-<linux|{win,osx}-unsigned>/(your Gitian key)/`)
 
 ### Verify other gitian builders signatures to your own. (Optional)
 
-Add other gitian builders keys to your gpg keyring, and/or refresh keys: See `../namecoin/contrib/gitian-keys/README.md`.
+Add other gitian builders keys to your gpg keyring, and/or refresh keys: See `../doichain/contrib/gitian-keys/README.md`.
 
 Verify the signatures
 
     pushd ./gitian-builder
-    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-linux ../namecoin-core/contrib/gitian-descriptors/gitian-linux.yml
-    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-unsigned ../namecoin-core/contrib/gitian-descriptors/gitian-win.yml
-    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-unsigned ../namecoin-core/contrib/gitian-descriptors/gitian-osx.yml
+    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-linux ../doichain-core/contrib/gitian-descriptors/gitian-linux.yml
+    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-unsigned ../doichain-core/contrib/gitian-descriptors/gitian-win.yml
+    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-unsigned ../doichain-core/contrib/gitian-descriptors/gitian-osx.yml
     popd
 
 ### Next steps:
@@ -194,7 +194,7 @@ Commit your signature to gitian.sigs:
     git push  # Assuming you can push to the gitian.sigs tree
     popd
 
-( **Not in Namecoin yet.** )
+( **Not in Doichain yet.** )
 
 Codesigner only: Create Windows/macOS detached signatures:
 - Only one person handles codesigning. Everyone else should skip to the next step.
@@ -230,27 +230,27 @@ Codesigner only: Commit the detached codesign payloads:
 Non-codesigners: wait for Windows/macOS detached signatures:
 
 - Once the Windows/macOS builds each have 3 matching signatures, they will be signed with their respective release keys.
-- Detached signatures will then be committed to the [namecoin-detached-sigs](https://github.com/namecoin/namecoin-detached-sigs) repository, which can be combined with the unsigned apps to create signed binaries.
+- Detached signatures will then be committed to the [doichain-detached-sigs](https://github.com/doichain/doichain-detached-sigs) repository, which can be combined with the unsigned apps to create signed binaries.
 
-( **Not in Namecoin yet.** ) Create (and optionally verify) the signed macOS binary:
-
-    pushd ./gitian-builder
-    ./bin/gbuild -i --commit signature=nc${VERSION} ../namecoin-core/contrib/gitian-descriptors/gitian-osx-signer.yml
-    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../namecoin-core/contrib/gitian-descriptors/gitian-osx-signer.yml
-    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../namecoin-core/contrib/gitian-descriptors/gitian-osx-signer.yml
-    mv build/out/namecoin-osx-signed.dmg ../namecoin-${VERSION}-osx.dmg
-    popd
-
-( **Not in Namecoin yet.** ) Create (and optionally verify) the signed Windows binaries:
+( **Not in Doichain yet.** ) Create (and optionally verify) the signed macOS binary:
 
     pushd ./gitian-builder
-    ./bin/gbuild -i --commit signature=nc${VERSION} ../namecoin-core/contrib/gitian-descriptors/gitian-win-signer.yml
-    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-win-signed --destination ../gitian.sigs/ ../namecoin-core/contrib/gitian-descriptors/gitian-win-signer.yml
-    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-signed ../namecoin-core/contrib/gitian-descriptors/gitian-win-signer.yml
-    mv build/out/namecoin-*win64-setup.exe ../namecoin-${VERSION}-win64-setup.exe
+    ./bin/gbuild -i --commit signature=nc${VERSION} ../doichain-core/contrib/gitian-descriptors/gitian-osx-signer.yml
+    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../doichain-core/contrib/gitian-descriptors/gitian-osx-signer.yml
+    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../doichain-core/contrib/gitian-descriptors/gitian-osx-signer.yml
+    mv build/out/doichain-osx-signed.dmg ../doichain-${VERSION}-osx.dmg
     popd
 
-( **Not in Namecoin yet.** ) Commit your signature for the signed macOS/Windows binaries:
+( **Not in Doichain yet.** ) Create (and optionally verify) the signed Windows binaries:
+
+    pushd ./gitian-builder
+    ./bin/gbuild -i --commit signature=nc${VERSION} ../doichain-core/contrib/gitian-descriptors/gitian-win-signer.yml
+    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-win-signed --destination ../gitian.sigs/ ../doichain-core/contrib/gitian-descriptors/gitian-win-signer.yml
+    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-signed ../doichain-core/contrib/gitian-descriptors/gitian-win-signer.yml
+    mv build/out/doichain-*win64-setup.exe ../doichain-${VERSION}-win64-setup.exe
+    popd
+
+( **Not in Doichain yet.** ) Commit your signature for the signed macOS/Windows binaries:
 
     pushd gitian.sigs
     git add ${VERSION}-osx-signed/"${SIGNER}"
@@ -269,15 +269,15 @@ sha256sum * > SHA256SUMS
 
 The list of files should be:
 ```
-namecoin-${VERSION}-aarch64-linux-gnu.tar.gz
-namecoin-${VERSION}-arm-linux-gnueabihf.tar.gz
-namecoin-${VERSION}-riscv64-linux-gnu.tar.gz
-namecoin-${VERSION}-x86_64-linux-gnu.tar.gz
-namecoin-${VERSION}-osx64.tar.gz
-namecoin-${VERSION}-osx.dmg
-namecoin-${VERSION}.tar.gz
-namecoin-${VERSION}-win64-setup.exe
-namecoin-${VERSION}-win64.zip
+doichain-${VERSION}-aarch64-linux-gnu.tar.gz
+doichain-${VERSION}-arm-linux-gnueabihf.tar.gz
+doichain-${VERSION}-riscv64-linux-gnu.tar.gz
+doichain-${VERSION}-x86_64-linux-gnu.tar.gz
+doichain-${VERSION}-osx64.tar.gz
+doichain-${VERSION}-osx.dmg
+doichain-${VERSION}.tar.gz
+doichain-${VERSION}-win64-setup.exe
+doichain-${VERSION}-win64.zip
 ```
 The `*-debug*` files generated by the gitian build contain debug symbols
 for troubleshooting by developers. It is assumed that anyone that is interested
@@ -293,7 +293,7 @@ rm SHA256SUMS
 (the digest algorithm is forced to sha256 to avoid confusion of the `Hash:` header that GPG adds with the SHA256 used for the files)
 Note: check that SHA256SUMS itself doesn't end up in SHA256SUMS, which is a spurious/nonsensical entry.
 
-( **The following is not in Namecoin yet.** )
+( **The following is not in Doichain yet.** )
 
 - Upload zips and installers, as well as `SHA256SUMS.asc` from last step, to the bitcoin.org server
   into `/var/www/bin/bitcoin-core-${VERSION}`

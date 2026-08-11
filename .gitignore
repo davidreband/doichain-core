@@ -2,17 +2,17 @@
 
 *.exe
 *.pdb
-src/namecoin
-src/namecoind
-src/namecoin-cli
-src/namecoin-gui
-src/namecoin-node
-src/namecoin-tx
-src/namecoin-wallet
+src/doichain
+src/doichaind
+src/doichain-cli
+src/doichain-gui
+src/doichain-node
+src/doichain-tx
+src/doichain-wallet
 src/test/fuzz/*
 !src/test/fuzz/*.*
-src/test/test_namecoin
-src/qt/test/test_namecoin-qt
+src/test/test_doichain
+src/qt/test/test_doichain-qt
 
 # autoreconf
 Makefile.in
@@ -92,8 +92,8 @@ src/qt/bitcoin-qt.includes
 *.qm
 Makefile
 !depends/Makefile
-src/qt/namecoin-qt
-Namecoin-Qt.app
+src/qt/doichain-qt
+Doichain-Qt.app
 background.tiff*
 
 # Qt Creator
@@ -137,7 +137,7 @@ test/.mypy_cache/
 /doc/doxygen/
 
 libbitcoinconsensus.pc
-libnamecoinconsensus.pc
+libdoichainconsensus.pc
 contrib/devtools/split-debug.sh
 
 # Output from running db4 installation
@@ -149,3 +149,7 @@ db4/
 osx_volname
 dist/
 *.background.tiff
+
+# VS Code
+.settings/
+.vscode/
