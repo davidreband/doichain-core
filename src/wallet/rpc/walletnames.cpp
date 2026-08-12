@@ -1147,11 +1147,35 @@ name_doi ()
   DestinationAddressHelper destHelper(*pwallet);
   destHelper.setOptions (options);
 
-  /* Check if this is an update of an existing name or a new registration.  */
+  /* As with name_update, pending operations in the mempool have to be taken
+     into account: if there are any, we build on the last one so that the
+     operations form a valid chain.  Only if there are none do we fall back
+     to the name database.  */
+
+  const unsigned chainLimit = gArgs.GetIntArg ("-limitnamechains",
+                                               DEFAULT_NAME_CHAIN_LIMIT);
   CNameData oldData;
   bool isUpdate = false;
   CTxIn nameInput;
 
+  {
+    auto& mempool = EnsureMemPool (node);
+    LOCK (mempool.cs);
+
+    const unsigned pendingOps = mempool.pendingNameChainLength (name);
+    if (pendingOps >= chainLimit)
+      throw JSONRPCError (RPC_TRANSACTION_ERROR,
+                          "there are already too many pending operations"
+                          " on this name");
+
+    if (pendingOps > 0)
+      {
+        isUpdate = true;
+        nameInput = CTxIn (mempool.lastNameOutput (name));
+      }
+  }
+
+  if (!isUpdate)
   {
     LOCK (cs_main);
 

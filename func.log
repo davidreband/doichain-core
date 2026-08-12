@@ -1,0 +1,45 @@
+Temporary test directory at /tmp/test_runner_₿_🏃_20260812_112055
+[node 0] Cleaning up leftover process
+2026-08-12T09:20:55.661793Z TestFramework (INFO): PRNG seed is: 5976872503524400891
+2026-08-12T09:20:55.712328Z TestFramework (INFO): Initializing test directory /tmp/test_runner_₿_🏃_20260812_112055/cache
+2026-08-12T09:20:56.065397Z TestFramework (ERROR): Unexpected exception:
+Traceback (most recent call last):
+  File "/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/test/functional/test_framework/test_framework.py", line 139, in main
+    self.setup()
+  File "/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/test/functional/test_framework/test_framework.py", line 271, in setup
+    self.setup_chain()
+  File "/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/test/functional/test_framework/test_framework.py", line 359, in setup_chain
+    self._initialize_chain()
+  File "/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/test/functional/test_framework/test_framework.py", line 938, in _initialize_chain
+    self.generatetoaddress(
+  File "/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/test/functional/test_framework/test_framework.py", line 658, in generatetoaddress
+    blocks = generator.generatetoaddress(*args, called_by_framework=True, **kwargs)
+  File "/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/test/functional/test_framework/test_node.py", line 450, in generatetoaddress
+    return self.__getattr__('generatetoaddress')(*args, **kwargs)
+  File "/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/test/functional/test_framework/coverage.py", line 50, in __call__
+    return_val = self.auth_service_proxy_instance.__call__(*args, **kwargs)
+  File "/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/test/functional/test_framework/authproxy.py", line 152, in __call__
+    raise JSONRPCException(response['error'], status)
+test_framework.authproxy.JSONRPCException: {'code': -5, 'message': 'Error: Invalid address'} [http_status=200]
+2026-08-12T09:20:56.116741Z TestFramework (INFO): Not stopping nodes as test failed. The dangling processes will be cleaned up later.
+2026-08-12T09:20:56.117168Z TestFramework (WARNING): Not cleaning up dir /tmp/test_runner_₿_🏃_20260812_112055/cache
+2026-08-12T09:20:56.117480Z TestFramework (ERROR): Test failed. Test logging available at /tmp/test_runner_₿_🏃_20260812_112055/cache/test_framework.log
+2026-08-12T09:20:56.117898Z TestFramework (ERROR): 
+2026-08-12T09:20:56.118443Z TestFramework (ERROR): Hint: Call /tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/test/functional/combine_logs.py '/tmp/test_runner_₿_🏃_20260812_112055/cache' to consolidate all logs
+2026-08-12T09:20:56.118705Z TestFramework (ERROR): 
+2026-08-12T09:20:56.118896Z TestFramework (ERROR): If this failure happened unexpectedly or intermittently, please file a bug and provide a link or upload of the combined log.
+2026-08-12T09:20:56.119147Z TestFramework (ERROR): https://github.com/doichain/doichain-core/issues
+2026-08-12T09:20:56.119379Z TestFramework (ERROR): 
+WARNING! Test 'name_deterministic_salt.py' not found in full test list.
+Traceback (most recent call last):
+  File "/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/build/test/functional/test_runner.py", line 1012, in <module>
+    main()
+  File "/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/build/test/functional/test_runner.py", line 618, in main
+    run_tests(
+  File "/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/build/test/functional/test_runner.py", line 676, in run_tests
+    subprocess.check_output([sys.executable, tests_dir + 'create_cache.py'] + flags + ["--tmpdir=%s/cache" % tmpdir])
+  File "/usr/lib/python3.10/subprocess.py", line 421, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/usr/lib/python3.10/subprocess.py", line 526, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/usr/bin/python3', '/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/build/test/functional/create_cache.py', '--cachedir=/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/build/test/cache', '--configfile=/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/build/test/functional/../config.ini', '--tmpdir=/tmp/test_runner_₿_🏃_20260812_112055/cache']' returned non-zero exit status 1.

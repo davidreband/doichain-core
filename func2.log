@@ -1,0 +1,64 @@
+Temporary test directory at /tmp/test_runner_₿_🏃_20260812_112657
+1/25 - name_ant_workflow.py passed, Duration: 1 s
+2/25 - name_byhash.py passed, Duration: 1 s
+3/25 - name_allowexpired.py passed, Duration: 2 s
+4/25 - name_expiration.py passed, Duration: 2 s
+5/25 - name_longsalt.py passed, Duration: 3 s
+6/25 - name_ismine.py passed, Duration: 4 s
+7/25 - name_list.py passed, Duration: 4 s
+8/25 - name_multiupdate.py passed, Duration: 0 s
+9/25 - name_immature_inputs.py passed, Duration: 7 s
+10/25 - name_novalue.py passed, Duration: 1 s
+11/25 - name_psbt.py passed, Duration: 1 s
+12/25 - name_pending.py passed, Duration: 5 s
+13/25 - name_encodings.py passed, Duration: 13 s
+14/25 - name_rawtx.py passed, Duration: 4 s
+15/25 - name_listunspent.py passed, Duration: 12 s
+16/25 - name_multisig.py --bip16-active passed, Duration: 9 s
+17/25 - name_reorg.py passed, Duration: 1 s
+18/25 - name_scanning.py passed, Duration: 1 s
+19/25 - name_segwit.py passed, Duration: 1 s
+20/25 - name_sendcoins.py passed, Duration: 1 s
+21/25 - name_txnqueue.py passed, Duration: 1 s
+22/25 - name_multisig.py passed, Duration: 11 s
+23/25 - name_utxo.py passed, Duration: 1 s
+24/25 - name_wallet.py passed, Duration: 5 s
+25/25 - name_registration.py passed, Duration: 8 s
+Remaining jobs: [name_multisig.py, name_registration.py, name_sendcoins.py, name_txnqueue.py, name_utxo.py, name_wallet.py]
+Remaining jobs: [name_multisig.py, name_registration.py, name_txnqueue.py, name_utxo.py, name_wallet.py]
+Remaining jobs: [name_multisig.py, name_registration.py, name_utxo.py, name_wallet.py]
+Remaining jobs: [name_registration.py, name_utxo.py, name_wallet.py]
+Remaining jobs: [name_registration.py, name_wallet.py]
+Remaining jobs: [name_registration.py]
+
+TEST                            | STATUS    | DURATION
+
+name_allowexpired.py            | ✓ Passed  | 2 s
+name_ant_workflow.py            | ✓ Passed  | 1 s
+name_byhash.py                  | ✓ Passed  | 1 s
+name_encodings.py               | ✓ Passed  | 13 s
+name_expiration.py              | ✓ Passed  | 2 s
+name_immature_inputs.py         | ✓ Passed  | 7 s
+name_ismine.py                  | ✓ Passed  | 4 s
+name_list.py                    | ✓ Passed  | 4 s
+name_listunspent.py             | ✓ Passed  | 12 s
+name_longsalt.py                | ✓ Passed  | 3 s
+name_multisig.py                | ✓ Passed  | 11 s
+name_multisig.py --bip16-active | ✓ Passed  | 9 s
+name_multiupdate.py             | ✓ Passed  | 0 s
+name_novalue.py                 | ✓ Passed  | 1 s
+name_pending.py                 | ✓ Passed  | 5 s
+name_psbt.py                    | ✓ Passed  | 1 s
+name_rawtx.py                   | ✓ Passed  | 4 s
+name_registration.py            | ✓ Passed  | 8 s
+name_reorg.py                   | ✓ Passed  | 1 s
+name_scanning.py                | ✓ Passed  | 1 s
+name_segwit.py                  | ✓ Passed  | 1 s
+name_sendcoins.py               | ✓ Passed  | 1 s
+name_txnqueue.py                | ✓ Passed  | 1 s
+name_utxo.py                    | ✓ Passed  | 1 s
+name_wallet.py                  | ✓ Passed  | 5 s
+
+ALL                             | ✓ Passed  | 99 s (accumulated) 
+Runtime: 21 s
+

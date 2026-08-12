@@ -21,13 +21,13 @@ CNameMemPool::pendingChainLength (const valtype& name) const
   if (registersName (name))
     ++res;
 
-  if (registersDoi (name))
-    ++res;
-
   const auto mit = updates.find (name);
   if (mit != updates.end ())
     res += mit->second.size ();
 
+  /* Unlike registrations, which live in their own map, pending DOI
+     operations are all kept in mapNameDois, so counting them once here is
+     enough -- registersDoi() reads the very same map.  */
   const auto mitDoi = mapNameDois.find (name);
   if (mitDoi != mapNameDois.end ())
     res += mitDoi->second.size ();

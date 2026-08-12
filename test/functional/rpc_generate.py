@@ -51,7 +51,7 @@ class RPCGenerateTest(BitcoinTestFramework):
 
         self.log.info('Generate an empty block to a combo descriptor with compressed pubkey')
         combo_key = '0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798'
-        combo_address = 'ncrt1qw508d6qejxtdg4y5r3zarvary0c5xw7kwsfjw6'
+        combo_address = 'dcrt1qw508d6qejxtdg4y5r3zarvary0c5xw7kpy24h3'
         hash = self.generateblock(node, 'combo(' + combo_key + ')', [])['hash']
         block = node.getblock(hash, 2)
         assert_equal(len(block['tx']), 1)
