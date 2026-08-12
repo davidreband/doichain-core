@@ -400,9 +400,11 @@ TestChain100Setup::TestChain100Setup(
 
     {
         LOCK(::cs_main);
+        /* Doichain's regtest chain parameters differ from Namecoin's, so the
+           100-block chain built here ends on a different hash.  */
         assert(
             m_node.chainman->ActiveChain().Tip()->GetBlockHash().ToString() ==
-            "4b692ed2f473aff1222e7e8bbd64c793208d9cabd7c3e3cdce21efd8cde09d8d");
+            "1369ca581898c6d6e97b603ad9118e058bc8940855ea9eeaeba40c393c87d8e6");
     }
 }
 

@@ -237,14 +237,6 @@ struct Params {
     bool fStrictChainId;
     int nLegacyBlocksBefore; // -1 for "always allow"
 
-    /**
-     * Doichain: whether an update of an existing name requires a name input.
-     * Doichain always requires one.  Doichain does not: mainnet block 29966
-     * (1173d2615de4aba9785646bc414040e622cc04869593f006872b9013e1b1201b)
-     * contains a name update without one, so enabling this would make the
-     * existing chain unsyncable.
-     */
-    bool fRequireNameInputForUpdate;
 
     /** Consensus rule interface.  */
     std::unique_ptr<ConsensusRules> rules;

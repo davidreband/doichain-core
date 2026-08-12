@@ -145,8 +145,6 @@ public:
         consensus.nAuxpowStartHeight = 1;
         consensus.fStrictChainId = false;
         consensus.nLegacyBlocksBefore = 1;
-        /* Doichain: name updates without a name input exist on chain.  */
-        consensus.fRequireNameInputForUpdate = false;
 
         consensus.rules.reset(new Consensus::MainNetConsensus());
 
@@ -269,8 +267,6 @@ public:
         consensus.nAuxpowChainId = 0x0003;
         consensus.fStrictChainId = false;
         consensus.nLegacyBlocksBefore = 1;
-        /* Doichain: name updates without a name input exist on chain.  */
-        consensus.fRequireNameInputForUpdate = false;
         consensus.rules.reset(new Consensus::TestNetConsensus());
 
         pchMessageStart[0] = 0xfc;
@@ -542,8 +538,6 @@ public:
         consensus.nAuxpowChainId = 0x0001;
         consensus.fStrictChainId = true;
         consensus.nLegacyBlocksBefore = 0;
-        /* Doichain: name updates without a name input exist on chain.  */
-        consensus.fRequireNameInputForUpdate = false;
 
         consensus.rules.reset(new Consensus::TestNetConsensus());
 
@@ -649,8 +643,6 @@ public:
         consensus.nAuxpowChainId = 0x0001;
         consensus.fStrictChainId = true;
         consensus.nLegacyBlocksBefore = 0;
-        /* Doichain: name updates without a name input exist on chain.  */
-        consensus.fRequireNameInputForUpdate = false;
 
         consensus.rules.reset(new Consensus::RegTestConsensus());
 

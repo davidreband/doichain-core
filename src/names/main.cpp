@@ -187,7 +187,12 @@ CheckNameTransaction (const CTransaction& tx, unsigned nHeight,
      name input that is being updated.  */
 
   assert (nameOpOut.isAnyUpdate () || nameOpOut.isDoiRegistration ());
-  if (params.fRequireNameInputForUpdate && nameIn == -1)
+
+  /* NAME_DOI may register a name without spending a previous name output;
+     that is how a DOI is created.  The Namecoin operations always need a
+     name input.  Mainnet block 29966 is the first one relying on this: it
+     carries three NAME_DOI registrations without a name input.  */
+  if (nameIn == -1 && nameOpOut.getNameOp () != OP_NAME_DOI)
     return state.Invalid (TxValidationResult::TX_CONSENSUS,
                           "tx-nameupdate-without-name-input",
                           "Name update has no previous name input");

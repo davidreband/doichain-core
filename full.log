@@ -1,0 +1,54 @@
+[  0%] Generating bitcoin-build-info.h
+[  1%] Built target crc32c
+[  4%] Built target minisketch
+[  5%] Built target secp256k1_precomputed
+[  6%] Built target univalue
+[ 10%] Built target bitcoin_crypto
+[ 12%] Built target bitcoin_consensus
+Consolidate compiler generated dependencies of target exhaustive_tests
+[ 18%] Built target leveldb
+Consolidate compiler generated dependencies of target unitester
+[ 19%] Built target exhaustive_tests
+[ 19%] Built target secp256k1
+[ 19%] Built target bitcoin_cli
+Consolidate compiler generated dependencies of target noverify_tests
+Consolidate compiler generated dependencies of target object
+[ 29%] Built target unitester
+[ 30%] Built target noverify_tests
+Consolidate compiler generated dependencies of target tests
+[ 33%] Built target test_util
+[ 33%] Built target object
+[ 33%] Built target generate_build_info
+[ 33%] Built target tests
+[ 33%] Built target bitcoin_clientversion
+[ 39%] Built target bitcoin_util
+[ 49%] Built target bitcoin_common
+Consolidate compiler generated dependencies of target doichain-util
+Consolidate compiler generated dependencies of target doichain
+Consolidate compiler generated dependencies of target doichain-cli
+Consolidate compiler generated dependencies of target doichain-tx
+[ 49%] Linking CXX executable ../bin/doichain
+[ 49%] Building CXX object src/CMakeFiles/doichain-util.dir/bitcoin-util.cpp.o
+[ 50%] Linking CXX executable ../bin/doichain-cli
+[ 50%] Building CXX object src/CMakeFiles/doichain-tx.dir/bitcoin-tx.cpp.o
+[ 67%] Built target bitcoin_node
+[ 72%] Built target bitcoin_wallet
+Consolidate compiler generated dependencies of target doichaind
+[ 72%] Building CXX object src/CMakeFiles/doichaind.dir/bitcoind.cpp.o
+Consolidate compiler generated dependencies of target doichain-wallet
+[ 72%] Building CXX object src/CMakeFiles/doichaind.dir/init/bitcoind.cpp.o
+[ 72%] Building CXX object src/CMakeFiles/doichain-wallet.dir/bitcoin-wallet.cpp.o
+[ 72%] Built target doichain
+[ 73%] Building CXX object src/CMakeFiles/doichain-wallet.dir/init/bitcoin-wallet.cpp.o
+[ 73%] Built target doichain-cli
+[ 73%] Building CXX object src/CMakeFiles/doichain-wallet.dir/wallet/wallettool.cpp.o
+Consolidate compiler generated dependencies of target test_doichain
+[100%] Built target test_doichain
+[100%] Linking CXX executable ../bin/doichain-util
+[100%] Built target doichain-util
+[100%] Linking CXX executable ../bin/doichaind
+[100%] Linking CXX executable ../bin/doichain-tx
+[100%] Built target doichain-tx
+[100%] Linking CXX executable ../bin/doichain-wallet
+[100%] Built target doichaind
+[100%] Built target doichain-wallet

@@ -8,6 +8,12 @@
 
 #include <boost/test/unit_test.hpp>
 
+/* The expected salts differ from Namecoin's.  getNameSalt derives them with
+   HKDF using a chain-specific info string, which reads "Doichain Registration
+   Salt" here.  Separating the derivation per chain is deliberate; nothing
+   depends on the old values, because this function only entered the code base
+   upstream after Doichain forked.  */
+
 BOOST_FIXTURE_TEST_SUITE(rpcnames_tests, RegTestingSetup) // Keys are in regtest format
 
 static void
@@ -28,15 +34,15 @@ BOOST_AUTO_TEST_CASE(name_salts)
     TestNameSalt( // test_name_salt_addr_p2pkh
                 /* private key   */ "cQDxbmQfwRV3vP1mdnVHq37nJekHLsuD3wdSQseBRA2ct4MFk5Pq",
                 /* name          */ "d/wikileaks",
-                /* expected salt */ "c33f6d84c93d769da2a8882ed9d4a69e2052dd9a");
+                /* expected salt */ "e199a1dacadaf290f689a8272df668dfa073e723");
     TestNameSalt( // test_name_salt_addr_p2wpkh_p2sh
                 /* private key   */ "cU9hVzhpvfn91u2zTVn8uqF2ymS7ucYH8V5TmsTDmuyMHgRk9WsJ",
                 /* name          */ "d/wikileaks",
-                /* expected salt */ "b14763659b268460865db01b2b10b80a9cbe9ceb");
+                /* expected salt */ "6d32e18f1070e4da48c186968b528e29c004900b");
     TestNameSalt( // test_name_salt_addr_p2wpkh
                 /* private key   */ "cPuQzcNEgbeYZ5at9VdGkCwkPA9r34gvEVJjuoz384rTfYpahfe7",
                 /* name          */ "d/wikileaks",
-                /* expected salt */ "a39038cddfcc17d391b8620639a72178dc73b19a");
+                /* expected salt */ "01843a6c55977e347bdf997b58487ceccb5994f4");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

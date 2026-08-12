@@ -1,0 +1,55 @@
+[  0%] Generating bitcoin-build-info.h
+[  1%] Built target crc32c
+[  4%] Built target minisketch
+[  4%] Built target bitcoin_cli
+[  5%] Built target univalue
+[  8%] Built target bitcoin_consensus
+[  9%] Built target secp256k1_precomputed
+[ 12%] Built target test_util
+[ 24%] Built target leveldb
+[ 24%] Built target bitcoin_crypto
+[ 24%] Built target secp256k1
+[ 24%] Built target generate_build_info
+[ 24%] Built target bitcoin_clientversion
+[ 31%] Built target bitcoin_util
+[ 43%] Built target bitcoin_common
+[ 62%] Built target bitcoin_node
+[ 68%] Built target bitcoin_wallet
+Consolidate compiler generated dependencies of target test_doichain
+[ 69%] Building CXX object src/test/CMakeFiles/test_doichain.dir/validation_chainstatemanager_tests.cpp.o
+[ 69%] Building CXX object src/test/CMakeFiles/test_doichain.dir/util_tests.cpp.o
+[ 69%] Building CXX object src/test/CMakeFiles/test_doichain.dir/__/wallet/test/feebumper_tests.cpp.o
+[ 69%] Building CXX object src/test/CMakeFiles/test_doichain.dir/versionbits_tests.cpp.o
+[ 69%] Building CXX object src/test/CMakeFiles/test_doichain.dir/__/wallet/test/coinselector_tests.cpp.o
+[ 70%] Building CXX object src/test/CMakeFiles/test_doichain.dir/__/wallet/test/wallet_test_fixture.cpp.o
+[ 70%] Building CXX object src/test/CMakeFiles/test_doichain.dir/__/wallet/test/coinselection_tests.cpp.o
+[ 70%] Building CXX object src/test/CMakeFiles/test_doichain.dir/__/wallet/test/db_tests.cpp.o
+[ 72%] Building CXX object src/test/CMakeFiles/test_doichain.dir/__/wallet/test/group_outputs_tests.cpp.o
+[ 72%] Building CXX object src/test/CMakeFiles/test_doichain.dir/__/wallet/test/ismine_tests.cpp.o
+[ 72%] Building CXX object src/test/CMakeFiles/test_doichain.dir/__/wallet/test/psbt_wallet_tests.cpp.o
+[ 72%] Building CXX object src/test/CMakeFiles/test_doichain.dir/__/wallet/test/rpcnames_tests.cpp.o
+[ 72%] Building CXX object src/test/CMakeFiles/test_doichain.dir/__/wallet/test/scriptpubkeyman_tests.cpp.o
+[ 73%] Building CXX object src/test/CMakeFiles/test_doichain.dir/__/wallet/test/spend_tests.cpp.o
+[ 73%] Building CXX object src/test/CMakeFiles/test_doichain.dir/__/wallet/test/wallet_rpc_tests.cpp.o
+[ 73%] Building CXX object src/test/CMakeFiles/test_doichain.dir/__/wallet/test/wallet_tests.cpp.o
+/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/src/wallet/test/spend_tests.cpp: In lambda function:
+/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/src/wallet/test/spend_tests.cpp:47:109: warning: missing initializer for member ‘wallet::CRecipient::nameScript’ [-Wmissing-field-initializers]
+   47 |         CRecipient recipient{PubKeyDestination({}), 50 * COIN - leftover_input_amount, /*subtract_fee=*/true};
+      |                                                                                                             ^
+/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/src/wallet/test/spend_tests.cpp: In member function ‘void wallet::spend_tests::wallet_duplicated_preset_inputs_test::test_method()’:
+/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/src/wallet/test/spend_tests.cpp:98:100: warning: missing initializer for member ‘wallet::CRecipient::nameScript’ [-Wmissing-field-initializers]
+   98 |                                            /*nAmount=*/299 * COIN, /*fSubtractFeeFromAmount=*/true}};
+      |                                                                                                    ^
+[ 73%] Building CXX object src/test/CMakeFiles/test_doichain.dir/__/wallet/test/wallet_transaction_tests.cpp.o
+[ 73%] Building CXX object src/test/CMakeFiles/test_doichain.dir/__/wallet/test/walletdb_tests.cpp.o
+[ 74%] Building CXX object src/test/CMakeFiles/test_doichain.dir/__/wallet/test/walletload_tests.cpp.o
+/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/src/wallet/test/wallet_tests.cpp: In member function ‘void wallet::wallet_tests::ListCoinsTest::test_method()’:
+/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/src/wallet/test/wallet_tests.cpp:417:77: warning: missing initializer for member ‘wallet::CRecipient::nameScript’ [-Wmissing-field-initializers]
+  417 |     AddTx(CRecipient{PubKeyDestination{{}}, 1 * COIN, /*subtract_fee=*/false});
+      |                                                                             ^
+/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/src/wallet/test/wallet_tests.cpp: In function ‘void wallet::wallet_tests::TestCoinsResult(wallet::wallet_tests::ListCoinsTest&, OutputType, CAmount, std::map<OutputType, long unsigned int>&)’:
+/tmp/claude-1000/-home-david-Projects-doichain-core/6bfc0dab-9bee-4462-9716-aca47ea223e4/scratchpad/dc31/src/wallet/test/wallet_tests.cpp:457:93: warning: missing initializer for member ‘wallet::CRecipient::nameScript’ [-Wmissing-field-initializers]
+  457 |     CWalletTx& wtx = context.AddTx(CRecipient{*dest, amount, /*fSubtractFeeFromAmount=*/true});
+      |                                                                                             ^
+[ 74%] Linking CXX executable ../../bin/test_doichain
+[100%] Built target test_doichain
