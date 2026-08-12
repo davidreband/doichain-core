@@ -239,8 +239,10 @@ public:
         consensus.powLimit = uint256{"000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
-        consensus.fPowAllowMinDifficultyBlocks = true;
-        consensus.nMinDifficultySince = 0; // 15 Mar 2014
+        /* Doichain testnet never allowed minimum-difficulty blocks; the 0.20
+           code running in production has this off.  */
+        consensus.fPowAllowMinDifficultyBlocks = false;
+        consensus.nMinDifficultySince = 4500;
         consensus.fPowNoRetargeting = false;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = Consensus::BIP9Deployment::NEVER_ACTIVE;
