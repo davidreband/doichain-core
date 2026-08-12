@@ -525,7 +525,7 @@ name_show ()
 
   if (chainman.IsInitialBlockDownload ())
     throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD,
-                       "Namecoin is downloading blocks...");
+                       "Doichain is downloading blocks...");
 
   UniValue options(UniValue::VOBJ);
   if (request.params.size () >= 2)
@@ -608,7 +608,7 @@ name_history ()
 
   if (chainman.IsInitialBlockDownload ())
     throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD,
-                       "Namecoin is downloading blocks...");
+                       "Doichain is downloading blocks...");
 
   UniValue options(UniValue::VOBJ);
   if (request.params.size () >= 2)
@@ -691,7 +691,7 @@ name_scan ()
 
   if (chainman.IsInitialBlockDownload ())
     throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD,
-                       "Namecoin is downloading blocks...");
+                       "Doichain is downloading blocks...");
 
   UniValue options(UniValue::VOBJ);
   if (request.params.size () >= 3)

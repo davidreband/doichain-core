@@ -90,7 +90,7 @@ CTxDestination DecodeDestination(const std::string& str, const CChainParams& par
     // Note this will be false if it is a valid Bech32 address for a different network
     bool is_bech32 = (ToLower(str.substr(0, params.Bech32HRP().size())) == params.Bech32HRP());
 
-    /* Upstream only calls DecodeBase58Check if !is_bech32.  But in Namecoin, it is
+    /* Upstream only calls DecodeBase58Check if !is_bech32.  But in Doichain, it is
        possible to have legacy base58 addresses that start with NC and thus look
        like they are bech32 while they are not.  */
     if (DecodeBase58Check(str, data, 21)) {

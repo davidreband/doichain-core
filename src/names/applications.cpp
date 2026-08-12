@@ -87,13 +87,13 @@ NamespaceFromName (const std::string& name)
     {
         case NameNamespace::Domain:
         {
-            // Source: https://github.com/namecoin/proposals/blob/master/ifa-0001.md#keys
+            // Source: https://github.com/doichain/proposals/blob/master/ifa-0001.md#keys
             if (label.length() > 63)
             {
                 return NameNamespace::NonStandard;
             }
 
-            // Source: https://github.com/namecoin/proposals/blob/master/ifa-0001.md#keys
+            // Source: https://github.com/doichain/proposals/blob/master/ifa-0001.md#keys
             // The ^ and $ are omitted relative to the spec because
             // std::regex_match implies them.
             std::regex domainPattern("(xn--)?[a-z0-9]+(-[a-z0-9]+)*");
@@ -103,7 +103,7 @@ NamespaceFromName (const std::string& name)
             }
 
             // Reject digits-only labels
-            // Source: https://github.com/namecoin/proposals/blob/master/ifa-0001.md#keys
+            // Source: https://github.com/doichain/proposals/blob/master/ifa-0001.md#keys
             std::regex digitsOnly("[0-9]+");
             if (std::regex_match (label, digitsOnly))
             {
@@ -116,10 +116,10 @@ NamespaceFromName (const std::string& name)
         {
             // Max id/ identifier length is 255 chars according to wiki spec.
             // But we don't need to check for this, because that's also the max
-            // length of an identifier under the Namecoin consensus rules.
+            // length of an identifier under the Doichain consensus rules.
 
             // Same as d/ regex but without IDN prefix.
-            // TODO: this doesn't exactly match the https://wiki.namecoin.org spec.
+            // TODO: this doesn't exactly match the https://wiki.doichain.org spec.
             std::regex identityPattern("[a-z0-9]+(-[a-z0-9]+)*");
             if (!std::regex_match (label, identityPattern))
             {

@@ -88,9 +88,9 @@ public Q_SLOTS:
     void gotoSignMessageTab(QString addr = "");
     /** Show Sign/Verify Message dialog and switch to verify message tab */
     void gotoVerifyMessageTab(QString addr = "");
-    /** Show Namecoin buy names page */
+    /** Show Doichain buy names page */
     void gotoBuyNamesPage();
-    /** Show Namecoin manage names page */
+    /** Show Doichain manage names page */
     void gotoManageNamesPage();
 
     /** Show incoming transaction notification for new transactions.

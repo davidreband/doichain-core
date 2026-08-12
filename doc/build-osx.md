@@ -2,7 +2,7 @@
 
 **Updated for MacOS [26](https://www.apple.com/os/macos/)**
 
-This guide describes how to build namecoind, command-line utilities, and GUI on macOS.
+This guide describes how to build doichaind, command-line utilities, and GUI on macOS.
 
 ## Preparation
 
@@ -16,7 +16,7 @@ macOS comes with a built-in Terminal located in:
 ### 1. Xcode Command Line Tools
 
 The Xcode Command Line Tools are a collection of build tools for macOS.
-These tools must be installed in order to build Namecoin Core from source.
+These tools must be installed in order to build Doichain Core from source.
 
 To install, run the following command from your terminal:
 
@@ -64,14 +64,14 @@ install anything.
 If you do not need IPC functionality (see [multiprocess.md](multiprocess.md))
 you can omit `capnp` and use `-DENABLE_IPC=OFF` in the `cmake -B` step below.
 
-### 4. Clone Namecoin repository
+### 4. Clone Doichain repository
 
 `git` should already be installed by default on your system.
-Now that all the required dependencies are installed, let's clone the Namecoin Core repository to a directory.
+Now that all the required dependencies are installed, let's clone the Doichain Core repository to a directory.
 All build scripts and commands will run from this directory.
 
 ``` bash
-git clone https://github.com/namecoin/namecoin-core.git
+git clone https://github.com/doichain/doichain-core.git
 ```
 
 ### 5. Install Optional Dependencies
@@ -80,7 +80,7 @@ git clone https://github.com/namecoin/namecoin-core.git
 
 ###### Qt
 
-Namecoin Core includes a GUI built with the cross-platform Qt Framework. To compile the GUI, we need to install
+Doichain Core includes a GUI built with the cross-platform Qt Framework. To compile the GUI, we need to install
 Qt, libqrencode and pass `-DBUILD_GUI=ON`. Skip if you don't intend to use the GUI.
 
 ``` bash
@@ -130,18 +130,18 @@ brew install python
 
 #### Deploy Dependencies
 
-You can [deploy](#3-deploy-optional) a `.zip` containing the Namecoin Core application.
+You can [deploy](#3-deploy-optional) a `.zip` containing the Doichain Core application.
 It is required that you have `python` and `zip` installed.
 
-## Build Namecoin Core
+## Build Doichain Core
 
-1. Clone the Namecoin Core source code:
+1. Clone the Doichain Core source code:
     ```shell
-    git clone https://github.com/namecoin/namecoin-core
-    cd namecoin-core
+    git clone https://github.com/doichain/doichain-core
+    cd doichain-core
     ```
 
-2.  Build Namecoin Core:
+2.  Build Doichain Core:
 
 ##### Wallet (only SQlite) and GUI Support:
 
@@ -170,7 +170,7 @@ cmake -B build -LH
 ### 2. Compile
 
 After configuration, you are ready to compile.
-Run the following in your terminal to compile Namecoin Core:
+Run the following in your terminal to compile Doichain Core:
 
 ``` bash
 cmake --build build     # Append "-j N" here for N parallel jobs.
@@ -185,48 +185,48 @@ You can also create a  `.zip` containing the `.app` bundle by running the follow
 cmake --build build --target deploy
 ```
 
-## Running Namecoin Core
+## Running Doichain Core
 
-Namecoin Core should now be available at `./build/bin/namecoind`.
-If you compiled support for the GUI, it should be available at `./build/bin/namecoin-qt`.
+Doichain Core should now be available at `./build/bin/doichaind`.
+If you compiled support for the GUI, it should be available at `./build/bin/doichain-qt`.
 
-There is also a multifunction command line interface at `./build/bin/namecoin`
-supporting subcommands like `namecoin node`, `bitcoin gui`, `bitcoin rpc`, and
-others that can be listed with `namecoin help`.
+There is also a multifunction command line interface at `./build/bin/doichain`
+supporting subcommands like `doichain node`, `bitcoin gui`, `bitcoin rpc`, and
+others that can be listed with `doichain help`.
 
-The first time you run `namecoind` or `bitcoin-qt`, it will start downloading the blockchain.
+The first time you run `doichaind` or `bitcoin-qt`, it will start downloading the blockchain.
 This process could take many hours, or even days on slower than average systems.
 
 By default, blockchain and wallet data files will be stored in:
 
 ``` bash
-/Users/${USER}/Library/Application Support/Namecoin/
+/Users/${USER}/Library/Application Support/Doichain/
 ```
 
 Before running, you may create an empty configuration file:
 
 ```shell
-mkdir -p "/Users/${USER}/Library/Application Support/Namecoin"
+mkdir -p "/Users/${USER}/Library/Application Support/Doichain"
 
-touch "/Users/${USER}/Library/Application Support/Namecoin/namecoin.conf"
+touch "/Users/${USER}/Library/Application Support/Doichain/doichain.conf"
 
-chmod 600 "/Users/${USER}/Library/Application Support/Namecoin/namecoin.conf"
+chmod 600 "/Users/${USER}/Library/Application Support/Doichain/doichain.conf"
 ```
 
-The first time you run namecoind, it will start downloading the blockchain. This process could
+The first time you run doichaind, it will start downloading the blockchain. This process could
 take several hours.
 
 You can monitor the download process by looking at the debug.log file:
 
 ```shell
-tail -f $HOME/Library/Application\ Support/Namecoin/debug.log
+tail -f $HOME/Library/Application\ Support/Doichain/debug.log
 ```
 
 ## Other commands:
 
 ```shell
-./build/bin/namecoind -daemon      # Starts the namecoin daemon.
-./build/bin/namecoin-cli --help    # Outputs a list of command-line options.
-./build/bin/namecoin-cli help      # Outputs a list of RPC commands when the daemon is running.
-./build/bin/namecoin-qt -server # Starts the namecoin-qt server mode, allows namecoin-cli control
+./build/bin/doichaind -daemon      # Starts the doichain daemon.
+./build/bin/doichain-cli --help    # Outputs a list of command-line options.
+./build/bin/doichain-cli help      # Outputs a list of RPC commands when the daemon is running.
+./build/bin/doichain-qt -server # Starts the doichain-qt server mode, allows doichain-cli control
 ```

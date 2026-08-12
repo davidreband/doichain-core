@@ -200,14 +200,14 @@ public:
             .dTxRate  = 0.005,
         };
 
-        /* FIXME: These are Namecoin's values.  Regenerate with
+        /* FIXME: These are Doichain's values.  Regenerate with
            headerssync-params.py against the Doichain chain.  */
         m_headers_sync_params = HeadersSyncParams{
             .commitment_period = 641,
             .redownload_buffer_size = 15218, // 15218/641 = ~23.7 commitments
         };
 
-        /* Doichain does not have the historical bugs that Namecoin had,
+        /* Doichain does not have the historical bugs that Doichain had,
            so we keep the bug map empty for mainnet. */
         assert(mapHistoricBugs.empty());
     }
@@ -290,7 +290,7 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("dnsseed.test.namecoin.webbtc.com."); // Marius Hanne
+        vSeeds.emplace_back("dnsseed.test.doichain.webbtc.com."); // Marius Hanne
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);
@@ -301,7 +301,7 @@ public:
 
         bech32_hrp = "td";
 
-        // FIXME: Namecoin has no fixed seeds for testnet, so that the line
+        // FIXME: Doichain has no fixed seeds for testnet, so that the line
         // below errors out.  Use it once we have testnet seeds.
         //vFixedSeeds = std::vector<uint8_t>(std::begin(chainparams_seed_test), std::end(chainparams_seed_test));
         vFixedSeeds.clear();
@@ -471,7 +471,7 @@ public:
 
         if (!options.challenge) {
             /* FIXME: Adjust the default signet challenge to something else if
-               we want to use signet for Namecoin.  */
+               we want to use signet for Doichain.  */
             bin = "512103ad5e0edad18cb1f0fc0d28a3d4f1f3e445640337489abb10404f2d1e086be430210359ef5021964fe22d6f8e05b2463c9540ce96883fe3b278760f048f5189f2e6c452ae"_hex_v_u8;
             //vFixedSeeds = std::vector<uint8_t>(std::begin(chainparams_seed_signet), std::end(chainparams_seed_signet));
             //vSeeds.emplace_back("seed.signet.bitcoin.sprovoost.nl.");

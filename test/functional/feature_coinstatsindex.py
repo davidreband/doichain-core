@@ -321,7 +321,7 @@ class CoinStatsIndexTest(BitcoinTestFramework):
         res1 = index_node.gettxoutsetinfo(hash_type='muhash', hash_or_height=None, use_index=True)
         assert_equal(res["muhash"], res1["muhash"])
 
-        # FIXME: This breaks in Namecoin.  Debug and possibly fix (although unclean shutdown is not
+        # FIXME: This breaks in Doichain.  Debug and possibly fix (although unclean shutdown is not
         # something officially "supported" anyway).
         if False:
             self.log.info("Test index with an unclean restart after a reorg")

@@ -75,7 +75,7 @@ DESCS_PRIV = [
         "stack_size": 5,
     },
     # The same policy but we provide the preimage. This path will be chosen as it's a smaller witness.
-    # FIXME: Debug and enable on Namecoin
+    # FIXME: Debug and enable on Doichain
     #{
     #    "desc": f"wsh(andor(ndv:older(2),and_v(v:pk({TPRVS[0]}),sha256(61e33e9dbfefc45f6a194187684d278f789fd4d5e207a357e79971b6519a8b12)),and_v(v:pkh({TPRVS[1]}),pk({TPRVS[2]}/*))))",
     #    "sequence": 2,

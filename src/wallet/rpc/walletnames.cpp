@@ -307,7 +307,7 @@ getNameSalt(const CKey& key, const valtype& name, valtype& rand)
     const valtype ikm(reinterpret_cast<const unsigned char*> (key.begin()),
                       reinterpret_cast<const unsigned char*> (key.end()));
     const std::string salt(reinterpret_cast<const char*>(name.data()), name.size());
-    const std::string info("Namecoin Registration Salt");
+    const std::string info("Doichain Registration Salt");
     CHKDF_HMAC_SHA256_L32 hkdf32(ikm.data(), ikm.size(), salt);
     unsigned char tmp[32];
     hkdf32.Expand32(info, tmp);
@@ -1039,7 +1039,7 @@ sendtoname ()
      configured name/value encodings).  That would just add to the already
      long list of rarely used arguments.  Also, this function is inofficially
      deprecated anyway, see
-     https://github.com/namecoin/namecoin-core/issues/12.  */
+     https://github.com/doichain/doichain-core/issues/12.  */
   const UniValue NO_OPTIONS(UniValue::VOBJ);
 
   const valtype name = DecodeNameFromRPCOrThrow (request.params[0], NO_OPTIONS);

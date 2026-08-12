@@ -256,7 +256,7 @@ Result CreateRateBumpTransaction(CWallet& wallet, const Txid& txid, const CCoinC
         if (original_change_index.has_value() ?  original_change_index.value() == i : OutputIsChange(wallet, output)) {
             new_coin_control.destChange = dest;
         } else {
-            /* FIXME: For Namecoin, this presumably strips off the name
+            /* FIXME: For Doichain, this presumably strips off the name
                prefix, and leads to an invalid tx.  */
             CRecipient recipient = {dest, output.nValue, false};
             recipients.push_back(recipient);

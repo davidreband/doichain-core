@@ -22,7 +22,7 @@ class CWallet;
 std::span<const CRPCCommand> GetWalletRPCCommands();
 
 /* These are private to rpcwallet.cpp upstream, but are used also from
-   rpcnames.cpp in Namecoin.  */
+   rpcnames.cpp in Doichain.  */
 UniValue SendMoney(CWallet& wallet, const CCoinControl& coin_control,
                    const CTxIn* withInput,
                    std::vector<CRecipient>& recipients, mapValue_t map_value, bool verbose);

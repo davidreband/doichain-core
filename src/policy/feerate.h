@@ -16,7 +16,7 @@
 #include <string>
 #include <type_traits>
 
-const std::string CURRENCY_UNIT = "NMC"; // One formatted unit
+const std::string CURRENCY_UNIT = "DOI"; // One formatted unit
 const std::string CURRENCY_ATOM = "sat"; // One indivisible minimum value unit
 
 enum class FeeRateFormat {

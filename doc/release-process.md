@@ -11,7 +11,7 @@ Release Process
 
 ### Before every major and minor release
 
-* ( **Not in Namecoin yet.** ) Update [bips.md](bips.md) to account for changes since the last release.
+* ( **Not in Doichain yet.** ) Update [bips.md](bips.md) to account for changes since the last release.
 * Update version in `CMakeLists.txt` (don't forget to set `CLIENT_VERSION_RC` to `0`).
 * Update manpages (see previous section)
 * Write release notes (see "Write the release notes" below) in doc/release-notes.md. If necessary,
@@ -19,7 +19,7 @@ Release Process
 
 ### Before every major release
 
-( **These are handled by upstream Bitcoin Core, not Namecoin.** )
+( **These are handled by upstream Bitcoin Core, not Doichain.** )
 
 * On both the master branch and the new release branch:
   - update `CLIENT_VERSION_MAJOR` in [`CMakeLists.txt`](../CMakeLists.txt)
@@ -58,7 +58,7 @@ Release Process
   - Run the script. It works fine in CPython, but PyPy is much faster (seconds instead of minutes): `pypy3 contrib/devtools/headerssync-params.py`.
   - Paste the output defining the header `commitment_period` and `redownload_buffer_size` into the mainnet section of [`src/kernel/chainparams.cpp`](/src/kernel/chainparams.cpp).
 - Clear the release notes and move them to the wiki (see "Write the release notes" below).
-- ( **Not in Namecoin yet.** ) Translations on Transifex
+- ( **Not in Doichain yet.** ) Translations on Transifex
     - Pull translations from Transifex into the master branch.
     - Create [a new resource](https://app.transifex.com/bitcoin/bitcoin/content/) named after the major version with the slug `qt-translation-<RRR>x`, where `RRR` is the major branch number padded with zeros. Use `src/qt/locale/bitcoin_en.xlf` to create it.
     - In the project workflow settings, ensure that [Translation Memory Fill-up](https://help.transifex.com/en/articles/6224817-setting-up-translation-memory-fill-up) is enabled and that [Translation Memory Context Matching](https://help.transifex.com/en/articles/6224753-translation-memory-with-context) is disabled.
@@ -72,7 +72,7 @@ Release Process
 - Create the draft, named "*version* Release Notes Draft", as a [collaborative wiki](https://github.com/bitcoin-core/bitcoin-devwiki/wiki/_new).
 - Clear the release notes: `cp doc/release-notes-empty-template.md doc/release-notes.md`
 - Create a pinned meta-issue for testing the release candidate (see [this issue](https://github.com/bitcoin/bitcoin/issues/27621) for an example) and provide a link to it in the release announcements where useful.
-- ( **Not in Namecoin yet.** ) Translations on Transifex
+- ( **Not in Doichain yet.** ) Translations on Transifex
     - Change the auto-update URL for the new major version's resource away from `master` and to the branch, e.g. `https://raw.githubusercontent.com/bitcoin/bitcoin/<branch>/src/qt/locale/bitcoin_en.xlf`. Do not forget this or it will keep tracking the translations on master instead, drifting away from the specific major release.
 - Prune inputs from the qa-assets repo (See [pruning
   inputs](https://github.com/bitcoin-core/qa-assets#pruning-inputs)).
@@ -102,13 +102,13 @@ Install Guix using one of the installation methods detailed in
 Check out the source code in the following directory hierarchy.
 
     cd /path/to/your/toplevel/build
-    git clone https://github.com/namecoin/guix.sigs.git
-    #git clone https://github.com/namecoin/namecoin-detached-sigs.git # Namecoin doesn't use detached sigs yet, so don't do this.
-    git clone https://github.com/namecoin/namecoin-core.git
+    git clone https://github.com/doichain/guix.sigs.git
+    #git clone https://github.com/doichain/doichain-detached-sigs.git # Doichain doesn't use detached sigs yet, so don't do this.
+    git clone https://github.com/doichain/doichain-core.git
 
 ### Write the release notes
 
-( **Not in Namecoin yet.** )
+( **Not in Doichain yet.** )
 
 Open a draft of the release notes for collaborative editing at https://github.com/bitcoin-core/bitcoin-devwiki/wiki.
 
@@ -120,10 +120,10 @@ Generate list of authors:
 
 ### Setup and perform Guix builds
 
-Checkout the Namecoin Core version you'd like to build:
+Checkout the Doichain Core version you'd like to build:
 
 ```sh
-pushd ./namecoin-core
+pushd ./doichain-core
 SIGNER='(your builder key, ie JeremyRand, jonasbits, etc)'
 VERSION='(new version without nc-prefix, e.g. 25.0)'
 git fetch origin "nc${VERSION}"
@@ -165,7 +165,7 @@ popd
 
 ## Codesigning
 
-( **Not in Namecoin yet.** )
+( **Not in Doichain yet.** )
 
 ### macOS codesigner only: Create detached macOS signatures (assuming [signapple](https://github.com/achow101/signapple/) is installed and up to date with master branch)
 
@@ -192,7 +192,7 @@ However if this is done, once the release has been tagged in the bitcoin-detache
 ### Windows and macOS codesigners only: Commit the detached codesign payloads
 
 ```sh
-pushd ./namecoin-detached-sigs
+pushd ./doichain-detached-sigs
 # checkout or create the appropriate branch for this release series
 git checkout --orphan <branch>
 # if you are the macOS codesigner
@@ -211,11 +211,11 @@ popd
 ### Non-codesigners: wait for Windows and macOS detached signatures
 
 - Once the Windows and macOS builds each have 3 matching signatures, they will be signed with their respective release keys.
-- Detached signatures will then be committed to the [namecoin-detached-sigs](https://github.com/namecoin-core/namecoin-detached-sigs) repository, which can be combined with the unsigned apps to create signed binaries.
+- Detached signatures will then be committed to the [doichain-detached-sigs](https://github.com/doichain-core/doichain-detached-sigs) repository, which can be combined with the unsigned apps to create signed binaries.
 
 ### Create the codesigned build outputs
 
-( **Not in Namecoin yet.** )
+( **Not in Doichain yet.** )
 
 - [Codesigning build outputs](/contrib/guix/README.md#codesigning-build-outputs)
 
@@ -225,7 +225,7 @@ popd
 
 ### Commit your codesigned signature to guix.sigs (for the signed macOS/Windows binaries)
 
-( **Not in Namecoin yet.** )
+( **Not in Doichain yet.** )
 
 ```sh
 pushd ./guix.sigs
@@ -245,8 +245,8 @@ cat "$VERSION"/*/all.SHA256SUMS.asc > SHA256SUMS.asc
 ```
 
 
-- Upload to the namecoin.org server (`/var/www/bin/namecoin-core-${VERSION}/`):
-    1. The contents of each `./namecoin-core/guix-build-${VERSION}/output/${HOST}/` directory.
+- Upload to the doichain.org server (`/var/www/bin/doichain-core-${VERSION}/`):
+    1. The contents of each `./doichain-core/guix-build-${VERSION}/output/${HOST}/` directory.
 
        Guix will output all of the results into host subdirectories, but the SHA256SUMS
        file does not include these subdirectories. In order for downloads via torrent
@@ -259,7 +259,7 @@ cat "$VERSION"/*/all.SHA256SUMS.asc > SHA256SUMS.asc
 
     3. The `SHA256SUMS.asc` combined signature file you just created.
 
-( **The following is not in Namecoin yet.** )
+( **The following is not in Doichain yet.** )
 
 - After uploading release candidate binaries, notify the bitcoin-core-dev mailing list and
   bitcoin-dev group that a release candidate is available for testing. Include a link to the release
@@ -274,14 +274,14 @@ cat "$VERSION"/*/all.SHA256SUMS.asc > SHA256SUMS.asc
   ```
 
   Insert the magnet URI into the announcement sent to mailing lists. This permits
-  people without access to `namecoin.org` to download the binary distribution.
+  people without access to `doichain.org` to download the binary distribution.
   Also put it into the `optional_magnetlink:` slot in the YAML file for
-  namecoin.org.
+  doichain.org.
 
 - Archive the release notes for the new version to `doc/release-notes/release-notes-${VERSION}.md`
   (branch `master` and branch of the release).
 
-  - namecoin.org blog post
+  - doichain.org blog post
 
   - blog post
 
@@ -304,7 +304,7 @@ cat "$VERSION"/*/all.SHA256SUMS.asc > SHA256SUMS.asc
 
       - Push the snap, see https://github.com/bitcoin-core/packaging/blob/main/snap/local/build.md
 
-  - Create a [new GitHub release](https://github.com/namecoin/namecoin-core/releases/new) with a link to the archived release notes
+  - Create a [new GitHub release](https://github.com/doichain/doichain-core/releases/new) with a link to the archived release notes
 
 - Announce the release:
 
@@ -312,7 +312,7 @@ cat "$VERSION"/*/all.SHA256SUMS.asc > SHA256SUMS.asc
 
   - Bitcoin Core announcements list https://bitcoincore.org/en/list/announcements/join/
 
-  - Namecoin Twitter https://twitter.com/namecoin
+  - Doichain Twitter https://twitter.com/doichain
 
   - Celebrate
 

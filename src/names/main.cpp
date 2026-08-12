@@ -134,8 +134,8 @@ CheckNameTransaction (const CTransaction& tx, unsigned nHeight,
         }
     }
 
-  /* Check that no name inputs/outputs are present for a non-Namecoin tx.
-     If that's the case, all is fine.  For a Namecoin tx instead, there
+  /* Check that no name inputs/outputs are present for a non-Doichain tx.
+     If that's the case, all is fine.  For a Doichain tx instead, there
      should be at least an output (for NAME_NEW, no inputs are expected).  */
 
   if (!tx.IsNamecoin ())
@@ -363,7 +363,7 @@ ApplyNameTransaction (const CTransaction& tx, unsigned nHeight,
 
   /* This check must be done *after* the historic bug fixing above!  Some
      of the names that must be handled above are actually produced by
-     transactions *not* marked as Namecoin tx.  */
+     transactions *not* marked as Doichain tx.  */
   if (!tx.IsNamecoin ())
     return;
 

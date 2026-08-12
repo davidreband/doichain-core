@@ -172,7 +172,7 @@ static constexpr int MIN_CORE_FDS = MIN_LEVELDB_FDS + NUM_FDS_MESSAGE_CAPTURE;
 /**
  * The PID file facilities.
  */
-static const char* BITCOIN_PID_FILENAME = "namecoind.pid";
+static const char* BITCOIN_PID_FILENAME = "doichaind.pid";
 /**
  * True if this process has created a PID file.
  * Used to determine whether we should remove the PID file on shutdown.
@@ -1460,9 +1460,9 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     // Warn about relative -datadir path.
     if (args.IsArgSet("-datadir") && !args.GetPathArg("-datadir").is_absolute()) {
         LogWarning("Relative datadir option '%s' specified, which will be interpreted relative to the "
-                   "current working directory '%s'. This is fragile, because if namecoin is started in the future "
+                   "current working directory '%s'. This is fragile, because if doichain is started in the future "
                    "from a different location, it will be unable to locate the current data files. There could "
-                   "also be data loss if namecoin is started while in a temporary directory.",
+                   "also be data loss if doichain is started while in a temporary directory.",
                    args.GetArg("-datadir", ""), fs::PathToString(fs::current_path()));
     }
 

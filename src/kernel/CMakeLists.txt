@@ -8,7 +8,7 @@ include(GNUInstallDirs)
 #       library, as more and more modules are decoupled from the
 #       consensus engine, this list will shrink to only those
 #       which are absolutely necessary.
-add_library(namecoinkernel
+add_library(doichainkernel
   bitcoinkernel.cpp
   chain.cpp
   checks.cpp
@@ -103,7 +103,7 @@ target_link_libraries(bitcoin_crypto PRIVATE kernel_warn_interface)
 target_link_libraries(leveldb PRIVATE kernel_warn_interface)
 target_link_libraries(crc32c PRIVATE kernel_warn_interface)
 
-target_link_libraries(namecoinkernel
+target_link_libraries(doichainkernel
   PRIVATE
     core_interface
     kernel_warn_interface
@@ -116,27 +116,27 @@ target_link_libraries(namecoinkernel
 target_include_directories(bitcoinkernel PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/leveldb/include>)
 
 # Add a convenience libbitcoinkernel target as a synonym for bitcoinkernel.
-add_custom_target(libnamecoinkernel)
-add_dependencies(libnamecoinkernel namecoinkernel)
+add_custom_target(libdoichainkernel)
+add_dependencies(libdoichainkernel doichainkernel)
 
-get_target_property(namecoinkernel_type namecoinkernel TYPE)
-if(namecoinkernel_type STREQUAL "STATIC_LIBRARY")
-  target_compile_definitions(namecoinkernel PUBLIC BITCOINKERNEL_STATIC)
+get_target_property(doichainkernel_type doichainkernel TYPE)
+if(doichainkernel_type STREQUAL "STATIC_LIBRARY")
+  target_compile_definitions(doichainkernel PUBLIC BITCOINKERNEL_STATIC)
 endif()
 
 configure_file(${PROJECT_SOURCE_DIR}/libbitcoinkernel.pc.in ${PROJECT_BINARY_DIR}/libbitcoinkernel.pc @ONLY)
-install(FILES ${PROJECT_BINARY_DIR}/libbitcoinkernel.pc DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig" COMPONENT libnamecoinkernel)
+install(FILES ${PROJECT_BINARY_DIR}/libbitcoinkernel.pc DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig" COMPONENT libdoichainkernel)
 
-install(TARGETS namecoinkernel
+install(TARGETS doichainkernel
   RUNTIME
     DESTINATION ${CMAKE_INSTALL_BINDIR}
-    COMPONENT libnamecoinkernel
+    COMPONENT libdoichainkernel
   LIBRARY
     DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    COMPONENT libnamecoinkernel
+    COMPONENT libdoichainkernel
   ARCHIVE
     DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    COMPONENT libnamecoinkernel
+    COMPONENT libdoichainkernel
 )
 
 install(FILES bitcoinkernel.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT libbitcoinkernel)

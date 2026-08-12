@@ -30,8 +30,8 @@ SATOSHI_PRECISION = Decimal('0.00000001')
 
 logger = logging.getLogger("TestFramework.utils")
 
-# Added in Namecoin for easier rebranding to other projects.
-config_file = "namecoin.conf"
+# Added in Doichain for easier rebranding to other projects.
+config_file = "doichain.conf"
 
 # Assert functions
 ##################
@@ -322,14 +322,14 @@ def get_binary_paths(config):
 
     paths = types.SimpleNamespace()
     binaries = {
-        "namecoin": "BITCOIN_BIN",
-        "namecoind": "BITCOIND",
-        "bench_namecoin": "BITCOIN_BENCH",
-        "namecoin-cli": "BITCOINCLI",
-        "namecoin-util": "BITCOINUTIL",
-        "namecoin-tx": "BITCOINTX",
-        "namecoin-chainstate": "BITCOINCHAINSTATE",
-        "namecoin-wallet": "BITCOINWALLET",
+        "doichain": "BITCOIN_BIN",
+        "doichaind": "BITCOIND",
+        "bench_doichain": "BITCOIN_BENCH",
+        "doichain-cli": "BITCOINCLI",
+        "doichain-util": "BITCOINUTIL",
+        "doichain-tx": "BITCOINTX",
+        "doichain-chainstate": "BITCOINCHAINSTATE",
+        "doichain-wallet": "BITCOINWALLET",
     }
     # Set paths to bitcoin core binaries allowing overrides with environment
     # variables.
@@ -607,13 +607,13 @@ def get_temp_default_datadir(temp_dir: pathlib.Path) -> tuple[dict, pathlib.Path
     temp_dir, as well as the complete path it would return."""
     if platform.system() == "Windows":
         env = dict(APPDATA=str(temp_dir))
-        datadir = temp_dir / "Namecoin"
+        datadir = temp_dir / "Doichain"
     else:
         env = dict(HOME=str(temp_dir))
         if platform.system() == "Darwin":
-            datadir = temp_dir / "Library/Application Support/Namecoin"
+            datadir = temp_dir / "Library/Application Support/Doichain"
         else:
-            datadir = temp_dir / ".namecoin"
+            datadir = temp_dir / ".doichain"
     return env, datadir
 
 

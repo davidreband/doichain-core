@@ -22,26 +22,26 @@ const TranslateFn G_TRANSLATION_FUN{nullptr};
 static constexpr auto HELP_USAGE = R"(Usage: %s [OPTIONS] COMMAND...
 
 Options:
-  -m, --multiprocess     Run multiprocess binaries namecoin-node, namecoin-gui.
-  -M, --monolithic       Run monolithic binaries namecoind, namecoin-qt. (Default behavior)
+  -m, --multiprocess     Run multiprocess binaries doichain-node, doichain-gui.
+  -M, --monolithic       Run monolithic binaries doichaind, doichain-qt. (Default behavior)
   -v, --version          Show version information
   -h, --help             Show full help message
 
 Commands:
-  gui [ARGS]     Start GUI, equivalent to running 'namecoin-qt [ARGS]' or 'namecoin-gui [ARGS]'.
-  node [ARGS]    Start node, equivalent to running 'namecoind [ARGS]' or 'namecoin-node [ARGS]'.
-  rpc [ARGS]     Call RPC method, equivalent to running 'namecoin-cli -named [ARGS]'.
-  wallet [ARGS]  Call wallet command, equivalent to running 'namecoin-wallet [ARGS]'.
-  tx [ARGS]      Manipulate hex-encoded transactions, equivalent to running 'namecoin-tx [ARGS]'.
+  gui [ARGS]     Start GUI, equivalent to running 'doichain-qt [ARGS]' or 'doichain-gui [ARGS]'.
+  node [ARGS]    Start node, equivalent to running 'doichaind [ARGS]' or 'doichain-node [ARGS]'.
+  rpc [ARGS]     Call RPC method, equivalent to running 'doichain-cli -named [ARGS]'.
+  wallet [ARGS]  Call wallet command, equivalent to running 'doichain-wallet [ARGS]'.
+  tx [ARGS]      Manipulate hex-encoded transactions, equivalent to running 'doichain-tx [ARGS]'.
   help           Show full help message.
 )";
 
 static constexpr auto HELP_FULL = R"(
 Additional less commonly used commands:
-  bench [ARGS]      Run bench command, equivalent to running 'bench_namecoin [ARGS]'.
-  chainstate [ARGS] Run namecoin kernel chainstate util, equivalent to running 'namecoin-chainstate [ARGS]'.
-  test [ARGS]       Run unit tests, equivalent to running 'test_namecoin [ARGS]'.
-  test-gui [ARGS]   Run GUI unit tests, equivalent to running 'test_namecoin-qt [ARGS]'.
+  bench [ARGS]      Run bench command, equivalent to running 'bench_doichain [ARGS]'.
+  chainstate [ARGS] Run doichain kernel chainstate util, equivalent to running 'doichain-chainstate [ARGS]'.
+  test [ARGS]       Run unit tests, equivalent to running 'test_doichain [ARGS]'.
+  test-gui [ARGS]   Run GUI unit tests, equivalent to running 'test_doichain-qt [ARGS]'.
 )";
 
 static constexpr auto HELP_SHORT = R"(

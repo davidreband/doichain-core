@@ -160,21 +160,21 @@ if(ENABLE_WALLET)
   add_subdirectory(wallet)
 
   if(BUILD_WALLET_TOOL)
-    add_executable(namecoin-wallet
+    add_executable(doichain-wallet
       bitcoin-wallet.cpp
       init/bitcoin-wallet.cpp
       wallet/wallettool.cpp
     )
-    add_windows_resources(namecoin-wallet bitcoin-wallet-res.rc)
-    add_windows_application_manifest(namecoin-wallet)
-    target_link_libraries(namecoin-wallet
+    add_windows_resources(doichain-wallet bitcoin-wallet-res.rc)
+    add_windows_application_manifest(doichain-wallet)
+    target_link_libraries(doichain-wallet
       core_interface
       bitcoin_wallet
       bitcoin_common
       bitcoin_util
       Boost::headers
     )
-    install_binary_component(namecoin-wallet HAS_MANPAGE)
+    install_binary_component(doichain-wallet HAS_MANPAGE)
   endif()
 endif()
 
@@ -306,42 +306,42 @@ if(WITH_EMBEDDED_ASMAP)
   )
 endif()
 
-# Namecoin wrapper executable that can call other executables.
+# Doichain wrapper executable that can call other executables.
 if(BUILD_BITCOIN_BIN)
-  add_executable(namecoin bitcoin.cpp)
-  add_windows_resources(namecoin bitcoin-res.rc)
-  add_windows_application_manifest(namecoin)
-  target_link_libraries(namecoin core_interface bitcoin_common bitcoin_util)
-  install_binary_component(namecoin)
+  add_executable(doichain bitcoin.cpp)
+  add_windows_resources(doichain bitcoin-res.rc)
+  add_windows_application_manifest(doichain)
+  target_link_libraries(doichain core_interface bitcoin_common bitcoin_util)
+  install_binary_component(doichain)
 endif()
 
 # Bitcoin Core bitcoind.
 if(BUILD_DAEMON)
-  add_executable(namecoind
+  add_executable(doichaind
     bitcoind.cpp
     init/bitcoind.cpp
   )
-  add_windows_resources(namecoind bitcoind-res.rc)
-  add_windows_application_manifest(namecoind)
-  target_link_libraries(namecoind
+  add_windows_resources(doichaind bitcoind-res.rc)
+  add_windows_application_manifest(doichaind)
+  target_link_libraries(doichaind
     core_interface
     bitcoin_node
     $<TARGET_NAME_IF_EXISTS:bitcoin_wallet>
   )
-  install_binary_component(namecoind HAS_MANPAGE)
+  install_binary_component(doichaind HAS_MANPAGE)
 endif()
 if(ENABLE_IPC AND BUILD_DAEMON)
-  add_executable(namecoin-node
+  add_executable(doichain-node
     bitcoind.cpp
     init/bitcoin-node.cpp
   )
-  target_link_libraries(namecoin-node
+  target_link_libraries(doichain-node
     core_interface
     bitcoin_node
     bitcoin_ipc
     $<TARGET_NAME_IF_EXISTS:bitcoin_wallet>
   )
-  install_binary_component(namecoin-node INTERNAL)
+  install_binary_component(doichain-node INTERNAL)
 endif()
 
 
@@ -358,10 +358,10 @@ target_link_libraries(bitcoin_cli
 
 # Bitcoin Core RPC client
 if(BUILD_CLI)
-  add_executable(namecoin-cli bitcoin-cli.cpp)
-  add_windows_resources(namecoin-cli bitcoin-cli-res.rc)
-  add_windows_application_manifest(namecoin-cli)
-  target_link_libraries(namecoin-cli
+  add_executable(doichain-cli bitcoin-cli.cpp)
+  add_windows_resources(doichain-cli bitcoin-cli-res.rc)
+  add_windows_application_manifest(doichain-cli)
+  target_link_libraries(doichain-cli
     core_interface
     bitcoin_cli
     bitcoin_common
@@ -369,34 +369,34 @@ if(BUILD_CLI)
     libevent::core
     libevent::extra
   )
-  install_binary_component(namecoin-cli HAS_MANPAGE)
+  install_binary_component(doichain-cli HAS_MANPAGE)
 endif()
 
 
 if(BUILD_TX)
-  add_executable(namecoin-tx bitcoin-tx.cpp)
-  add_windows_resources(namecoin-tx bitcoin-tx-res.rc)
-  add_windows_application_manifest(namecoin-tx)
-  target_link_libraries(namecoin-tx
+  add_executable(doichain-tx bitcoin-tx.cpp)
+  add_windows_resources(doichain-tx bitcoin-tx-res.rc)
+  add_windows_application_manifest(doichain-tx)
+  target_link_libraries(doichain-tx
     core_interface
     bitcoin_common
     bitcoin_util
     univalue
   )
-  install_binary_component(namecoin-tx HAS_MANPAGE)
+  install_binary_component(doichain-tx HAS_MANPAGE)
 endif()
 
 
 if(BUILD_UTIL)
-  add_executable(namecoin-util bitcoin-util.cpp)
-  add_windows_resources(namecoin-util bitcoin-util-res.rc)
-  add_windows_application_manifest(namecoin-util)
-  target_link_libraries(namecoin-util
+  add_executable(doichain-util bitcoin-util.cpp)
+  add_windows_resources(doichain-util bitcoin-util-res.rc)
+  add_windows_application_manifest(doichain-util)
+  target_link_libraries(doichain-util
     core_interface
     bitcoin_common
     bitcoin_util
   )
-  install_binary_component(namecoin-util HAS_MANPAGE)
+  install_binary_component(doichain-util HAS_MANPAGE)
 endif()
 
 
@@ -411,16 +411,16 @@ if(BUILD_KERNEL_LIB)
     add_subdirectory(test/kernel)
   endif()
   if(BUILD_UTIL_CHAINSTATE)
-    add_executable(namecoin-chainstate
+    add_executable(doichain-chainstate
       bitcoin-chainstate.cpp
     )
-    add_windows_application_manifest(namecoin-chainstate)
+    add_windows_application_manifest(doichain-chainstate)
     target_link_libraries(bitcoin-chainstate
       PRIVATE
         core_interface
-        namecoinkernel
+        doichainkernel
     )
-    install_binary_component(namecoin-chainstate INTERNAL)
+    install_binary_component(doichain-chainstate INTERNAL)
   endif()
 endif()
 

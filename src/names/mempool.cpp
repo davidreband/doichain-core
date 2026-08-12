@@ -431,7 +431,7 @@ CNameMemPool::checkTx (const CTransaction& tx) const
           {
             /* Like NAME_UPDATE, several DOI operations on one name may be
                pending at the same time.  But the d/ namespace stays with the
-               classic Namecoin workflow, so it must not be used for name_doi.
+               classic Doichain workflow, so it must not be used for name_doi.
 
                Note that the name is compared as raw bytes.  The original code
                compared against EncodeNameForMessage(), which wraps the name in

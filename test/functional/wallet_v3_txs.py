@@ -109,7 +109,7 @@ class WalletV3Test(BitcoinTestFramework):
         self.run_test_with_swapped_versions(self.tx_spends_unconfirmed_tx_with_wrong_version)
         self.run_test_with_swapped_versions(self.va_tx_spends_confirmed_vb_tx)
         self.run_test_with_swapped_versions(self.spend_inputs_with_different_versions)
-        # Namecoin still uses v1 by default, and this breaks the test.
+        # Doichain still uses v1 by default, and this breaks the test.
         #self.spend_inputs_with_different_versions_default_version()
         self.v3_utxos_appear_in_listunspent()
         self.truc_tx_with_conflicting_sibling()

@@ -282,7 +282,7 @@ class CTransaction
 public:
     // Default transaction version.
     // FIXME: Upstream Bitcoin has default version set to 2 already.  Do this
-    // once we forked to make the tx version irrelevant for Namecoin.
+    // once we forked to make the tx version irrelevant for Doichain.
     static const int32_t CURRENT_VERSION{1};
     static const int32_t NAMECOIN_VERSION{0x7100};
 
@@ -408,7 +408,7 @@ struct CMutableTransaction
     }
 
     /**
-     * Turn this into a Namecoin version transaction if it is not yet one.
+     * Turn this into a Doichain version transaction if it is not yet one.
      */
     void SetNamecoin();
 };

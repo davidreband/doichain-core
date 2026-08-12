@@ -484,7 +484,7 @@ QVariant NameTableModel::headerData(int section, Qt::Orientation orientation, in
         switch(section)
         {
             case Name:
-                return tr("Name registered using Namecoin.");
+                return tr("Name registered using Doichain.");
 
             case Value:
                 return tr("Data associated with the name.");

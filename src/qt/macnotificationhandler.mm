@@ -13,7 +13,7 @@
 - (NSString *)__bundleIdentifier
 {
     if (self == [NSBundle mainBundle]) {
-        return @"org.namecoin.Namecoin-Qt";
+        return @"org.doichain.Doichain-Qt";
     } else {
         return [self __bundleIdentifier];
     }

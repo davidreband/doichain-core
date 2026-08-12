@@ -1,6 +1,6 @@
 UNIX BUILD NOTES
 ====================
-Some notes on how to build Namecoin Core in Unix.
+Some notes on how to build Doichain Core in Unix.
 
 (For BSD specific instructions, see `build-*bsd.md` in this directory.)
 
@@ -24,7 +24,7 @@ distributions](#linux-distribution-specific-instructions), or the
 ## Memory Requirements
 
 C++ compilers are memory-hungry. It is recommended to have at least 1.5 GB of
-memory available when compiling Namecoin Core. On systems with less, gcc can be
+memory available when compiling Doichain Core. On systems with less, gcc can be
 tuned to conserve memory with additional `CMAKE_CXX_FLAGS`:
 
 
@@ -62,7 +62,7 @@ SQLite is required for the wallet:
 
     sudo apt install libsqlite3-dev
 
-To build Namecoin Core without wallet, see [*Disable-wallet mode*](#disable-wallet-mode)
+To build Doichain Core without wallet, see [*Disable-wallet mode*](#disable-wallet-mode)
 
 Cap'n Proto is needed for IPC functionality (see [multiprocess.md](multiprocess.md)):
 
@@ -80,7 +80,7 @@ User-Space, Statically Defined Tracing (USDT) dependencies:
 
 GUI dependencies:
 
-Namecoin Core includes a GUI built with the cross-platform Qt Framework. To compile the GUI, we need to install
+Doichain Core includes a GUI built with the cross-platform Qt Framework. To compile the GUI, we need to install
 the necessary parts of Qt, the libqrencode and pass `-DBUILD_GUI=ON`. Skip if you don't intend to use the GUI.
 
     sudo apt-get install qt6-base-dev qt6-tools-dev qt6-l10n-tools qt6-tools-dev-tools libgl-dev
@@ -112,7 +112,7 @@ SQLite is required for the wallet:
 
     sudo dnf install sqlite-devel
 
-To build Namecoin Core without wallet, see [*Disable-wallet mode*](#disable-wallet-mode)
+To build Doichain Core without wallet, see [*Disable-wallet mode*](#disable-wallet-mode)
 
 ZMQ-enabled binaries are compiled with `-DWITH_ZMQ=ON` and require the following dependency:
 
@@ -130,7 +130,7 @@ Compile with `-DENABLE_IPC=OFF` if you do not need IPC functionality.
 
 GUI dependencies:
 
-Namecoin Core includes a GUI built with the cross-platform Qt Framework. To compile the GUI, we need to install
+Doichain Core includes a GUI built with the cross-platform Qt Framework. To compile the GUI, we need to install
 the necessary parts of Qt, the libqrencode and pass `-DBUILD_GUI=ON`. Skip if you don't intend to use the GUI.
 
     sudo dnf install qt6-qtbase-devel qt6-qttools-devel
@@ -196,7 +196,7 @@ not use the packages of your Linux distribution.
 
 Disable-wallet mode
 --------------------
-When the intention is to only run a P2P node, without a wallet, Namecoin Core can
+When the intention is to only run a P2P node, without a wallet, Doichain Core can
 be compiled in disable-wallet mode with:
 
     cmake -B build -DENABLE_WALLET=OFF
@@ -210,11 +210,11 @@ Setup and Build Example: Arch Linux
 This example lists the steps necessary to setup and build a command line only distribution of the latest changes on Arch Linux:
 
     pacman --sync --needed capnproto cmake boost gcc git libevent make python sqlite
-    git clone https://github.com/namecoin-core/namecoin.git
-    cd namecoin-core/
+    git clone https://github.com/doichain-core/doichain.git
+    cd doichain-core/
     cmake -B build
     cmake --build build
     ctest --test-dir build
-    ./build/bin/namecoind
-    ./build/bin/namecoin help
+    ./build/bin/doichaind
+    ./build/bin/doichain help
 

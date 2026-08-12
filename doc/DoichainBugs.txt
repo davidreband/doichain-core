@@ -1,16 +1,16 @@
-Historic Namecoin Bugs
+Historic Doichain Bugs
 ======================
 
-The Namecoin blockchain contains some transactions that must be considered
+The Doichain blockchain contains some transactions that must be considered
 "buggy".  Nevertheless, it is, of course, important to work around these
 in order to support validating the full blockchain.  This file tries to
 document the historic transactions that need workarounds.
 
-Non-Namecoin Transaction Version
+Non-Doichain Transaction Version
 --------------------------------
 
 The original client correctly prevents name outputs from being spent by
-transactions not flagged as "Namecoin transaction" (version 0x7100).  In
+transactions not flagged as "Doichain transaction" (version 0x7100).  In
 other words, such transactions must not have name *inputs*.  However,
 it does not check the *outputs*.  Consequently, the blockchain contains
 some transactions with version 1 that, nevertheless, contain name outputs.
@@ -61,7 +61,7 @@ no argument concatenation is done any more.
 libcoin's "Name Stealing"
 -------------------------
 
-Michael Gronager (aka "libcoin") discovered a critical flaw in Namecoin's
+Michael Gronager (aka "libcoin") discovered a critical flaw in Doichain's
 validation of name updates in late 2013.  The code accepted *any* name update,
 and did not validate that the input and output names were actually the same.
 In other words, one could register an arbitrary throw-away name and then
@@ -72,7 +72,7 @@ these transactions:
 
 139,872 / 2f034f2499c136a2c5a922ca4be65c1292815c753bbb100a2a26d5ad532c3919:
   update of "d/bitcoin" (the first ever name registered) to the value of
-  "Namecoin died October the 15th 2013, coinslayer"
+  "Doichain died October the 15th 2013, coinslayer"
 
 139,936 / c3e76d5384139228221cce60250397d1b87adf7366086bc8d6b5e6eee03c55c7:
   update of "d/wav" (after being challenged by phelix)

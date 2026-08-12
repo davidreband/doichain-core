@@ -170,7 +170,7 @@ bool Consensus::CheckTxInputs(const CTransaction& tx, TxValidationState& state, 
            was added by CheckNameTransaction already.  */
         if (state.IsValid () || state.GetRejectReason () == "")
             state.Invalid (TxValidationResult::TX_CONSENSUS,
-                           "tx-invalid-nameop", "Tx invalid for Namecoin");
+                           "tx-invalid-nameop", "Tx invalid for Doichain");
         return false;
       }
 

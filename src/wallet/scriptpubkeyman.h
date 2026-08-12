@@ -132,7 +132,7 @@ public:
     virtual std::unique_ptr<SigningProvider> GetSolvingProvider(const CScript& script) const { return nullptr; }
 
     /** Returns a signing provider for the given script that includes private
-     *  keys.  This is something we need for Namecoin's deterministic salts
+     *  keys.  This is something we need for Doichain's deterministic salts
      *  but which the upstream interface can't provide.  */
     virtual std::unique_ptr<SigningProvider> GetSigningProviderWithKeys(const CScript& script) const { return nullptr; }
 

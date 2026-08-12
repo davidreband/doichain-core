@@ -384,7 +384,7 @@ TestChain100Setup::TestChain100Setup(
     TestOpts opts)
     : TestingSetup{ChainType::REGTEST, opts}
 {
-    /* Turn off automatic name DB checks for Namecoin.  They flush the
+    /* Turn off automatic name DB checks for Doichain.  They flush the
        coin cache, which messes up some of the upstream tests.  We test
        the name-DB checking explicitly anyway, and only want them active
        by default for the regtests.  */

@@ -64,7 +64,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Use &lt;strong&gt;d/&lt;/strong&gt; prefix for domain names. E.g. &lt;strong&gt;d/mysite&lt;/strong&gt; will register &lt;strong&gt;mysite.bit&lt;/strong&gt;&lt;br&gt;See &lt;a href=&quot;https://github.com/namecoin/proposals/blob/master/ifa-0001.md#keys&quot;&gt;Domain Names: Keys&lt;/a&gt; for reference. Other prefixes can be used for miscellaneous purposes (not domain names).&lt;/p&gt;</string>
+         <string>Use &lt;strong&gt;d/&lt;/strong&gt; prefix for domain names. E.g. &lt;strong&gt;d/mysite&lt;/strong&gt; will register &lt;strong&gt;mysite.bit&lt;/strong&gt;&lt;br&gt;See &lt;a href=&quot;https://github.com/doichain/proposals/blob/master/ifa-0001.md#keys&quot;&gt;Domain Names: Keys&lt;/a&gt; for reference. Other prefixes can be used for miscellaneous purposes (not domain names).&lt;/p&gt;</string>
         </property>
         <property name="textFormat">
          <enum>Qt::RichText</enum>

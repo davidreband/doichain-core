@@ -1077,7 +1077,7 @@ BOOST_AUTO_TEST_CASE(package_cpfp_tests)
 }
 
 #if 0
-FIXME: Debug this on Namecoin
+FIXME: Debug this on Doichain
 BOOST_AUTO_TEST_CASE(package_rbf_tests)
 {
     mineBlocks(5);

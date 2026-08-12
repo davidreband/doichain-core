@@ -1139,7 +1139,7 @@ static util::Result<CreatedTransactionResult> CreateTransactionInternal(
             isDoichain = true;
     }
 
-    /* It can happen that the transaction has already a Namecoin version, for
+    /* It can happen that the transaction has already a Doichain version, for
        instance, when it is being funded via FundTransaction, where the nVersion
        of the original transaction is copied via the coin_control.  This is fine
        and will just do nothing then.  */

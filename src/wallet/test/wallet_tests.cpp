@@ -465,7 +465,7 @@ void TestCoinsResult(ListCoinsTest& context, OutputType out_type, CAmount amount
 
 BOOST_FIXTURE_TEST_CASE(BasicOutputTypesTest, ListCoinsTest)
 {
-    /* With legacy as default address type (which is the default in Namecoin),
+    /* With legacy as default address type (which is the default in Doichain),
        the output address type matching is disabled and all change is sent
        to legacy addresses.  */
     wallet->m_default_address_type = OutputType::BECH32M;

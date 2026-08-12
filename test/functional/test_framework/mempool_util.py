@@ -31,7 +31,7 @@ from .wallet import (
 
 # Default for -minrelaytxfee in sat/kvB
 # This is overwritten from the "real" value in the test framework for
-# Namecoin, defined in test_node.py.
+# Doichain, defined in test_node.py.
 DEFAULT_MIN_RELAY_TX_FEE = 1000
 # Default for -incrementalrelayfee in sat/kvB
 DEFAULT_INCREMENTAL_RELAY_FEE = 100

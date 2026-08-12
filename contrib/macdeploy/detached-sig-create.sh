@@ -10,9 +10,9 @@ SIGNAPPLE=signapple
 TEMPDIR=sign.temp
 
 BUNDLE_ROOT=dist
-BUNDLE_NAME="Namecoin-Qt.app"
+BUNDLE_NAME="Doichain-Qt.app"
 UNSIGNED_BUNDLE="${BUNDLE_ROOT}/${BUNDLE_NAME}"
-UNSIGNED_BINARY="${UNSIGNED_BUNDLE}/Contents/MacOS/Namecoin-Qt"
+UNSIGNED_BINARY="${UNSIGNED_BUNDLE}/Contents/MacOS/Doichain-Qt"
 
 ARCH=$(${SIGNAPPLE} info ${UNSIGNED_BINARY} | head -n 1 | cut -d " " -f 1)
 

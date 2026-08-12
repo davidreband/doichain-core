@@ -127,7 +127,7 @@ INVALID_DATA = [
     ("bc1gmk9yu", "Empty Bech32 data section", []),
 ]
 VALID_DATA = [
-    # FIXME: Make the "uppercase" addresses work with Namecoin
+    # FIXME: Make the "uppercase" addresses work with Doichain
     # BIP 350
     #(
     #    "NC1QW508D6QEJXTDG4y5r3zarvary0c5xw7kmcc7kg",
@@ -196,7 +196,7 @@ class ValidateAddressMainTest(BitcoinTestFramework):
         assert_equal(res["error_locations"], error_locations)
 
     def test_validateaddress(self):
-        # FIXME: Update invalid addresses for Namecoin
+        # FIXME: Update invalid addresses for Doichain
         #for (addr, error, locs) in INVALID_DATA:
         #    self.check_invalid(addr, error, locs)
         for (addr, spk) in VALID_DATA:

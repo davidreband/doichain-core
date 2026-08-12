@@ -564,7 +564,7 @@ BOOST_AUTO_TEST_CASE (name_tx_verification)
   view.SetName (name1, data1, false);
 
   /* ****************************************************** */
-  /* Try out the Namecoin / non-Namecoin tx version check.  */
+  /* Try out the Doichain / non-Doichain tx version check.  */
 
   TxValidationState state;
   CMutableTransaction mtx;
@@ -575,12 +575,12 @@ BOOST_AUTO_TEST_CASE (name_tx_verification)
   mtx.vout.push_back (CTxOut (COIN, addr));
   const CTransaction baseTx(mtx);
 
-  /* Non-name tx should be non-Namecoin version.  */
+  /* Non-name tx should be non-Doichain version.  */
   BOOST_CHECK (CheckNameTransaction (baseTx, 200000, view, state, 0));
   mtx.SetNamecoin ();
   BOOST_CHECK (!CheckNameTransaction (mtx, 200000, view, state, 0));
 
-  /* Name tx should be Namecoin version.  */
+  /* Name tx should be Doichain version.  */
   mtx = CMutableTransaction (baseTx);
   mtx.vin.push_back (CTxIn (inNew));
   BOOST_CHECK (!CheckNameTransaction (mtx, 200000, view, state, 0));

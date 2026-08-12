@@ -94,7 +94,7 @@
      <item row="4" column="1">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>JSON string, e.g. {&amp;quot;ip&amp;quot;: [&amp;quot;1.2.3.4&amp;quot;, &amp;quot;1.2.3.5&amp;quot;]}&lt;br&gt;See &lt;a href=&quot;https://github.com/namecoin/proposals&quot;&gt;JSON value specifications&lt;/a&gt;.</string>
+        <string>JSON string, e.g. {&amp;quot;ip&amp;quot;: [&amp;quot;1.2.3.4&amp;quot;, &amp;quot;1.2.3.5&amp;quot;]}&lt;br&gt;See &lt;a href=&quot;https://github.com/doichain/proposals&quot;&gt;JSON value specifications&lt;/a&gt;.</string>
        </property>
        <property name="openExternalLinks">
         <bool>true</bool>

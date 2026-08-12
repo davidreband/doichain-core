@@ -1,3 +1,3 @@
-# Bootstrappable Namecoin Core Builds
+# Bootstrappable Doichain Core Builds
 
 See [contrib/guix/README.md](../contrib/guix/README.md)

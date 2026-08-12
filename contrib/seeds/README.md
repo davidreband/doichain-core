@@ -11,7 +11,7 @@ to addrman with).
 The seeds compiled into the release are created from jonasbits's DNS seed data, like this:
 
 ````
-curl -s https://stats.nmctest.net/seeds.txt?s=NamecoinNet > seeds_main.txt
+curl -s https://stats.nmctest.net/seeds.txt?s=DoichainNet > seeds_main.txt
 python3 makeseeds.py -a asmap-filled.dat -s seeds_main.txt > nodes_main.txt
 python3 makeseeds.py -a asmap-filled.dat -s seeds_signet.txt -m 266000 > nodes_signet.txt
 python3 makeseeds.py -a asmap-filled.dat -s seeds_test.txt -m 4650000 > nodes_test.txt

@@ -63,8 +63,8 @@ static std::vector<std::string> parseTestSetupArgs(const ArgsManager& argsman)
 int main(int argc, char** argv)
 {
     /* FIXME: Re-enable benchmarking after it has been fixed for auxpow.
-       See https://github.com/namecoin/namecoin-core/issues/273.  */
-    fprintf(stderr, "bench_bitcoin is disabled in Namecoin/Auxpow\n");
+       See https://github.com/doichain/doichain-core/issues/273.  */
+    fprintf(stderr, "bench_bitcoin is disabled in Doichain/Auxpow\n");
     return EXIT_SUCCESS;
 
     ArgsManager argsman;

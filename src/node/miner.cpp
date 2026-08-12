@@ -254,7 +254,7 @@ bool BlockAssembler::TestChunkBlockLimits(FeePerWeight chunk_feerate, int64_t ch
 
 // Perform transaction-level checks before adding to block:
 // - transaction finality (locktime)
-// - Namecoin maturity conditions
+// - Doichain maturity conditions
 bool BlockAssembler::TestChunkTransactions(const std::vector<CTxMemPoolEntryRef>& txs) const
 {
     for (const auto tx : txs) {

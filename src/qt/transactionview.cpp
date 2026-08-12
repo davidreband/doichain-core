@@ -73,7 +73,7 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, QWidget *pa
     hlayout->addWidget(dateWidget);
 
     typeWidget = new QComboBox(this);
-    // Scaled by 82 to 97 in Namecoin due to "Name operation" width as rendered
+    // Scaled by 82 to 97 in Doichain due to "Name operation" width as rendered
     // on Whonix 15 KDE.
     if (platformStyle->getUseExtraSpacing()) {
         typeWidget->setFixedWidth(143);

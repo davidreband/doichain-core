@@ -100,7 +100,7 @@ class ConfArgsTest(BitcoinTestFramework):
         self.log.info('Test config file parser')
 
         # Check that startup fails if conf= is set in bitcoin.conf or in an included conf file
-        bad_conf_file_path = self.nodes[0].datadir_path / "namecoin_bad.conf"
+        bad_conf_file_path = self.nodes[0].datadir_path / "doichain_bad.conf"
         util.write_config(bad_conf_file_path, n=0, chain='', extra_config='conf=some.conf\n')
         conf_in_config_file_err = 'Error: Error reading configuration file: conf cannot be set in the configuration file; use includeconf= if you want to include additional config files'
         self.nodes[0].assert_start_raises_init_error(
@@ -143,7 +143,7 @@ class ConfArgsTest(BitcoinTestFramework):
                 conf.write("wallet=foo\n")
             self.nodes[0].assert_start_raises_init_error(expected_msg=f'Error: Config setting for -wallet only applied on {self.chain} network when in [{self.chain}] section.')
 
-        main_conf_file_path = self.nodes[0].datadir_path / "namecoin_main.conf"
+        main_conf_file_path = self.nodes[0].datadir_path / "doichain_main.conf"
         util.write_config(main_conf_file_path, n=0, chain='', extra_config=f'includeconf={inc_conf_file_path}\n')
         with open(inc_conf_file_path, 'w') as conf:
             conf.write('acceptnonstdtxn=1\n')
@@ -436,7 +436,7 @@ class ConfArgsTest(BitcoinTestFramework):
             "be correlated to other connections over Tor. For maximum privacy set -proxyrandomize=1."))
 
     def test_ignored_conf(self):
-        self.log.info('Test error is triggered when the datadir in use contains a namecoin.conf file that would be ignored '
+        self.log.info('Test error is triggered when the datadir in use contains a doichain.conf file that would be ignored '
                       'because a conflicting -conf file argument is passed.')
         node = self.nodes[0]
         with tempfile.NamedTemporaryFile(dir=self.options.tmpdir, mode="wt", delete=False) as temp_conf:
@@ -458,8 +458,8 @@ class ConfArgsTest(BitcoinTestFramework):
         if platform.system() == "Windows":
             return
 
-        self.log.info('Test error is triggered when namecoin.conf in the default data directory sets another datadir '
-                      'and it contains a different namecoin.conf file that would be ignored')
+        self.log.info('Test error is triggered when doichain.conf in the default data directory sets another datadir '
+                      'and it contains a different doichain.conf file that would be ignored')
 
         # Create a temporary directory that will be treated as the default data
         # directory by bitcoind.
@@ -486,7 +486,7 @@ class ConfArgsTest(BitcoinTestFramework):
 
     def test_acceptstalefeeestimates_arg_support(self):
         self.log.info("Test -acceptstalefeeestimates option support")
-        conf_file = self.nodes[0].datadir_path / "namecoin.conf"
+        conf_file = self.nodes[0].datadir_path / "doichain.conf"
         for chain, chain_name in {("main", ""), ("test", "testnet3"), ("signet", "signet"), ("testnet4", "testnet4")}:
             util.write_config(conf_file, n=0, chain=chain_name, extra_config='acceptstalefeeestimates=1\n')
             self.nodes[0].assert_start_raises_init_error(expected_msg=f'Error: acceptstalefeeestimates is not supported on {chain} chain.')

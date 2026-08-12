@@ -558,7 +558,7 @@ public:
     void registerRpcs() override
     {
         registerRpcs(GetWalletRPCCommands());
-        /* Many of the non-wallet Namecoin RPCs can use a wallet optionally,
+        /* Many of the non-wallet Doichain RPCs can use a wallet optionally,
            for the "ismine" field.  Thus if a wallet is available, we register
            handlers for them with the wallet context.  */
         registerRpcs(GetNameRPCCommands());

@@ -122,7 +122,7 @@ private:
     bool TestChunkTransactions(const std::vector<CTxMemPoolEntryRef>& txs) const;
     
     /**
-     * Verify if a tx can be added from a Namecoin perspective.  This may not
+     * Verify if a tx can be added from a Doichain perspective.  This may not
      * (yet) be the case if it is a NAME_FIRSTUPDATE with a not-yet-mature
      * NAME_NEW.  Those are allowed in the mempool, but not in blocks.
      */
