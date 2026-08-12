@@ -286,12 +286,16 @@ BOOST_FIXTURE_TEST_CASE (check_auxpow, BasicTestingSetup)
   auxpow = builder.get (builder.parentBlock.vtx[1]);
   BOOST_CHECK (!auxpow.check (hashAux, ourChainId, params));
 
-  /* The parent chain can't have the same chain ID.  */
+  /* The parent chain can't have the same chain ID -- but only where a strict
+     chain ID is required.  Doichain mainnet and testnet run with
+     fStrictChainId = false, so a parent block carrying our own chain ID is
+     accepted there.  */
   CAuxpowBuilder builder2(builder);
   builder2.parentBlock.SetChainId (100);
   BOOST_CHECK (builder2.get ().check (hashAux, ourChainId, params));
   builder2.parentBlock.SetChainId (ourChainId);
-  BOOST_CHECK (!builder2.get ().check (hashAux, ourChainId, params));
+  BOOST_CHECK_EQUAL (builder2.get ().check (hashAux, ourChainId, params),
+                     !params.fStrictChainId);
 
   /* Disallow too long merkle branches.  */
   builder2 = builder;

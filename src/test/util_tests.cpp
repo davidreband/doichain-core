@@ -1516,7 +1516,7 @@ BOOST_AUTO_TEST_CASE(message_sign)
     const std::string message = "Trust no one";
 
     const std::string expected_signature =
-        "H1aQ7WWEyMxq/wPB4yiCcw5pqmYnH+SXcp+tKse9AlLqGaH4JEj4gesdKW7JHFZfQCt+GIITL0mVJqXXNwOQwLo=";
+        "ICJUlgiuUTcD/pdtMOmeE7l34ts0TkXQy8mV1dk7hcZIJkzgghrDWjHu3r2bfLlURIirnvMCTIRMdbAc8YR7i8I=";
 
     CKey privkey;
     std::string generated_signature;
@@ -1538,6 +1538,9 @@ BOOST_AUTO_TEST_CASE(message_sign)
     BOOST_CHECK_EQUAL(expected_signature, generated_signature);
 }
 
+/* The signatures below were regenerated for Doichain.  MESSAGE_MAGIC reads
+   "Doichain Signed Message:\n" here, the same value the 0.20 nodes in
+   production use, so signatures made with Namecoin's magic do not verify.  */
 BOOST_AUTO_TEST_CASE(message_verify)
 {
     BOOST_CHECK_EQUAL(
@@ -1581,15 +1584,15 @@ BOOST_AUTO_TEST_CASE(message_verify)
 
     BOOST_CHECK_EQUAL(
         MessageVerify(
-            "N4sm2FCx896aRjtzpex7rrFbRFpnrcvGYr",
-            "H+k6FIN5AhSoslH1O2aS9GerYLMzmPDh5lLHLGg5wVMiSRuHNFkVtcQAUx8kYEjjHTpeBruiA+DY/TZ0PAl2kq8=",
+            "MxS3YxnDtPCghhYJJGmaGz4x8otTh1K57b",
+            "IPz8MrrO8YQOucz8eBserVOmkuq8kn3u7icLvYgQll0TW2WsWMklX4NcJcTlVYUyXU4lCUi8sT1heQNk/sfS02c=",
             "Trust no one"),
         MessageVerificationResult::OK);
 
     BOOST_CHECK_EQUAL(
         MessageVerify(
-            "N4sm2FCx896aRjtzpex7rrFbRFpnrcvGYr",
-            "Hwf2fTyHTrOJjzahwJHCPBXAhgu80WRPmSt0SAsUVXHkW4p1fYx6w2wTn3Kq4tFdnqeUnzUTZA+502ANeTbSvO0=",
+            "MxS3YxnDtPCghhYJJGmaGz4x8otTh1K57b",
+            "IEVaDfDLtJ9BkBloFzWp758LpQ3z9qXpg9VyMprYZAx7fZmgBB7vEhNcG1oC9QRHr5YSp64NBTCIKIsdF0FjblI=",
             "Trust me"),
         MessageVerificationResult::OK);
 }

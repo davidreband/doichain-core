@@ -129,7 +129,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].period = 2016;
 
         // Deployment of Taproot (BIPs 340-342)
-        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].bit = 28;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].bit = 2;
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nStartTime = Consensus::BIP9Deployment::NEVER_ACTIVE;
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].min_activation_height = 0; // No activation delay
@@ -701,7 +701,7 @@ public:
                 .height = 110,
                 .hash_serialized = AssumeutxoHash{uint256{"b6f3c376e66764edd996ec074254833d33d187bf4886f5812b85ba5f0db2d54d"}},
                 .m_chain_tx_count = 111,
-                .blockhash = uint256{"4f29bd26ec9ef63973ee4e45bfb517cccaed7629c6cdbdd0d2f653f9d3ea4a47"},
+                .blockhash = uint256{"57936d18b72372d524b65539c1854429228b606f08035d061f5cffdafa6f1e5d"},
             },
             {
                 // For use by fuzz target src/test/fuzz/utxo_snapshot.cpp
