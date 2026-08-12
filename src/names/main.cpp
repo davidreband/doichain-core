@@ -252,16 +252,22 @@ CheckNameTransaction (const CTransaction& tx, unsigned nHeight,
       /* With a name input, this updates an existing DOI.  */
       if (nameIn != -1)
         {
+          if (nameOpIn.getNameOp () != OP_NAME_DOI)
+            return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                                  "tx-name-doi-not-name-doi-input",
+                                  "NAME_DOI input is not a OP_NAME_DOI");
+
+          /* If the name input is still pending in the mempool, the name is
+             not in the database yet and there is nothing to check it
+             against.  NAME_UPDATE handles a pending input the same way.  */
+          if (coinIn.nHeight == MEMPOOL_HEIGHT)
+            return true;
+
           CNameData oldName;
           if (!view.GetName (name, oldName))
             return state.Invalid (TxValidationResult::TX_CONSENSUS,
                                   "tx-nameupdate-nonexistant",
                                   "NAME_DOI name does not exist");
-
-          if (nameOpIn.getNameOp () != OP_NAME_DOI)
-            return state.Invalid (TxValidationResult::TX_CONSENSUS,
-                                  "tx-name-doi-not-name-doi-input",
-                                  "NAME_DOI input is not a OP_NAME_DOI");
 
           return true;
         }

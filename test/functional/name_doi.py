@@ -132,26 +132,26 @@ class NameDoiTest (NameTestFramework):
     self.generateToOther (1)
 
   def test_pending_operations (self, node):
-    """A second name_doi issued while the first is still pending is not
-    accepted by the node: only the first stays pending and only its value
-    gets mined, even though the RPC returns a txid for the second.
-
-    This records the behaviour as it is, not as it ought to be.  Namecoin
-    chains pending operations up to DEFAULT_NAME_CHAIN_LIMIT, which is 2 for
-    Doichain, and name_doi is meant to do the same.  Why the replacement
-    happens is still open -- most likely the wallet reuses the same funding
-    input for both transactions.  See DOICHAIN_FORK_INVENTORY.md."""
+    """Pending DOI operations chain onto each other up to
+    DEFAULT_NAME_CHAIN_LIMIT, which is 2 for Doichain."""
     self.log.info ("checking pending name_doi operations")
 
-    node.name_doi ("e/chained", "one")
-    assert_equal (len (node.name_pending ("e/chained")), 1)
+    first = node.name_doi ("e/chained", "one")
+    assert first in node.getrawmempool ()
 
     second = node.name_doi ("e/chained", "two")
-    assert second not in node.getrawmempool ()
-    assert_equal (len (node.name_pending ("e/chained")), 1)
+    assert second in node.getrawmempool ()
+    assert_equal (len (node.name_pending ("e/chained")), 2)
+
+    # The second operation spends the name output of the first.
+    raw = node.getrawtransaction (second, True)
+    assert first in [vin["txid"] for vin in raw["vin"]]
+
+    assert_raises_rpc_error (-25, "too many pending operations",
+                             node.name_doi, "e/chained", "three")
 
     self.generateToOther (1)
-    assert_equal (node.name_show ("e/chained")["value"], "one")
+    assert_equal (node.name_show ("e/chained")["value"], "two")
 
   def test_reorg (self, node):
     """A DOI registration must survive being reorged out and back in, and
