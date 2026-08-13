@@ -7,7 +7,7 @@ coordinate twice for changes that are ready at the same time is wasted effort.
 Nothing here is scheduled yet. This file records what was measured and what has
 to be decided, so the analysis does not have to be redone.
 
-## 1. Remove name expiration
+## 1. Remove name expiration -- implemented, not activated
 
 ### Where it stands today
 
@@ -38,6 +38,15 @@ refuses to update an expired name:
 removed as dead code during the port. So updating an expired DOI is allowed in
 principle — the name just does not survive long enough for it to matter,
 because `ExpireNames` has already spent its output.
+
+**The rule is implemented** on the `doichain/consensus` branch and described in
+[name-expiration.md](name-expiration.md).  It is switched off on every network
+until an activation height is chosen.
+
+Sampling the live chain answered the scope question by itself: `bp/`, `e/`,
+`pe/` and the unprefixed names were all created with `name_doi`, and the
+classic `name_new` plus `name_firstupdate` path is used by exactly one name.
+"DOI names only" and "all names" therefore describe the same set here.
 
 ### What has to be decided
 

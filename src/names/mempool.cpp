@@ -370,11 +370,11 @@ CNameMemPool::check (const CCoinsViewCache& tip,
 
           ++nameDois[name];
 
-          CNameData data;
-          if (tip.GetName (name, data))
-            assert (!data.isExpired (spendheight));
-          else
-            assert (registersDoi (name));
+          /* Unlike NAME_UPDATE, a DOI operation is both the registration and
+             the update of a name, so an entry in the database may well be
+             expired here: registering a name whose earlier incarnation has
+             expired is allowed.  Only the bookkeeping above can be asserted.  */
+          assert (registersDoi (name));
         }
     }
 
