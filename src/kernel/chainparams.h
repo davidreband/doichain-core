@@ -178,6 +178,8 @@ public:
         std::unordered_map<Consensus::BuriedDeployment, int> activation_heights{};
         bool fastprune{false};
         bool enforce_bip94{false};
+        //! Doichain: height from which names stop expiring, for tests.
+        std::optional<unsigned> no_name_expiration_since{};
     };
 
     static std::unique_ptr<const CChainParams> RegTest(const RegTestOptions& options);

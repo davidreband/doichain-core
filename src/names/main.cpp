@@ -42,6 +42,15 @@ isExpired (unsigned nPrevHeight, unsigned nHeight)
     return false;
 
   const Consensus::Params& params = Params ().GetConsensus ();
+
+  /* Names last updated at or after the activation height never expire.  The
+     rule is tied to the name's own update height rather than to the current
+     one, so that names which expired before activation stay expired -- their
+     outputs are already spent, and reviving them would leave the name
+     database inconsistent with the UTXO set.  */
+  if (nPrevHeight >= params.nNoNameExpirationSince)
+    return false;
+
   return nPrevHeight + params.rules->NameExpirationDepth (nHeight) <= nHeight;
 }
 
@@ -425,7 +434,17 @@ ExpireNames (unsigned nHeight, CCoinsViewCache& view, CBlockUndo& undo,
   /* Both are inclusive!  The last expireTo was nHeight - 1 - expDepthOld,
      now we start at this value + 1.  */
   const unsigned expireFrom = nHeight - expDepthOld;
-  const unsigned expireTo = nHeight - expDepthNow;
+  unsigned expireTo = nHeight - expDepthNow;
+
+  /* Names updated at or after the activation height never expire, so they
+     must not be collected here either.  Once expireTo has been clamped below
+     expireFrom the loop below simply does nothing.  */
+  if (expireTo >= params.nNoNameExpirationSince)
+    {
+      if (params.nNoNameExpirationSince <= expireFrom)
+        return true;
+      expireTo = params.nNoNameExpirationSince - 1;
+    }
 
   /* It is possible that expireFrom = expireTo + 1, in case that the
      expiration period is raised together with the block height.  In this

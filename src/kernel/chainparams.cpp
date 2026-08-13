@@ -27,6 +27,7 @@
 #include <cstdint>
 #include <cstring>
 #include <iterator>
+#include <limits>
 #include <map>
 #include <span>
 #include <utility>
@@ -145,6 +146,8 @@ public:
         consensus.nAuxpowStartHeight = 1;
         consensus.fStrictChainId = false;
         consensus.nLegacyBlocksBefore = 1;
+        /* Doichain: name expiration is still in force.  */
+        consensus.nNoNameExpirationSince = std::numeric_limits<unsigned>::max();
 
         consensus.rules.reset(new Consensus::MainNetConsensus());
 
@@ -269,6 +272,8 @@ public:
         consensus.nAuxpowChainId = 0x0003;
         consensus.fStrictChainId = false;
         consensus.nLegacyBlocksBefore = 1;
+        /* Doichain: name expiration is still in force.  */
+        consensus.nNoNameExpirationSince = std::numeric_limits<unsigned>::max();
         consensus.rules.reset(new Consensus::TestNetConsensus());
 
         pchMessageStart[0] = 0xfc;
@@ -540,6 +545,8 @@ public:
         consensus.nAuxpowChainId = 0x0001;
         consensus.fStrictChainId = true;
         consensus.nLegacyBlocksBefore = 0;
+        /* Doichain: name expiration is still in force.  */
+        consensus.nNoNameExpirationSince = std::numeric_limits<unsigned>::max();
 
         consensus.rules.reset(new Consensus::TestNetConsensus());
 
@@ -645,6 +652,8 @@ public:
         consensus.nAuxpowChainId = 0x0001;
         consensus.fStrictChainId = true;
         consensus.nLegacyBlocksBefore = 0;
+        /* Doichain: name expiration is still in force.  */
+        consensus.nNoNameExpirationSince = std::numeric_limits<unsigned>::max();
 
         consensus.rules.reset(new Consensus::RegTestConsensus());
 
@@ -678,6 +687,10 @@ public:
                 consensus.CSVHeight = int{height};
                 break;
             }
+        }
+
+        if (opts.no_name_expiration_since) {
+            consensus.nNoNameExpirationSince = *opts.no_name_expiration_since;
         }
 
         for (const auto& [deployment_pos, version_bits_params] : opts.version_bits_parameters) {

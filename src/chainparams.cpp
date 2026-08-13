@@ -45,6 +45,12 @@ void ReadRegTestArgs(const ArgsManager& args, CChainParams::RegTestOptions& opti
 {
     if (auto value = args.GetBoolArg("-fastprune")) options.fastprune = *value;
     if (HasTestOption(args, "bip94")) options.enforce_bip94 = true;
+    if (auto value = args.GetIntArg("-nameexpirationdisabledheight")) {
+        if (*value < 0) {
+            throw std::runtime_error("-nameexpirationdisabledheight must not be negative.");
+        }
+        options.no_name_expiration_since = static_cast<unsigned>(*value);
+    }
 
     for (const std::string& arg : args.GetArgs("-testactivationheight")) {
         const auto found{arg.find('@')};

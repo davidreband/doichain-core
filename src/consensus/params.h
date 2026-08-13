@@ -237,6 +237,14 @@ struct Params {
     bool fStrictChainId;
     int nLegacyBlocksBefore; // -1 for "always allow"
 
+    /**
+     * Doichain: names whose last update is at or above this height never
+     * expire.  Names updated below it keep expiring on the old schedule, so
+     * the historical chain validates unchanged and nothing that has already
+     * expired comes back to life.  The maximum value means "not activated".
+     */
+    unsigned nNoNameExpirationSince;
+
 
     /** Consensus rule interface.  */
     std::unique_ptr<ConsensusRules> rules;

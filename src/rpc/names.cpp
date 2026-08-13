@@ -126,11 +126,20 @@ addExpirationInfo (const ChainstateManager& chainman,
 {
   const int curHeight = chainman.ActiveHeight ();
   const Consensus::Params& params = Params ().GetConsensus ();
+  data.pushKV ("height", height);
+
+  /* Names last updated at or above the activation height never expire, so
+     there is no counter to report for them.  */
+  if (static_cast<unsigned> (height) >= params.nNoNameExpirationSince)
+    {
+      data.pushKV ("expired", false);
+      return;
+    }
+
   const int expireDepth = params.rules->NameExpirationDepth (curHeight);
   const int expireHeight = height + expireDepth;
   const int expiresIn = expireHeight - curHeight;
   const bool expired = (expiresIn <= 0);
-  data.pushKV ("height", height);
   data.pushKV ("expires_in", expiresIn);
   data.pushKV ("expired", expired);
 }
@@ -390,7 +399,8 @@ NameInfoHelp&
 NameInfoHelp::withExpiration ()
 {
   withField ({RPCResult::Type::NUM, "height", "the name's last update height"});
-  withField ({RPCResult::Type::NUM, "expires_in", "expire counter for the name"});
+  withField ({RPCResult::Type::NUM, "expires_in", /*optional=*/true,
+              "expire counter for the name, absent if the name cannot expire"});
   withField ({RPCResult::Type::BOOL, "expired", "whether the name is expired"});
   return *this;
 }
