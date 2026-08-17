@@ -223,6 +223,43 @@ Nebeneffekt: die in Abschnitt 5.3 beschriebene Reserve im
 Schwierigkeitsgrenzwert wird gegenstandslos, weil die alte Berechnung für neue
 Blöcke nicht mehr aufgerufen wird.
 
+#### Warum die Übernahme kein Kopieren ist
+
+Die Rechenvorschrift selbst ist überschaubar und liegt als erprobter Code vor.
+Die Schwierigkeit liegt an drei anderen Stellen.
+
+**Erstens: es ist eine Konsensregel.** Geändert wird nicht ein Programmteil,
+sondern die Regel, nach der alle Knoten im Netz einen Block für gültig halten.
+Alte und neue Knoten würden sich uneinig — deshalb müssen bis zum Stichtag alle
+Betreiber und Miner umgestellt haben. Der Zeitpunkt muss außerdem so gewählt
+sein, dass die bisherige Kette weiterhin lückenlos gültig bleibt.
+
+**Zweitens: die Rechnung arbeitet mit Näherungswerten.** Um eine
+Exponentialfunktion ohne Kommazahlen zu berechnen, verwendet Bitcoin Cash eine
+Annäherung mit Festkommazahlen. Ein Fehler darin liefert keine Fehlermeldung,
+sondern plausible, aber falsche Zahlen — und ein selbst geschriebener Test, der
+derselben Formel folgt, würde denselben Fehler wiederholen. Das ist das
+eigentliche Risiko.
+
+Dagegen gibt es ein bewährtes Vorgehen: den Originalcode wortgetreu übernehmen
+statt ihn zu verbessern, die von Bitcoin Cash veröffentlichten Prüfvektoren
+nutzen, und zusätzlich gegen eine unabhängig gerechnete, exakte Fassung
+vergleichen. Erst diese Kombination deckt beides ab — Übereinstimmung mit der
+erprobten Umsetzung und mathematische Richtigkeit. Ergänzend prüft ein
+Zufallstest die Eigenschaften, die immer gelten müssen, und ein Durchlauf über
+die tatsächliche Kettengeschichte zeigt, wie sich die Regel auf echten Daten
+verhalten hätte.
+
+**Drittens: Bitcoin Cash ist eine andere Kette.** Doichain wird mitgeschürft,
+Bitcoin Cash nicht. Die bestehende Berechnung enthält Besonderheiten aus dem
+Mitschürfen, die für alle alten Blöcke unverändert erhalten bleiben müssen. Die
+neue Regel kommt daneben, nicht an ihre Stelle.
+
+**Einschätzung:** technisch beherrschbar, Aufwand etwa eine Arbeitswoche für die
+Umsetzung samt Tests, danach mindestens zwei Wochen Beobachtung im Testnetz. Das
+Risiko liegt nicht in der Programmierung, sondern in der Sorgfalt der Prüfung
+und in der Abstimmung des Stichtags.
+
 ---
 
 ## 5. Offene Entscheidungen
