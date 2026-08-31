@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install dependencies
         run: |
@@ -37,7 +37,7 @@ jobs:
             libevent-dev libboost-dev libsqlite3-dev
 
       - name: ccache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/ccache
           key: lean-ci-ccache-${{ github.sha }}
@@ -70,7 +70,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           # Full history: the linters run commit-range and subtree checks.
           fetch-depth: 0
