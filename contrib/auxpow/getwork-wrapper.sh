@@ -9,5 +9,7 @@
 # Example:
 #   contrib/auxpow/getwork-wrapper.sh http://user:pass@localhost:port/ 1234
 
-PYTHONPATH="test/functional/test_framework"
+export LC_ALL=C
+
+export PYTHONPATH="test/functional/test_framework"
 contrib/auxpow/getwork-wrapper.py --backend-url="$1" --port="$2"

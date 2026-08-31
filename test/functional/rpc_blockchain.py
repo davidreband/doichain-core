@@ -207,7 +207,7 @@ class BlockchainTest(BitcoinTestFramework):
         assert_equal(res['bits'], nbits_str(REGTEST_N_BITS))
         assert_equal(res['target'], target_str(REGTEST_TARGET))
 
-    def check_signalling_deploymentinfo_result(self, gdi_result, height, blockhash, status_next):
+    def check_signalling_deploymentinfo_result(self, gdi_result, height, blockhash, _status_next):
         assert height >= 144 and height <= 287
 
         assert_equal(gdi_result, {

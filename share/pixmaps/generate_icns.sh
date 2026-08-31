@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+export LC_ALL=C
 
 # Prereqs: sudo apt-get install icnsutils
 # Run this script from the directory where it is located.

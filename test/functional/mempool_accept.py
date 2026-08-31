@@ -396,8 +396,10 @@ class MempoolAcceptanceTest(BitcoinTestFramework):
             rawtxs=[tx.serialize().hex()],
         )
 
-        # FIXME: Enable once Namecoin has BIP68 enabled.
-        return
+        # FIXME: Enable once Doichain has BIP68 enabled.
+        bip68_enabled = False
+        if not bip68_enabled:
+            return
         self.log.info('A transaction that is locked by BIP68 sequence logic')
         tx = tx_from_hex(raw_tx_reference)
         tx.vin[0].nSequence = 2  # We could include it in the second block mined from now, but not the very next one
