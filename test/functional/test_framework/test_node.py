@@ -986,7 +986,7 @@ class TestNodeCLI():
         self.datadir = datadir
         self.rpc_timeout = rpc_timeout
         self.input = None
-        self.log = logging.getLogger('TestFramework.namecoincli')
+        self.log = logging.getLogger('TestFramework.doichaincli')
 
     def __call__(self, *options, input=None):
         # TestNodeCLI is callable with bitcoin-cli command-line options
