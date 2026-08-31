@@ -49,9 +49,9 @@ class NameExpirationTest (NameTestFramework):
 
     # Register the names.  name-long should expire one block before
     # name-short, so that the situation described above works out.
-    updLong = self.firstupdateName (0, "name-long", newLong, "value")
+    self.firstupdateName (0, "name-long", newLong, "value")
     self.generate (self.node, 2)
-    updShort = self.firstupdateName (0, "name-short", newShort, "value")
+    self.firstupdateName (0, "name-short", newShort, "value")
     self.generate (self.node, 27)
     self.checkName (0, "name-long", "value", 2, False)
     self.checkName (0, "name-short", "value", 4, False)

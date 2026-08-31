@@ -55,7 +55,7 @@ class NameLongSaltTest (NameTestFramework):
     signed = node.signrawtransactionwithwallet (tx)
     assert_equal (signed["complete"], True)
     txid = node.sendrawtransaction (signed["hex"], 0)
-    
+
     return {"txid": txid, "vout": 0}
 
   def generateFirstupdate (self, node, nm, value, salt, newInp):

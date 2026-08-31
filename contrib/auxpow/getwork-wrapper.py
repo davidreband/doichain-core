@@ -83,7 +83,7 @@ class GetworkWrapper:
 
   def submitWork (self, data):
     key = self.keyForWork (data)
-    if not key in self.works:
+    if key not in self.works:
       print ('Error: stale / unknown work submitted')
       return False
     w = self.works[key]

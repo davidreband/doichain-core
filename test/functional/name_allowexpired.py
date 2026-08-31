@@ -44,13 +44,13 @@ class NameExpirationTest(NameTestFramework):
         self.log.info("Wait 1 block, make sure domains registered.")
         self.checkName(0, "d/active", "value", 30, False)
         self.checkName(0, "d/expired", "value", 30, False)
-        
+
         self.log.info("Let half a registration interval pass.")
         self.generate (node, 15)
-        
+
         self.log.info("Renew d/active.")
         node.name_update("d/active", "renewed")
-        # Don't renew d/expired. 
+        # Don't renew d/expired.
         self.log.info("Let d/expired lapse.")
         self.generate (node, 16)
         # 30 - 15 = 15

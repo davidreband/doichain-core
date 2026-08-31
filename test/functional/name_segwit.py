@@ -20,7 +20,6 @@ from test_framework.messages import (
 )
 from test_framework.util import (
   assert_equal,
-  assert_greater_than,
   assert_raises_rpc_error,
   softfork_active,
 )

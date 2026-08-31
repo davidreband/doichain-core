@@ -29,9 +29,10 @@ pub fn lint_py_lint() -> LintResult {
             "E743", // do not define functions named "l", "O", or "I"
             "F401", // module imported but unused
             "F402", // import module from line N shadowed by loop variable
-            "F403", // 'from foo_module import *' used; unable to detect undefined names
+            // F403 / F405 (star imports) are intentionally not selected: the
+            // Namecoin/Doichain functional name tests use
+            // `from test_framework.util import *`.
             "F404", // future import(s) name after other statements
-            "F405", // foo_function may be undefined, or defined from star imports: bar_module
             "F406", // "from module import *" only allowed at module level
             "F407", // an undefined __future__ feature name was imported
             "F541", // f-string without any placeholders

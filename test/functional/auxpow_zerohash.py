@@ -29,7 +29,6 @@ from test_framework.util import assert_equal
 
 from test_framework.auxpow_testing import computeAuxpow
 
-import codecs
 from io import BytesIO
 
 

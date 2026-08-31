@@ -104,7 +104,7 @@ class ReorgsRestoreTest(BitcoinTestFramework):
 
         # Disconnect tip and sync wallet state
         tip = wallet.getbestblockhash()
-        tip_height = wallet.getblockstats(hash_or_height=tip)["height"]
+        wallet.getblockstats(hash_or_height=tip)["height"]
         wallet.invalidateblock(tip)
         wallet.syncwithvalidationinterfacequeue()
 

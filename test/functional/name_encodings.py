@@ -390,7 +390,7 @@ class NameEncodingsTest (NameTestFramework):
     txAscii = self.node.decoderawtransaction (txHex)
     found = False
     for out in txAscii['vout']:
-      if not 'nameOp' in out['scriptPubKey']:
+      if 'nameOp' not in out['scriptPubKey']:
         continue
 
       assert not found

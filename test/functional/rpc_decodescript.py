@@ -193,7 +193,7 @@ class DecodeScriptTest(BitcoinTestFramework):
         rpc_result = self.nodes[0].decodescript('5102' + witprog_hex)
         assert_equal('anchor', rpc_result['type'])
         # in the disassembly, the witness program is shown as single decimal due to its small size
-        witprog_as_decimal = int.from_bytes(bytes.fromhex(witprog_hex), 'little')
+        int.from_bytes(bytes.fromhex(witprog_hex), 'little')
         assert_equal(f'OP_NAME_NEW {witprog_hex}', rpc_result['asm'])
         assert_equal('ncrt1pfeesjnvuq8', rpc_result['address'])
 

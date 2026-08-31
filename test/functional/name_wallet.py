@@ -43,7 +43,7 @@ class NameWalletTest (NameTestFramework):
     totalFee = -info['fee']
     assert totalFee >= extra
 
-    absFee = totalFee - extra
+    totalFee - extra
 
     return totalFee
 

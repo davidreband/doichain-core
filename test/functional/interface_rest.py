@@ -4,7 +4,6 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the REST API."""
 
-import binascii
 from decimal import Decimal
 from enum import Enum
 from io import BytesIO
@@ -19,7 +18,6 @@ from test_framework.messages import (
     COIN,
     deser_block_spent_outputs,
 )
-from test_framework.script import CScript
 from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
@@ -32,7 +30,6 @@ from test_framework.wallet import (
 )
 
 from test_framework.auxpow_testing import mineAuxpowBlock
-from test_framework.messages import BLOCK_HEADER_SIZE
 
 INVALID_PARAM = "abc"
 UNKNOWN_PARAM = "0000000000000000000000000000000000000000000000000000000000000000"

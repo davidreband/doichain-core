@@ -496,7 +496,6 @@ class FullBlockTest(BitcoinTestFramework):
         self.move_tip(35)
         self.next_block(39)
         b39_outputs = 0
-        b39_sigops_per_output = 6
 
         # Build the redeem script, hash it, use hash to create the p2sh script
         redeem_script = CScript([self.coinbase_pubkey] + [OP_2DUP, OP_CHECKSIGVERIFY] * 5 + [OP_CHECKSIG])

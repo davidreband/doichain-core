@@ -30,7 +30,7 @@ class NameSendCoinsTest (NameTestFramework):
       if 'nameOp' in out['scriptPubKey']:
         continue
       addr = out['scriptPubKey']['address']
-      if not addr in expected:
+      if addr not in expected:
         # This must be the change address.  Through the assertion above about
         # the expected sizes, we make sure that the test fails if there is
         # not exactly one key with this property.

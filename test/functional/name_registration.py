@@ -69,7 +69,7 @@ class NameRegistrationTest (NameTestFramework):
     assert_raises_rpc_error (-25, 'is already being registered',
                              self.firstupdateName,
                              0, "name-0", newAconfl, "foo")
-    
+
     # Check that the name appears when the name_new is ripe.
     self.generateToOther (7)
     assert_raises_rpc_error (-4, 'name never existed',

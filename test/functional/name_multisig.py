@@ -24,7 +24,6 @@ from test_framework.script import (
 )
 from test_framework.util import (
   assert_equal,
-  assert_greater_than,
   assert_raises_rpc_error,
   softfork_active,
 )
@@ -243,7 +242,7 @@ class NameMultisigTest (NameTestFramework):
     updOps = [OP_NAME_UPDATE, nameBytes, valueBytes, OP_2DROP, OP_DROP]
     anyoneOps = [OP_TRUE]
 
-    updScript = CScript (updOps)
+    CScript (updOps)
     anyoneScript = CScript (anyoneOps)
     updAndAnyoneScript = CScript (updOps + anyoneOps)
 

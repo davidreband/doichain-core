@@ -57,7 +57,7 @@ class NameDeterministicSaltTest(NameTestFramework):
 
         self.log.info("Now let's register a name and give it a wrong (but existing) TXID.")
 
-        new_name1 = node.name_new('d/name4')
+        node.name_new('d/name4')
         new_name2 = node.name_new('d/dummy')
         self.generate (node, 12)
         assert_raises_rpc_error(-25, "generated rand for txid does not match", node.name_firstupdate, "d/name4", None, new_name2[0])

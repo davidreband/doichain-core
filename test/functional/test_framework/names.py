@@ -139,5 +139,5 @@ class NameTestFramework (BitcoinTestFramework):
     signed = self.nodes[nameTo].signrawtransactionwithwallet (signed['hex'])
     assert signed['complete']
     tx = signed['hex']
-    
+
     return self.nodes[nameFrom].sendrawtransaction (tx)
