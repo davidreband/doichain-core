@@ -1,11 +1,11 @@
 # Lightweight, self-contained CI for Doichain Core.
 #
 # Builds the daemon, CLI and unit tests on a stock GitHub-hosted Linux runner
-# (no GUI, no multiprocess/IPC), runs the unit test suite, and runs the full
-# Bitcoin linters inside their container.  This gives fast, cheap and reliable
-# feedback on every push/PR; the full Bitcoin-Core-style matrix
-# (Linux/macOS/Windows) lives in ci.yml and is better suited for a public
-# repository with unlimited Actions minutes.
+# (no GUI, no multiprocess/IPC), runs the unit test suite and the functional
+# name-test suite, and runs the full Bitcoin linters inside their container.
+# This gives fast, cheap and reliable feedback on every push/PR; the full
+# Bitcoin-Core-style matrix (Linux/macOS/Windows) lives in ci.yml and is better
+# suited for a public repository with unlimited Actions minutes.
 name: Lean CI
 
 on:
@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   linux:
-    name: Linux build + unit tests
+    name: Linux build + tests
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
@@ -64,6 +64,18 @@ jobs:
         # is kept only to absorb timing noise on shared CI runners.
         run: >
           ctest --test-dir build --output-on-failure --repeat until-pass:2 -j"$(nproc)"
+
+      - name: Functional tests (name suite)
+        # End-to-end tests that drive doichaind over RPC on regtest and cover
+        # the name / AuxPoW functionality (incl. name_doi). Four name_* suites
+        # are excluded pending a fix to the name-RPC "ismine" wallet-context
+        # wiring (name_encodings, name_ismine, name_pending) and a missing RPC
+        # method (name_deterministic_salt).
+        run: |
+          NAMES=$(ls test/functional/name_*.py | xargs -n1 basename \
+            | grep -vE 'name_encodings|name_ismine|name_pending|name_deterministic_salt')
+          python3 build/test/functional/test_runner.py $NAMES -j"$(nproc)" \
+            --tmpdirprefix="${RUNNER_TEMP}/dc-func"
 
   lint:
     name: Lint (Bitcoin linters)
