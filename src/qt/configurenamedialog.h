@@ -1,5 +1,5 @@
-#ifndef CONFIGURENAMEDIALOG_H
-#define CONFIGURENAMEDIALOG_H
+#ifndef BITCOIN_QT_CONFIGURENAMEDIALOG_H
+#define BITCOIN_QT_CONFIGURENAMEDIALOG_H
 
 #include <qt/platformstyle.h>
 
@@ -52,4 +52,4 @@ private:
     const QString name;
 };
 
-#endif // CONFIGURENAMEDIALOG_H
+#endif // BITCOIN_QT_CONFIGURENAMEDIALOG_H

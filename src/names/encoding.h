@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef H_BITCOIN_NAMES_ENCODING
-#define H_BITCOIN_NAMES_ENCODING
+#ifndef BITCOIN_NAMES_ENCODING_H
+#define BITCOIN_NAMES_ENCODING_H
 
 #include <script/script.h>
 
@@ -90,4 +90,4 @@ std::string EncodeNameForMessage (const valtype& data);
 void AddEncodedNameToUniv (UniValue& obj, const std::string& key,
                            const valtype& data, NameEncoding enc);
 
-#endif // H_BITCOIN_NAMES_ENCODING
+#endif // BITCOIN_NAMES_ENCODING_H

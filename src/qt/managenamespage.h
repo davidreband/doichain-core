@@ -1,5 +1,5 @@
-#ifndef MANAGENAMESPAGE_H
-#define MANAGENAMESPAGE_H
+#ifndef BITCOIN_QT_MANAGENAMESPAGE_H
+#define BITCOIN_QT_MANAGENAMESPAGE_H
 
 #include <qt/platformstyle.h>
 
@@ -62,4 +62,4 @@ Q_SIGNALS:
     void message(const QString &title, const QString &message, unsigned int style);
 };
 
-#endif // MANAGENAMESPAGE_H
+#endif // BITCOIN_QT_MANAGENAMESPAGE_H

@@ -11,4 +11,4 @@ bool getNameSalt(const CKey& key, const valtype& name, valtype& rand);
 
 } // namespace wallet
 
-#endif //BITCOIN_WALLET_RPC_WALLETNAMES_H
+#endif // BITCOIN_WALLET_RPC_WALLETNAMES_H

@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef H_BITCOIN_NAMES_APPLICATIONS
-#define H_BITCOIN_NAMES_APPLICATIONS
+#ifndef BITCOIN_NAMES_APPLICATIONS_H
+#define BITCOIN_NAMES_APPLICATIONS_H
 
 #include <script/script.h>
 
@@ -29,4 +29,4 @@ bool IsMinimalJSONOrEmptyString (const std::string& text);
 
 std::string GetMinimalJSON (const std::string& text);
 
-#endif // H_BITCOIN_NAMES_APPLICATIONS
+#endif // BITCOIN_NAMES_APPLICATIONS_H

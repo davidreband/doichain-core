@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef H_BITCOIN_NAMES_MAIN
-#define H_BITCOIN_NAMES_MAIN
+#ifndef BITCOIN_NAMES_MAIN_H
+#define BITCOIN_NAMES_MAIN_H
 
 #include <consensus/amount.h>
 #include <names/common.h>
@@ -135,4 +135,4 @@ bool UnexpireNames (unsigned nHeight, CBlockUndo& undo,
  */
 void CheckNameDB (Chainstate& chainState, bool disconnect);
 
-#endif // H_BITCOIN_NAMES_MAIN
+#endif // BITCOIN_NAMES_MAIN_H

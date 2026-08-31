@@ -1,5 +1,5 @@
-#ifndef NAMETABLEMODEL_H
-#define NAMETABLEMODEL_H
+#ifndef BITCOIN_QT_NAMETABLEMODEL_H
+#define BITCOIN_QT_NAMETABLEMODEL_H
 
 #include <qt/bitcoinunits.h>
 #include <qt/clientmodel.h>
@@ -111,4 +111,4 @@ struct NameTableEntry
         name(QString::fromStdString(name)), value(QString::fromStdString(value)), nHeight(nHeight), expiresIn(expiresIn), nameStatus(QString::fromStdString(nameStatus)) {}
 };
 
-#endif // NAMETABLEMODEL_H
+#endif // BITCOIN_QT_NAMETABLEMODEL_H

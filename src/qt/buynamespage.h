@@ -1,5 +1,5 @@
-#ifndef BUYNAMESPAGE_H
-#define BUYNAMESPAGE_H
+#ifndef BITCOIN_QT_BUYNAMESPAGE_H
+#define BITCOIN_QT_BUYNAMESPAGE_H
 
 #include <qt/platformstyle.h>
 
@@ -41,4 +41,4 @@ private Q_SLOTS:
     void onRegisterNameAction();
 };
 
-#endif // BUYNAMESPAGE_H
+#endif // BITCOIN_QT_BUYNAMESPAGE_H

@@ -38,10 +38,6 @@ are identical. The Doichain-specific parts are:
   changed by whoever controls it — proven by spending the name's previous
   `name_doi` output (the same UTXO-ownership principle Namecoin uses for
   `name_update`). Classic `d/` Namecoin names keep working unchanged alongside it.
-* **Consensus rules gated by activation height.** Tightened rules (the strict
-  `name_doi` ownership check and enforcement of the PoW difficulty rule) become
-  active only from a configured block height, so the existing Doichain chain stays
-  valid and the new rules apply from a coordinated flag-day onward.
 
 ### A simple example
 

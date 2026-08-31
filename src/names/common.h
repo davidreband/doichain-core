@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef H_BITCOIN_NAMES_COMMON
-#define H_BITCOIN_NAMES_COMMON
+#ifndef BITCOIN_NAMES_COMMON_H
+#define BITCOIN_NAMES_COMMON_H
 
 #include <compat/endian.h>
 #include <primitives/transaction.h>
@@ -437,4 +437,4 @@ public:
 
 };
 
-#endif // H_BITCOIN_NAMES_COMMON
+#endif // BITCOIN_NAMES_COMMON_H

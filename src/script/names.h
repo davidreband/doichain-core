@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef H_BITCOIN_SCRIPT_NAMES
-#define H_BITCOIN_SCRIPT_NAMES
+#ifndef BITCOIN_SCRIPT_NAMES_H
+#define BITCOIN_SCRIPT_NAMES_H
 
 #include <script/script.h>
 
@@ -256,4 +256,4 @@ public:
 
 };
 
-#endif // H_BITCOIN_SCRIPT_NAMES
+#endif // BITCOIN_SCRIPT_NAMES_H
