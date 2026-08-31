@@ -1,9 +1,10 @@
 # Lightweight, self-contained CI for Doichain Core.
 #
 # Builds the daemon, CLI and unit tests on a stock GitHub-hosted Linux runner
-# (no GUI, no multiprocess/IPC) and runs the unit test suite.  This gives fast,
-# cheap and reliable feedback on every push/PR; the full Bitcoin-Core-style
-# matrix (Linux/macOS/Windows) lives in ci.yml and is better suited for a public
+# (no GUI, no multiprocess/IPC), runs the unit test suite, and runs the full
+# Bitcoin linters inside their container.  This gives fast, cheap and reliable
+# feedback on every push/PR; the full Bitcoin-Core-style matrix
+# (Linux/macOS/Windows) lives in ci.yml and is better suited for a public
 # repository with unlimited Actions minutes.
 name: Lean CI
 
@@ -63,3 +64,20 @@ jobs:
         run: >
           ctest --test-dir build --output-on-failure --repeat until-pass:2 -j"$(nproc)"
           -E 'pow_tests|script_standard_tests|net_peer_connection_tests|name_mempool_tests|validation_chainstatemanager_tests'
+
+  lint:
+    name: Lint (Bitcoin linters)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history: the linters run commit-range and subtree checks.
+          fetch-depth: 0
+
+      - name: Run linters
+        # Builds the bitcoin-linter container (ci/lint_imagefile) and runs the
+        # full lint suite (ci/lint/06_script.sh) inside it. Docker/buildx are
+        # preinstalled on ubuntu-latest; ci/lint.py drops the interactive -it
+        # flag automatically when GITHUB_ACTIONS=true.
+        run: ci/lint.py
