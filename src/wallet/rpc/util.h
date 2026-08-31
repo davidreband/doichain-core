@@ -49,6 +49,15 @@ std::string EnsureUniqueWalletName(const JSONRPCRequest& request, std::optional<
 void EnsureWalletIsUnlocked(const CWallet&);
 WalletContext& EnsureWalletContext(const std::any& context);
 
+/**
+ * Returns whether the request carries a wallet context at all, without ever
+ * throwing (unlike EnsureWalletContext). This must be defined in the wallet
+ * translation unit: the std::any holding a WalletContext* is created there, and
+ * a cross-boundary std::any_cast from the node side can fail to recognise the
+ * type, so the non-wallet name RPCs have to ask the wallet side to do the check.
+ */
+bool HasWalletContext(const JSONRPCRequest& request);
+
 bool GetAvoidReuseFlag(const CWallet& wallet, const UniValue& param);
 std::string LabelFromValue(const UniValue& value);
 //! Fetch parent descriptors of this scriptPubKey.

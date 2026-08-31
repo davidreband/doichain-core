@@ -272,8 +272,11 @@ public:
       {
         /* GetWalletForJSONRPCRequest throws an internal error if there
            is no wallet context.  We want to handle this situation gracefully
-           and just fall back to not having a wallet in this case.  */
-        if (util::AnyPtr<wallet::WalletContext> (request.context))
+           and just fall back to not having a wallet in this case.  The context
+           check must happen in the wallet translation unit (HasWalletContext):
+           a node-side std::any_cast of the WalletContext can fail across the
+           wallet/node boundary even though the wallet side stored it.  */
+        if (wallet::HasWalletContext (request))
           {
             wallet = wallet::GetWalletForJSONRPCRequest (request);
             return;

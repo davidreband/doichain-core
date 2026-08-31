@@ -101,6 +101,11 @@ WalletContext& EnsureWalletContext(const std::any& context)
     return *wallet_context;
 }
 
+bool HasWalletContext(const JSONRPCRequest& request)
+{
+    return util::AnyPtr<WalletContext>(request.context) != nullptr;
+}
+
 std::string LabelFromValue(const UniValue& value)
 {
     static const std::string empty_string;
