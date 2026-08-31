@@ -2,7 +2,6 @@ Doichain Core integration/staging tree
 =======================================
 
 [![Lean CI](https://github.com/Doichain/doichain-core/actions/workflows/ci-lean.yml/badge.svg?branch=master)](https://github.com/Doichain/doichain-core/actions/workflows/ci-lean.yml)
-[![Full CI](https://github.com/Doichain/doichain-core/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/Doichain/doichain-core/actions/workflows/ci.yml)
 
 https://doichain.org
 
