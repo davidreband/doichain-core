@@ -55,15 +55,15 @@ jobs:
         run: cmake --build build -j"$(nproc)"
 
       - name: Unit tests
-        # A few upstream Bitcoin/Namecoin unit tests hardcode base-chain
-        # constants that Doichain intentionally changes (PoW difficulty limit,
-        # bech32 HRP, BIP341 address vectors) or are known-flaky. They are
-        # excluded here and tracked for a dedicated Doichain test-adaptation
-        # pass (TODO); Doichain's own tests (incl. name_tests/name_doi_verification)
-        # and all base-library tests still run.
+        # Full unit suite. The suites that used to be excluded here
+        # (pow_tests, script_standard_tests, net_peer_connection_tests,
+        # name_mempool_tests, validation_chainstatemanager_tests) have been
+        # adapted to Doichain's parameters (powLimit, bech32 HRP, default P2P
+        # port, placeholder nMinimumChainWork) and the name-mempool callback
+        # race that made name_mempool_tests flaky has been fixed. until-pass:2
+        # is kept only to absorb timing noise on shared CI runners.
         run: >
           ctest --test-dir build --output-on-failure --repeat until-pass:2 -j"$(nproc)"
-          -E 'pow_tests|script_standard_tests|net_peer_connection_tests|name_mempool_tests|validation_chainstatemanager_tests'
 
   lint:
     name: Lint (Bitcoin linters)
