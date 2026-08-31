@@ -75,6 +75,18 @@ not Doichain-specific should ideally be contributed there. The contribution
 workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md) and useful hints for
 developers can be found in [doc/developer-notes.md](doc/developer-notes.md).
 
+This repository is based on the Namecoin Core release tagged **`nc31.1`**
+(Bitcoin Core 31), and the full upstream history is preserved. The complete set
+of Doichain-specific changes on top of that base can therefore be reviewed with:
+
+```sh
+git fetch --tags
+git diff nc31.1..master
+```
+
+or on GitHub via
+[`nc31.1...master`](https://github.com/Doichain/doichain-core/compare/nc31.1...master).
+
 Please discuss complicated or controversial changes as a GitHub issue before
 working on a patch set.
 
