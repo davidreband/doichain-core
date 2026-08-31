@@ -237,6 +237,12 @@ CAuxpowBuilder::buildCoinbaseData (bool header, const valtype& auxRoot,
 
 BOOST_FIXTURE_TEST_CASE (check_auxpow, BasicTestingSetup)
 {
+  /* Exercise the auxpow chain-id checks (including the strict-chain-id rule)
+     against regtest, whose parameters keep fStrictChainId = true.  Doichain
+     mainnet deliberately uses fStrictChainId = false, so the default MAIN
+     params would not trigger the strict-chain-id rejection this test relies
+     on.  (auxpow_pow below likewise selects regtest.)  */
+  SelectParams (ChainType::REGTEST);
   const Consensus::Params& params = Params ().GetConsensus ();
   CAuxpowBuilder builder(5, 42);
   CAuxPow auxpow;
