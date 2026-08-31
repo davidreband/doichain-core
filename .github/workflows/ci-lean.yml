@@ -1,0 +1,57 @@
+# Lightweight, self-contained CI for Doichain Core.
+#
+# Builds the daemon, CLI and unit tests on a stock GitHub-hosted Linux runner
+# (no GUI, no multiprocess/IPC) and runs the unit test suite.  This gives fast,
+# cheap and reliable feedback on every push/PR; the full Bitcoin-Core-style
+# matrix (Linux/macOS/Windows) lives in ci.yml and is better suited for a public
+# repository with unlimited Actions minutes.
+name: Lean CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: ['**']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lean-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  linux:
+    name: Linux build + unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential cmake pkgconf python3 ccache \
+            libevent-dev libboost-dev libsqlite3-dev
+
+      - name: ccache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ccache
+          key: lean-ci-ccache-${{ github.sha }}
+          restore-keys: lean-ci-ccache-
+
+      - name: Configure
+        run: >
+          cmake -B build
+          -DBUILD_GUI=OFF
+          -DENABLE_IPC=OFF
+          -DBUILD_TESTS=ON
+          -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build -j"$(nproc)"
+
+      - name: Unit tests
+        run: ctest --test-dir build --output-on-failure --repeat until-pass:2 -j"$(nproc)"
