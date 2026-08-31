@@ -1,6 +1,6 @@
 #!/sbin/openrc-run
 
-# backward compatibility for existing gentoo layout 
+# backward compatibility for existing gentoo layout
 #
 if [ -d "/var/lib/namecoin/.namecoin" ]; then
 	NAMECOIND_DEFAULT_DATADIR="/var/lib/namecoin/.namecoin"

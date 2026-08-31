@@ -3,6 +3,8 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#include <bitcoin-build-config.h> // IWYU pragma: keep
+
 #include <base58.h>
 #include <chainparams.h>
 #include <common/args.h>
@@ -558,7 +560,7 @@ name_show ()
   MaybeWalletForRequest wallet(request);
   LOCK2 (wallet.getLock (), cs_main);
   UniValue name_object = getNameInfo(chainman, options, name, data, wallet);
-  assert(!name_object["expired"].isNull());
+  CHECK_NONFATAL(!name_object["expired"].isNull());
   const bool is_expired = name_object["expired"].get_bool();
   if (is_expired && !allow_expired)
     {

@@ -514,7 +514,7 @@ class ConfArgsTest(BitcoinTestFramework):
         err = self.nodes[0].stdout.read()
         self.nodes[0].stderr.seek(0)
         self.nodes[0].stderr.truncate()
-        if err != b'' and err != warning_msg(self.nodes[0], 42):
+        if err != b'':
             raise AssertionError("Unexpected stderr after shutdown of Testnet3 node")
         self.stop_node(0)
 

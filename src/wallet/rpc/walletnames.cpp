@@ -343,7 +343,7 @@ getNameSalt(CWallet* const pwallet, const valtype& name, const CScript& output, 
         CKey key;
         if (!ExtractDestination(output, dest))
             continue; // If multisig.
-        assert(IsValidDestination(dest)); // We should never get a null destination.
+        CHECK_NONFATAL(IsValidDestination(dest)); // We should never get a null destination.
 
         keyid = GetKeyForDestination(*provider, dest);
         provider->GetKey(keyid, key);
@@ -998,7 +998,7 @@ queuerawtransaction ()
       // Don't check max fee.
       const node::TransactionError err = BroadcastTransaction(node, txParsed, unused_err_string,
         /* max_tx_fee */ 0, node::TxBroadcast::MEMPOOL_AND_BROADCAST_TO_ALL, /* wait_callback */ false);
-      assert(err == node::TransactionError::OK);
+      CHECK_NONFATAL(err == node::TransactionError::OK);
 
       return hashTx.GetHex();
     }

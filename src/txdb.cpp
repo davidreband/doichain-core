@@ -468,7 +468,7 @@ bool CCoinsViewDB::ValidateNameDB(const Chainstate& chainState, const std::funct
                 return false;
             }
             nameHeightsData.insert(std::make_pair(name, data.getHeight()));
-            
+
             /* Expiration is checked at height+1, because that matches
                how the UTXO set is cleared in ExpireNames.  */
             assert(namesInDB.count(name) == 0);

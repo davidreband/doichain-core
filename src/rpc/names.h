@@ -5,7 +5,7 @@
 #ifndef BITCOIN_RPC_NAMES_H
 #define BITCOIN_RPC_NAMES_H
 
-#include <bitcoin-build-config.h>
+#include <bitcoin-build-config.h> // IWYU pragma: keep
 
 #include <names/encoding.h>
 #include <rpc/util.h>

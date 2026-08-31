@@ -64,9 +64,9 @@ void ConfigureNameDialog::accept()
     returnTransferTo = ui->transferTo->text();
 
     if(!IsValidJSONOrEmptyString(data)){
-        QMessageBox::StandardButton MessageBoxInvalidJSON = 
+        QMessageBox::StandardButton MessageBoxInvalidJSON =
         QMessageBox::warning(this, tr("Invalid JSON"),
-                tr("Are you sure you want to continue anyway? The inputted JSON data is invalid, and is likely to make the name unresolvable."), 
+                tr("Are you sure you want to continue anyway? The inputted JSON data is invalid, and is likely to make the name unresolvable."),
                 QMessageBox::Ok|QMessageBox::Cancel);
 
         if(MessageBoxInvalidJSON == QMessageBox::Ok){
@@ -77,11 +77,11 @@ void ConfigureNameDialog::accept()
         QMessageBox MessageBoxNonMinimalJSON;
         MessageBoxNonMinimalJSON.setIcon(QMessageBox::Warning);
         MessageBoxNonMinimalJSON.setWindowTitle(tr("Non-minimal JSON"));
-        MessageBoxNonMinimalJSON.setText(tr("Are you sure you want to continue anyway? The inputted JSON data is non-minimal, and therefore will waste space as well as incurring added transaction costs when written on the blockchain.")); 
+        MessageBoxNonMinimalJSON.setText(tr("Are you sure you want to continue anyway? The inputted JSON data is non-minimal, and therefore will waste space as well as incurring added transaction costs when written on the blockchain."));
         MessageBoxNonMinimalJSON.addButton(QMessageBox::Ok);
         MessageBoxNonMinimalJSON.addButton(QMessageBox::Cancel);
         MessageBoxNonMinimalJSON.addButton(tr("Minimalise JSON"), QMessageBox::ActionRole);
-        
+
         MessageBoxNonMinimalJSON.exec();
 
         QMessageBox::ButtonRole reply = MessageBoxNonMinimalJSON.buttonRole(MessageBoxNonMinimalJSON.clickedButton());
@@ -89,7 +89,7 @@ void ConfigureNameDialog::accept()
         if(reply == QMessageBox::AcceptRole){
             QDialog::accept();
         } else if(reply == QMessageBox::ActionRole){
-            
+
             std::string minimalJSONData = GetMinimalJSON(data);
             ui->dataEdit->setText(QString::fromStdString(minimalJSONData));
 
@@ -141,8 +141,8 @@ void ConfigureNameDialog::onDataEdited(const QString &name)
     ui->dataSize->resize(ui->dataSize->fontMetrics().horizontalAdvance(ui->dataSize->text()), ui->dataSize->height());
 
     std::string data = ui->dataEdit->text().toStdString();
-    
-    if(IsMinimalJSONOrEmptyString(data)){ 
+
+    if(IsMinimalJSONOrEmptyString(data)){
         ui->labelValidJSON->setText(tr("Valid and minimal JSON data."));
     } else if(IsValidJSONOrEmptyString(data)){
         ui->labelValidJSON->setText(tr("JSON data is not minimal."));

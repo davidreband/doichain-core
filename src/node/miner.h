@@ -120,7 +120,7 @@ private:
       * This check should always succeed, and is here
       * only as an extra check in case of a bug */
     bool TestChunkTransactions(const std::vector<CTxMemPoolEntryRef>& txs) const;
-    
+
     /**
      * Verify if a tx can be added from a Namecoin perspective.  This may not
      * (yet) be the case if it is a NAME_FIRSTUPDATE with a not-yet-mature

@@ -185,21 +185,21 @@ IsValidJSONOrEmptyString (const std::string& text){
     UniValue v;
 
     return text.empty() || v.read(text);
-}    
+}
 
 bool
 IsMinimalJSONOrEmptyString (const std::string& text){
     UniValue v;
     if(text.empty()){
         return true;
-    } 
+    }
 
-    if(!v.read(text)){ 
+    if(!v.read(text)){
         return false;
-    } 
+    }
 
     const std::string minimalJSON = GetMinimalJSON(text);
-    
+
     const bool isMinimal = (text == minimalJSON);
 
     if(!isMinimal){

@@ -37,6 +37,7 @@ EXPECTED_BOOST_INCLUDES = [
                            "boost/test/included/unit_test.hpp",
                            "boost/test/unit_test.hpp",
                            "boost/tuple/tuple.hpp",
+                           "boost/xpressive/xpressive_dynamic.hpp",
                           ]
 
 

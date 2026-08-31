@@ -185,7 +185,7 @@ RPCHelpMan getauxblock()
     }
 
     /* Submit a block instead.  */
-    assert(request.params.size() == 2);
+    CHECK_NONFATAL(request.params.size() == 2);
     const std::string& hash = request.params[0].get_str();
 
     const bool fAccepted

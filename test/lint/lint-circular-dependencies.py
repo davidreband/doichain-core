@@ -25,6 +25,33 @@ EXPECTED_CIRCULAR_DEPENDENCIES = (
 
     # Temporary, removed in followup https://github.com/bitcoin/bitcoin/pull/24230
     "index/base -> node/context -> net_processing -> index/blockfilterindex -> index/base",
+
+    # Doichain/Namecoin name subsystem, AuxPoW, and the CBlockIndex::GetBlockHeader(BlockManager)
+    # change (which adds the chain -> node/blockstorage edge) introduce these cycles.
+    "auxpow -> primitives/block -> auxpow",
+    "chain -> node/blockstorage -> chain",
+    "init -> rpc/names -> init",
+    "names/main -> undo -> names/main",
+    "names/main -> validation -> names/main",
+    "names/mempool -> txmempool -> names/mempool",
+    "names/mempool -> validation -> names/mempool",
+    "qt/nametablemodel -> qt/walletmodel -> qt/nametablemodel",
+    "rpc/blockchain -> rpc/names -> rpc/blockchain",
+    "rpc/blockchain -> rpc/rawtransaction -> rpc/blockchain",
+    "rpc/names -> rpc/util -> rpc/names",
+    "script/names -> script/script -> script/names",
+    "txdb -> validation -> txdb",
+    "chain -> node/blockstorage -> pow -> chain",
+    "chain -> node/blockstorage -> validation -> chain",
+    "consensus/tx_verify -> names/main -> txmempool -> consensus/tx_verify",
+    "consensus/tx_verify -> names/main -> validation -> consensus/tx_verify",
+    "kernel/chainstatemanager_opts -> txdb -> validation -> kernel/chainstatemanager_opts",
+    "chain -> node/blockstorage -> validation -> deploymentstatus -> chain",
+    "chain -> node/blockstorage -> validation -> kernel/chain -> chain",
+    "chain -> node/blockstorage -> validation -> txmempool -> chain",
+    "chain -> node/blockstorage -> validation -> validationinterface -> chain",
+    "chain -> node/blockstorage -> validation -> versionbits -> chain",
+    "chain -> node/blockstorage -> validation -> versionbits -> versionbits_impl -> chain",
 )
 
 CODE_DIR = "src"

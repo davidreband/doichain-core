@@ -486,7 +486,7 @@ BOOST_AUTO_TEST_CASE (name_iteration)
   tester.add ("a");
   tester.add ("aa");
   tester.add ("b");
-  
+
   tester.remove ("aa");
   tester.remove ("b");
   tester.add ("b");
@@ -731,7 +731,7 @@ BOOST_AUTO_TEST_CASE (name_tx_verification)
   scr = CNameScript::buildNameUpdate (addr, name1, tooLongValue);
   mtx.vout.push_back (CTxOut (COIN, scr));
   BOOST_CHECK (!CheckNameTransaction (mtx, 110000, viewUpd, state, 0));
-  
+
   /* Name mismatch to prev out.  */
   mtx.vout.clear ();
   scr = CNameScript::buildNameUpdate (addr, name2, value);
@@ -922,7 +922,7 @@ BOOST_AUTO_TEST_CASE (name_expire_utxo)
   const valtype name2 = DecodeName ("test-name-2", NameEncoding::ASCII);
   const valtype value = DecodeName ("value", NameEncoding::ASCII);
   const CScript addr = getTestAddress ();
-  
+
   const CScript upd1 = CNameScript::buildNameUpdate (addr, name1, value);
   const CScript upd2 = CNameScript::buildNameUpdate (addr, name2, value);
 

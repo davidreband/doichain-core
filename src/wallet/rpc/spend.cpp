@@ -827,7 +827,7 @@ RPCHelpMan fundrawtransaction()
             destinations,
             InterpretSubtractFeeFromOutputInstructions(options["subtractFeeFromOutputs"], dummy)
     );
-    assert(namePrefix.size() == recipients.size());
+    CHECK_NONFATAL(namePrefix.size() == recipients.size());
     for (unsigned i = 0; i < recipients.size(); ++i) {
         recipients[i].nameScript = namePrefix[i];
     }
