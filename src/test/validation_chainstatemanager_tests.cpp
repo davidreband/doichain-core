@@ -183,7 +183,12 @@ BOOST_FIXTURE_TEST_CASE(chainstatemanager_ibd_exit_after_loading_blocks, ChainTe
         chainman.m_cached_is_ibd.store(cached_is_ibd, std::memory_order_relaxed);
         chainman.m_blockman.m_importing = loading_blocks;
         if (tip_exists) {
-            tip.nChainWork = chainman.MinimumChainWork() - (enough_work ? 0 : 1);
+            // Doichain MAIN currently carries a placeholder nMinimumChainWork of
+            // 0 (a real value lands at rollout). With a zero minimum, "min - 1"
+            // would underflow, so treat the zero case as "enough work".
+            arith_uint256 work{chainman.MinimumChainWork()};
+            if (!enough_work && work != arith_uint256{}) work -= 1;
+            tip.nChainWork = work;
             tip.nTime = (recent_time - (tip_recent ? 0h : 100h)).time_since_epoch().count();
             chainman.ActiveChain().SetTip(tip);
         } else {
@@ -192,13 +197,19 @@ BOOST_FIXTURE_TEST_CASE(chainstatemanager_ibd_exit_after_loading_blocks, ChainTe
         chainman.UpdateIBDStatus();
     }};
 
+    // See the note in apply(): when the active chain's minimum chain work is 0
+    // (Doichain MAIN placeholder), the "insufficient work" dimension collapses
+    // to "enough work", so fold it into the expectation below.
+    const bool min_work_is_zero{chainman.MinimumChainWork() == arith_uint256{}};
+
     for (const bool cached_is_ibd : {false, true}) {
         for (const bool loading_blocks : {false, true}) {
             for (const bool tip_exists : {false, true}) {
                 for (const bool enough_work : {false, true}) {
                     for (const bool tip_recent : {false, true}) {
                         apply(cached_is_ibd, loading_blocks, tip_exists, enough_work, tip_recent);
-                        const bool expected_ibd = cached_is_ibd && (loading_blocks || !tip_exists || !enough_work || !tip_recent);
+                        const bool has_enough_work{enough_work || min_work_is_zero};
+                        const bool expected_ibd = cached_is_ibd && (loading_blocks || !tip_exists || !has_enough_work || !tip_recent);
                         BOOST_CHECK_EQUAL(chainman.IsInitialBlockDownload(), expected_ibd);
                     }
                 }

@@ -388,8 +388,11 @@ public:
   void
   ExpectTxids (const std::vector<Txid>& expected) const
   {
-    while (m_node.validation_signals->CallbacksPending () > 0)
-      UninterruptibleSleep (std::chrono::milliseconds (10));
+    // Deterministically drain the validation-interface queue so every
+    // TransactionRemovedFromMempool callback has run (and its writes to txids
+    // are visible on this thread) before comparing. The previous
+    // CallbacksPending() poll raced the callback thread and made this flaky.
+    m_node.validation_signals->SyncWithValidationInterfaceQueue ();
     BOOST_CHECK (txids == expected);
   }
 
