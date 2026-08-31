@@ -1,98 +1,129 @@
-Namecoin Core integration/staging tree
-=====================================
+Doichain Core integration/staging tree
+=======================================
 
-[![Build Status](https://travis-ci.org/namecoin/namecoin-core.svg?branch=master)](https://travis-ci.org/namecoin/namecoin-core)
+[![CI](https://github.com/Doichain/doichain-core/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/Doichain/doichain-core/actions/workflows/ci.yml)
 
-https://namecoin.org
+https://doichain.org
 
-What is Namecoin? 
-----------------
+What is Doichain?
+-----------------
 
-Namecoin is a decentralized open source information registration and transfer system based on the Bitcoin cryptocurrency.
+Doichain is a decentralized name and data registration blockchain. It is a fork
+of [Namecoin](https://namecoin.org) (which in turn derives from Bitcoin) and
+therefore inherits Namecoin's naming system and merged mining, while adding the
+`name_doi` operation for a simpler, ownership-controlled way to register names.
 
 What does it do?
 ----------------
 
 * Securely record and transfer arbitrary names (keys).
-* Attach a value (data) to the names (up to 520 bytes, more in the future).
-* Transact namecoins, the digital currency (ℕ, NMC).
+* Attach a value (data) to a name (up to 520 bytes).
+* Register a name in a single step with `name_doi` (see below).
+* Transact the Doichain currency (DOI).
+* Merged mining and decentralized DNS, inherited from Namecoin.
 
-Namecoin was the first fork of Bitcoin and still is one of the most innovative altcoins. It was first to implement merged mining and a decentralized DNS. Namecoin squares Zooko's Triangle!
+Differences from Namecoin (upstream)
+------------------------------------
 
-What can it be used for?
-----------------
+Doichain is built on top of Namecoin Core, so most of the code, RPCs and tooling
+are identical. The Doichain-specific parts are:
 
-* Protect free-speech rights online by making the web more resistant to censorship.
-* Access websites using the .bit domain (with TLS/SSL).
-* Store identity information such as email, GPG key, BTC address, TLS fingerprints, Bitmessage address, etc.
-* Human readable Tor .onion names/domains.
-* File signatures, Voting, bonds/stocks,/shares, web of trust, escrow and notary services (to be implemented).
+* **Own network.** Doichain is a separate chain with its own genesis block,
+  network magic, default ports (P2P 8338 / RPC 8339), address prefixes,
+  `dc…` bech32 addresses and AuxPoW chain id `0x0002`.
+* **`name_doi` — one-step, UTXO-owned names.** In addition to Namecoin's classic
+  two-step registration (`name_new` → wait → `name_firstupdate`, a commit/reveal
+  that protects against front-running), Doichain adds the `OP_NAME_DOI` operation:
+  a name is **registered in a single transaction**, and afterwards it can only be
+  changed by whoever controls it — proven by spending the name's previous
+  `name_doi` output (the same UTXO-ownership principle Namecoin uses for
+  `name_update`). Classic `d/` Namecoin names keep working unchanged alongside it.
+* **Consensus rules gated by activation height.** Tightened rules (the strict
+  `name_doi` ownership check and enforcement of the PoW difficulty rule) become
+  active only from a configured block height, so the existing Doichain chain stays
+  valid and the new rules apply from a coordinated flag-day onward.
 
-For more information, as well as an immediately useable, binary version of
-the Namecoin Core software, see https://www.namecoin.org/download.
+### A simple example
+
+Register a name and a value in one step, read it back, then update it as the
+owner (this spends the previous output, so only the owner can do it):
+
+```sh
+# one-step registration
+doichain-cli name_doi "id/alice" "hello from doichain"
+
+# ...mine/confirm a block, then read it back
+doichain-cli name_show "id/alice"
+
+# owner update (fails for anyone who does not control the name)
+doichain-cli name_doi "id/alice" "updated value"
+```
 
 License
 -------
 
-Namecoin Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
-information or see https://opensource.org/license/MIT.
+Doichain Core is released under the terms of the MIT license. See [COPYING](COPYING)
+for more information or see https://opensource.org/license/MIT.
 
 Development Process
 -------------------
 
-The `master` branch is regularly built (see doc/build-*.md for instructions) and tested, but is not guaranteed to be
-completely stable. [Tags](https://github.com/namecoin/namecoin-core/tags) are created
-regularly to indicate new official, stable release versions of Namecoin Core.
+The `master` branch is regularly built (see doc/build-*.md for instructions) and
+tested, but is not guaranteed to be completely stable.
+[Tags](https://github.com/Doichain/doichain-core/tags) are created regularly to
+indicate new official, stable release versions of Doichain Core.
 
-The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md)
-and useful hints for developers can be found in [doc/developer-notes.md](doc/developer-notes.md).
+Doichain Core tracks [Namecoin Core](https://github.com/namecoin/namecoin-core)
+and [Bitcoin Core](https://github.com/bitcoin/bitcoin) upstream; changes that are
+not Doichain-specific should ideally be contributed there. The contribution
+workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md) and useful hints for
+developers can be found in [doc/developer-notes.md](doc/developer-notes.md).
 
-The developer [forum](https://forum.namecoin.info/viewforum.php?f=4)
-should be used to discuss complicated or controversial changes before working
-on a patch set.
-
-Developer IRC can be found on Freenode at #namecoin-dev.
+Please discuss complicated or controversial changes as a GitHub issue before
+working on a patch set.
 
 Testing
 -------
 
-Testing and code review is the bottleneck for development; we get more pull
-requests than we can review and test on short notice. Please be patient and help out by testing
-other people's pull requests, and remember this is a security-critical project where any mistake might cost people
-lots of money.
+Testing and code review is the bottleneck for development; please help out by
+testing other people's pull requests, and remember this is a security-critical
+project where any mistake might cost people lots of money.
 
 ### Automated Testing
 
-Developers are strongly encouraged to write [unit tests](src/test/README.md) for new code, and to
-submit new unit tests for old code. Unit tests can be compiled and run
-(assuming they weren't disabled during the generation of the build system) with: `ctest`. Further details on running
-and extending unit tests can be found in [/src/test/README.md](/src/test/README.md).
+Developers are strongly encouraged to write [unit tests](src/test/README.md) for
+new code, and to submit new unit tests for old code. Unit tests can be compiled
+and run (assuming they weren't disabled during the generation of the build system)
+with: `ctest`. Further details on running and extending unit tests can be found in
+[/src/test/README.md](/src/test/README.md).
 
-There are also [regression and integration tests](/test), written
-in Python.
-These tests can be run (if the [test dependencies](/test) are installed) with: `build/test/functional/test_runner.py`
-(assuming `build` is your build directory).
+There are also [regression and integration tests](/test), written in Python.
+These tests can be run (if the [test dependencies](/test) are installed) with:
+`build/test/functional/test_runner.py` (assuming `build` is your build directory).
 
-The CI (Continuous Integration) systems make sure that every pull request is tested on Windows, Linux, and macOS.
-The CI must pass on all commits before merge to avoid unrelated CI failures on new pull requests.
+Continuous Integration runs via **GitHub Actions**
+([.github/workflows/ci.yml](.github/workflows/ci.yml)) on every push and pull
+request, building and testing on Linux, macOS and Windows and running the linters.
 
 ### Manual Quality Assurance (QA) Testing
 
-Changes should be tested by somebody other than the developer who wrote the
-code. This is especially important for large or high-risk changes. It is useful
-to add a test plan to the pull request description if testing the changes is
-not straightforward.
+Changes should be tested by somebody other than the developer who wrote the code.
+This is especially important for large or high-risk changes. It is useful to add a
+test plan to the pull request description if testing the changes is not
+straightforward.
 
 Translations
 ------------
 
-**Translation workflow is not yet set up for Namecoin Core.  For strings which are common to Bitcoin Core, see below.**
+**Translation workflow is not yet set up for Doichain Core. For strings which are
+common to Bitcoin Core, see below.**
 
 Changes to translations as well as new translations can be submitted to
 [Bitcoin Core's Transifex page](https://explore.transifex.com/bitcoin/bitcoin/).
 
-Translations are periodically pulled from Transifex and merged into the git repository. See the
-[translation process](doc/translation_process.md) for details on how this works.
+Translations are periodically pulled from Transifex and merged into the git
+repository. See the [translation process](doc/translation_process.md) for details
+on how this works.
 
-**Important**: We do not accept translation changes as GitHub pull requests because the next
-pull from Transifex would automatically overwrite them again.
+**Important**: We do not accept translation changes as GitHub pull requests because
+the next pull from Transifex would automatically overwrite them again.
