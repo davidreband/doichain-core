@@ -183,6 +183,83 @@ CheckNameTransaction (const CTransaction& tx, unsigned nHeight,
       return true;
     }
 
+  /* Handle NAME_DOI (Doichain one-step registration / owner update).  It has
+     to be processed here, before the generic name_update flow below, because
+     its input requirements differ: a fresh registration has no name input,
+     while updating an existing name must spend that name's previous output.  */
+
+  if (nameOpOut.getNameOp () == OP_NAME_DOI)
+    {
+      const valtype& doiName = nameOpOut.getOpName ();
+      if (doiName.size () > MAX_NAME_LENGTH)
+        return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                              "tx-name-invalid", "Invalid name");
+      if (nameOpOut.getOpValue ().size () > MAX_VALUE_LENGTH)
+        return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                              "tx-value-invalid", "Invalid value");
+
+      CNameData oldDoi;
+      const bool doiExists = view.GetName (doiName, oldDoi);
+
+      /* Historic (pre-fork) rule: reproduce the permissive behaviour of the
+         original Doichain client so that the pre-existing chain stays valid.
+         Fresh registrations without an input were accepted and existing names
+         could be overwritten; an input, if present, had to be a NAME_DOI on an
+         already-existing name.  */
+      if (nHeight < static_cast<unsigned> (params.DoiOwnershipHeight))
+        {
+          if (nameIn != -1)
+            {
+              if (!doiExists)
+                return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                                      "tx-namedoi-nonexistant",
+                                      "NAME_DOI (legacy) input on a non-existing name");
+              if (nameOpIn.getNameOp () != OP_NAME_DOI)
+                return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                                      "tx-namedoi-input-not-doi",
+                                      "NAME_DOI (legacy) input is not a NAME_DOI");
+            }
+          return true;
+        }
+
+      /* New, strict UTXO-ownership rule.  A name that does not exist (or has
+         expired) is free and may be registered in one step without an input.
+         An existing, unexpired name may only be changed by whoever controls
+         it, proven by spending its previous NAME_DOI output.  */
+
+      if (!doiExists || oldDoi.isExpired (nHeight))
+        {
+          if (nameIn != -1)
+            return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                                  "tx-namedoi-freename-with-input",
+                                  "NAME_DOI registration of a free name must not spend a name input");
+          return true;
+        }
+
+      if (nameIn == -1)
+        return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                              "tx-namedoi-overwrite-without-input",
+                              "NAME_DOI on an existing name must spend its previous output");
+      if (nameOpIn.getNameOp () != OP_NAME_DOI)
+        return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                              "tx-namedoi-input-not-doi",
+                              "NAME_DOI input is not a NAME_DOI");
+      if (doiName != nameOpIn.getOpName ())
+        return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                              "tx-namedoi-name-mismatch",
+                              "NAME_DOI name mismatch to name input");
+
+      /* As for NAME_UPDATE, verify the input matches the name database.  This
+         is redundant with UTXO handling but adds an extra safety layer.  */
+      const unsigned inHeight = coinIn.nHeight;
+      if (inHeight == MEMPOOL_HEIGHT)
+        return true;
+      assert (inHeight == oldDoi.getHeight ());
+      assert (tx.vin[nameIn].prevout == oldDoi.getUpdateOutpoint ());
+
+      return true;
+    }
+
   /* Now that we have ruled out NAME_NEW, check that we have a previous
      name input that is being updated.  */
 

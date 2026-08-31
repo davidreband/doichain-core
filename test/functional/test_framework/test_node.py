@@ -2,7 +2,7 @@
 # Copyright (c) 2017-present The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-"""Class for namecoind node under test"""
+"""Class for doichaind node under test"""
 
 import contextlib
 import decimal
@@ -59,7 +59,7 @@ TEST_CLI_MAX_ARG_SIZE = 1024
 
 # The null blocks key (all 0s)
 NULL_BLK_XOR_KEY = bytes([0] * NUM_XOR_BYTES)
-BITCOIN_PID_FILENAME_DEFAULT = "namecoind.pid"
+BITCOIN_PID_FILENAME_DEFAULT = "doichaind.pid"
 
 if sys.platform.startswith("linux"):
     UNIX_PATH_MAX = 108          # includes the trailing NUL
@@ -80,7 +80,7 @@ class ErrorMatch(Enum):
 
 
 class TestNode():
-    """A class for representing a namecoind node under test.
+    """A class for representing a doichaind node under test.
 
     This class contains:
 
@@ -322,7 +322,7 @@ class TestNode():
         self.process = subprocess.Popen(self.args + extra_args, env=subp_env, stdout=stdout, stderr=stderr, cwd=cwd, **kwargs)
 
         self.running = True
-        self.log.debug("namecoind started, waiting for RPC to come up")
+        self.log.debug("doichaind started, waiting for RPC to come up")
 
         if self.start_perf:
             self._start_perf()
@@ -346,7 +346,7 @@ class TestNode():
                 str_error += "************************\n" if str_error else ''
 
                 raise FailedToStartError(self._node_msg(
-                    f'namecoind exited with status {self.process.returncode} during initialization. {str_error}'))
+                    f'doichaind exited with status {self.process.returncode} during initialization. {str_error}'))
             try:
                 rpc = get_rpc_proxy(
                     rpc_url(self.datadir_path, self.index, self.chain, self.rpchost),
@@ -420,7 +420,7 @@ class TestNode():
                     raise
                 latest_error = suppress_error("missing_credentials", e)
             time.sleep(1.0 / poll_per_s)
-        self._raise_assertion_error(f"Unable to connect to namecoind after {self.rpc_timeout}s (ignored errors: {dict(suppressed_errors)!s}{'' if latest_error is None else f', latest: {latest_error[0]!r}/{latest_error[1]}'})")
+        self._raise_assertion_error(f"Unable to connect to doichaind after {self.rpc_timeout}s (ignored errors: {dict(suppressed_errors)!s}{'' if latest_error is None else f', latest: {latest_error[0]!r}/{latest_error[1]}'})")
 
     def wait_for_cookie_credentials(self):
         """Ensures auth cookie credentials can be read, e.g. for testing CLI with -rpcwait before RPC connection is up."""
@@ -769,7 +769,7 @@ class TestNode():
             try:
                 self.start(extra_args, stdout=log_stdout, stderr=log_stderr, *args, **kwargs)
                 ret = self.process.wait(timeout=self.rpc_timeout)
-                self.log.debug(self._node_msg(f'namecoind exited with status {ret} during initialization'))
+                self.log.debug(self._node_msg(f'doichaind exited with status {ret} during initialization'))
                 assert_not_equal(ret, 0) # Exit code must indicate failure
                 self.running = False
                 self.process = None
@@ -793,7 +793,7 @@ class TestNode():
                 self.process.kill()
                 self.running = False
                 self.process = None
-                assert_msg = f'namecoind should have exited within {self.rpc_timeout}s '
+                assert_msg = f'doichaind should have exited within {self.rpc_timeout}s '
                 if expected_msg is None:
                     assert_msg += "with an error"
                 else:
@@ -1036,7 +1036,7 @@ class TestNodeCLI():
                 stdin_data = rpc_args
             p_args = p_args[:base_arg_pos] + ['-stdin']
 
-        self.log.debug("Running namecoin-cli {}".format(p_args[2:]))
+        self.log.debug("Running doichain-cli {}".format(p_args[2:]))
         process = subprocess.Popen(p_args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         cli_stdout, cli_stderr = process.communicate(input=stdin_data)
         returncode = process.poll()

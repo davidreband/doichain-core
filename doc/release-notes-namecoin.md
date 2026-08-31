@@ -95,7 +95,7 @@
   [corresponding issue](https://github.com/namecoin/namecoin-core/issues/54).
 
 - Names and values in the RPC interface (and to a limited degree also the REST
-  interface and `namecoin-tx`) can now be specified and requested in one of
+  interface and `doichain-tx`) can now be specified and requested in one of
   three encodings (`ascii`, `utf8` and `hex`).  This fixes a long-standing issue
   with names or values that were invalid UTF-8, by adding proper support for
   pure binary data as well as validation of the data before returning it as
@@ -105,7 +105,7 @@
   can be found in the
   [Github issue](https://github.com/namecoin/namecoin-core/issues/246).
 
-- The `namecoin-tx` utility has now support for creating name operations based
+- The `doichain-tx` utility has now support for creating name operations based
   on the new commands `namenew`, ` namefirstupdate` and `nameupdate`.  For the
   exact usage, see the
   [proposal](https://github.com/namecoin/namecoin-core/issues/147#issuecomment-402429258).

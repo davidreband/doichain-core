@@ -530,6 +530,80 @@ addTestCoin (const CScript& scr, unsigned nHeight, CCoinsViewCache& view)
   return outp;
 }
 
+BOOST_AUTO_TEST_CASE (name_doi_verification)
+{
+  const valtype nameA = DecodeName ("doi-name-a", NameEncoding::ASCII);
+  const valtype nameB = DecodeName ("doi-name-b", NameEncoding::ASCII);
+  const valtype value = DecodeName ("doi-value", NameEncoding::ASCII);
+  const CScript addr = getTestAddress ();
+
+  const CScript scrDoiA = CNameScript::buildNameDOI (addr, nameA, value);
+  const CScript scrDoiB = CNameScript::buildNameDOI (addr, nameB, value);
+
+  /* The test fixture uses mainnet params: DoiOwnershipHeight = 450'000 and
+     NameExpirationDepth = 36'000.  We check the strict rule at height 500'000
+     and the historic (permissive) rule at 400'000; names are registered close
+     enough below to stay unexpired.  */
+  const unsigned STRICT = 500000;
+  const unsigned LEGACY = 400000;
+  const unsigned REGH   = 490000;
+
+  CCoinsView dummyView;
+  CCoinsViewCache view(&dummyView);
+
+  const COutPoint inFund = addTestCoin (addr, 1, view);
+  const COutPoint inDoiA = addTestCoin (scrDoiA, REGH, view);
+  const COutPoint inDoiB = addTestCoin (scrDoiB, REGH, view);
+
+  TxValidationState state;
+  CMutableTransaction mtx;
+
+  /* (1) Strict rule: one-step registration of a free name (no name input). */
+  mtx = CMutableTransaction ();
+  mtx.SetNamecoin ();
+  mtx.vin.push_back (CTxIn (inFund));
+  mtx.vout.push_back (CTxOut (COIN, scrDoiA));
+  BOOST_CHECK (CheckNameTransaction (mtx, STRICT, view, state, 0));
+
+  /* Register nameA and nameB; their update outputs are inDoiA / inDoiB.  */
+  CNameData dataA, dataB;
+  dataA.fromScript (REGH, inDoiA, CNameScript (scrDoiA));
+  dataB.fromScript (REGH, inDoiB, CNameScript (scrDoiB));
+  view.SetName (nameA, dataA, false);
+  view.SetName (nameB, dataB, false);
+
+  /* (2) Strict rule: overwriting an existing name WITHOUT spending its output
+     is rejected.  This is the fix for the historic ownerless-overwrite bug.  */
+  mtx = CMutableTransaction ();
+  mtx.SetNamecoin ();
+  mtx.vin.push_back (CTxIn (inFund));
+  mtx.vout.push_back (CTxOut (COIN, scrDoiA));
+  BOOST_CHECK (!CheckNameTransaction (mtx, STRICT, view, state, 0));
+
+  /* (3) Strict rule: the owner updates by spending the previous output.  */
+  mtx = CMutableTransaction ();
+  mtx.SetNamecoin ();
+  mtx.vin.push_back (CTxIn (inDoiA));
+  mtx.vout.push_back (CTxOut (COIN, scrDoiA));
+  BOOST_CHECK (CheckNameTransaction (mtx, STRICT, view, state, 0));
+
+  /* (4) Strict rule: spending name A's output while writing name B (using one
+     name's ownership to hijack another) is rejected on the name mismatch.  */
+  mtx = CMutableTransaction ();
+  mtx.SetNamecoin ();
+  mtx.vin.push_back (CTxIn (inDoiA));
+  mtx.vout.push_back (CTxOut (COIN, scrDoiB));
+  BOOST_CHECK (!CheckNameTransaction (mtx, STRICT, view, state, 0));
+
+  /* (5) Below the fork height the very same ownerless overwrite is accepted,
+     so that the pre-existing chain stays valid under the new client.  */
+  mtx = CMutableTransaction ();
+  mtx.SetNamecoin ();
+  mtx.vin.push_back (CTxIn (inFund));
+  mtx.vout.push_back (CTxOut (COIN, scrDoiA));
+  BOOST_CHECK (CheckNameTransaction (mtx, LEGACY, view, state, 0));
+}
+
 BOOST_AUTO_TEST_CASE (name_tx_verification)
 {
   const valtype name1 = DecodeName ("test-name-1", NameEncoding::ASCII);

@@ -179,6 +179,16 @@ struct Params {
      * Note that segwit v0 script rules are enforced on all blocks except the
      * BIP 16 exception blocks. */
     int SegwitHeight;
+    /** Doichain: block height from which the strict name_doi UTXO-ownership rule
+     *  is enforced.  Below this height the historic (permissive) name_doi rules
+     *  apply, so that the pre-existing chain stays valid. */
+    int DoiOwnershipHeight;
+    /** Doichain: block height from which the proof-of-work difficulty rule
+     *  (nBits == GetNextWorkRequired) is enforced.  The pre-existing chain was
+     *  produced by a client that did not check this, so it is only enforced
+     *  from this height onward; older blocks stay valid.  (The block hash is
+     *  still checked against its claimed target at every height.) */
+    int DoiPowCheckHeight;
     /** Don't warn about unknown BIP 9 activations below this height.
      * This prevents us from warning about the CSV and segwit activations. */
     int MinBIP9WarningHeight;

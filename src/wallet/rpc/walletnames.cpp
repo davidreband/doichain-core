@@ -843,6 +843,121 @@ name_update ()
 /* ************************************************************************** */
 
 RPCHelpMan
+name_doi ()
+{
+  NameOptionsHelp optHelp;
+  optHelp
+      .withNameEncoding ()
+      .withValueEncoding ()
+      .withWriteOptions ();
+
+  return RPCHelpMan ("name_doi",
+      "\nRegisters or updates a name using the Doichain name_doi operation."
+      "  If the name does not yet exist (or has expired) it is registered in a"
+      " single step; if it already exists, its previous name_doi output is spent,"
+      " so that only the current owner can change it."
+          + HELP_REQUIRING_PASSPHRASE,
+      {
+          {"name", RPCArg::Type::STR, RPCArg::Optional::NO, "The name to register or update"},
+          {"value", RPCArg::Type::STR, RPCArg::Optional::NO, "Value for the name"},
+          optHelp.buildRpcArg (),
+      },
+      RPCResult {RPCResult::Type::STR_HEX, "", "the transaction ID"},
+      RPCExamples {
+          HelpExampleCli ("name_doi", "\"myname\", \"my-value\"")
+        + HelpExampleRpc ("name_doi", "\"myname\", \"my-value\"")
+      },
+      [&] (const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
+{
+  std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest (request);
+  if (!wallet)
+    return NullUniValue;
+  CWallet* const pwallet = wallet.get ();
+
+  const auto& node = EnsureAnyNodeContext (request);
+  const auto& chainman = EnsureChainman (node);
+
+  UniValue options(UniValue::VOBJ);
+  if (request.params.size () >= 3)
+    options = request.params[2].get_obj ();
+
+  const valtype name = DecodeNameFromRPCOrThrow (request.params[0], options);
+  if (name.size () > MAX_NAME_LENGTH)
+    throw JSONRPCError (RPC_INVALID_PARAMETER, "the name is too long");
+
+  const valtype value = DecodeValueFromRPCOrThrow (request.params[1], options);
+  if (value.size () > MAX_VALUE_LENGTH_UI)
+    throw JSONRPCError (RPC_INVALID_PARAMETER, "the value is too long");
+
+  /* Find the previous name output to spend.  Pending mempool operations take
+     precedence; otherwise we look the name up in the database.  If the name is
+     not registered (or has expired), this is a one-step registration that does
+     not spend a name input. */
+  const unsigned chainLimit = gArgs.GetIntArg ("-limitnamechains",
+                                               DEFAULT_NAME_CHAIN_LIMIT);
+  COutPoint outp;
+  bool freshReg = false;
+  {
+    auto& mempool = EnsureMemPool (node);
+    LOCK (mempool.cs);
+
+    const unsigned pendingOps = mempool.pendingNameChainLength (name);
+    if (pendingOps >= chainLimit)
+      throw JSONRPCError (RPC_TRANSACTION_ERROR,
+                          "there are already too many pending operations"
+                          " on this name");
+
+    if (pendingOps > 0)
+      outp = mempool.lastNameOutput (name);
+  }
+
+  if (outp.IsNull ())
+    {
+      LOCK (cs_main);
+
+      CNameData oldData;
+      const auto& coinsTip = chainman.ActiveChainstate ().CoinsTip ();
+      if (!coinsTip.GetName (name, oldData)
+            || oldData.isExpired (chainman.ActiveHeight ()))
+        freshReg = true;
+      else
+        outp = oldData.getUpdateOutpoint ();
+    }
+
+  /* Make sure the results are valid at least up to the most recent block
+     the user could have gotten from another RPC command prior to now.  */
+  pwallet->BlockUntilSyncedToCurrentChain ();
+
+  LOCK (pwallet->cs_wallet);
+
+  EnsureWalletIsUnlocked (*pwallet);
+
+  DestinationAddressHelper destHelper(*pwallet);
+  destHelper.setOptions (options);
+
+  const CScript nameOp
+    = CNameScript::buildNameDOI (CScript (), name, value);
+
+  CTxIn txIn;
+  if (!freshReg)
+    {
+      assert (!outp.IsNull ());
+      txIn = CTxIn (outp);
+    }
+
+  const UniValue txidVal
+      = SendNameOutput (request, *pwallet, destHelper.getDest (), nameOp,
+                        freshReg ? nullptr : &txIn, options);
+  destHelper.finalise ();
+
+  return txidVal;
+}
+  );
+}
+
+/* ************************************************************************** */
+
+RPCHelpMan
 queuerawtransaction ()
 {
   return RPCHelpMan ("queuerawtransaction",

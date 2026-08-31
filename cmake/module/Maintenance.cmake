@@ -23,7 +23,7 @@ function(add_maintenance_targets)
     return()
   endif()
 
-  foreach(target IN ITEMS namecoin namecoind namecoin-node namecoin-qt namecoin-gui namecoin-cli namecoin-tx namecoin-util namecoin-wallet test_namecoin bench_namecoin)
+  foreach(target IN ITEMS namecoin doichaind doichain-node doichain-qt doichain-gui doichain-cli doichain-tx doichain-util doichain-wallet test_namecoin bench_namecoin)
     if(TARGET ${target})
       list(APPEND executables $<TARGET_FILE:${target}>)
     endif()
@@ -43,7 +43,7 @@ function(add_maintenance_targets)
 endfunction()
 
 function(add_windows_deploy_target)
-  if(MINGW AND TARGET namecoin AND TARGET namecoin-qt AND TARGET namecoind AND TARGET namecoin-cli AND TARGET namecoin-tx AND TARGET namecoin-wallet AND TARGET namecoin-util AND TARGET test_namecoin)
+  if(MINGW AND TARGET namecoin AND TARGET doichain-qt AND TARGET doichaind AND TARGET doichain-cli AND TARGET doichain-tx AND TARGET doichain-wallet AND TARGET doichain-util AND TARGET test_namecoin)
     find_program(MAKENSIS_EXECUTABLE makensis)
     if(NOT MAKENSIS_EXECUTABLE)
       add_custom_target(deploy
@@ -60,12 +60,12 @@ function(add_windows_deploy_target)
       OUTPUT ${PROJECT_BINARY_DIR}/bitcoin-win64-setup.exe
       COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/release
       COMMAND ${CMAKE_STRIP} $<TARGET_FILE:namecoin> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:namecoin>
-      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:namecoin-qt> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:namecoin-qt>
-      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:namecoind> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:namecoind>
-      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:namecoin-cli> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:namecoin-cli>
-      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:namecoin-tx> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:namecoin-tx>
-      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:namecoin-wallet> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:namecoin-wallet>
-      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:namecoin-util> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:namecoin-util>
+      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:doichain-qt> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:doichain-qt>
+      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:doichaind> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:doichaind>
+      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:doichain-cli> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:doichain-cli>
+      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:doichain-tx> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:doichain-tx>
+      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:doichain-wallet> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:doichain-wallet>
+      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:doichain-util> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:doichain-util>
       COMMAND ${CMAKE_STRIP} $<TARGET_FILE:test_namecoin> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:test_namecoin>
       COMMAND ${MAKENSIS_EXECUTABLE} -V2 ${PROJECT_BINARY_DIR}/bitcoin-win64-setup.nsi
       VERBATIM
@@ -75,7 +75,7 @@ function(add_windows_deploy_target)
 endfunction()
 
 function(add_macos_deploy_target)
-  if(CMAKE_SYSTEM_NAME STREQUAL "Darwin" AND TARGET namecoin-qt)
+  if(CMAKE_SYSTEM_NAME STREQUAL "Darwin" AND TARGET doichain-qt)
     set(macos_app "Namecoin-Qt.app")
     # Populate Contents subdirectory.
     configure_file(${PROJECT_SOURCE_DIR}/share/qt/Info.plist.in ${macos_app}/Contents/Info.plist NO_SOURCE_PERMISSIONS)
@@ -89,8 +89,8 @@ function(add_macos_deploy_target)
 
     add_custom_command(
       OUTPUT ${PROJECT_BINARY_DIR}/${macos_app}/Contents/MacOS/Namecoin-Qt
-      COMMAND ${CMAKE_COMMAND} --install ${PROJECT_BINARY_DIR} --config $<CONFIG> --component namecoin-qt --prefix ${macos_app}/Contents/MacOS --strip
-      COMMAND ${CMAKE_COMMAND} -E rename ${macos_app}/Contents/MacOS/bin/$<TARGET_FILE_NAME:namecoin-qt> ${macos_app}/Contents/MacOS/Namecoin-Qt
+      COMMAND ${CMAKE_COMMAND} --install ${PROJECT_BINARY_DIR} --config $<CONFIG> --component doichain-qt --prefix ${macos_app}/Contents/MacOS --strip
+      COMMAND ${CMAKE_COMMAND} -E rename ${macos_app}/Contents/MacOS/bin/$<TARGET_FILE_NAME:doichain-qt> ${macos_app}/Contents/MacOS/Namecoin-Qt
       COMMAND ${CMAKE_COMMAND} -E rm -rf ${macos_app}/Contents/MacOS/bin
       COMMAND ${CMAKE_COMMAND} -E rm -rf ${macos_app}/Contents/MacOS/share
       VERBATIM
@@ -138,7 +138,7 @@ function(add_macos_deploy_target)
         )
       endif()
     endif()
-    add_dependencies(deploydir namecoin-qt)
+    add_dependencies(deploydir doichain-qt)
     add_dependencies(deploy deploydir)
   endif()
 endfunction()

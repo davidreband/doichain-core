@@ -215,7 +215,7 @@ static RPCHelpMan loadwallet()
     return RPCHelpMan{
         "loadwallet",
         "Loads a wallet from a wallet file or directory."
-                "\nNote that all wallet command-line options used when starting namecoind will be"
+                "\nNote that all wallet command-line options used when starting doichaind will be"
                 "\napplied to the new wallet.\n",
                 {
                     {"filename", RPCArg::Type::STR, RPCArg::Optional::NO, "The path to the directory of the wallet to be loaded, either absolute or relative to the \"wallets\" directory. The \"wallets\" directory is set by the -walletdir option and defaults to the \"wallets\" folder within the data directory."},
@@ -909,6 +909,7 @@ RPCHelpMan name_list();
 RPCHelpMan name_new();
 RPCHelpMan name_firstupdate();
 RPCHelpMan name_update();
+RPCHelpMan name_doi();
 RPCHelpMan queuerawtransaction();
 RPCHelpMan dequeuetransaction();
 RPCHelpMan listqueuedtransactions();
@@ -984,6 +985,7 @@ std::span<const CRPCCommand> GetWalletRPCCommands()
         {"names", &name_new},
         {"names", &name_firstupdate},
         {"names", &name_update},
+        {"names", &name_doi},
         {"names", &queuerawtransaction},
         {"names", &dequeuetransaction},
         {"names", &listqueuedtransactions},

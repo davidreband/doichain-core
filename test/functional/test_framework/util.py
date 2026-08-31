@@ -323,13 +323,13 @@ def get_binary_paths(config):
     paths = types.SimpleNamespace()
     binaries = {
         "namecoin": "BITCOIN_BIN",
-        "namecoind": "BITCOIND",
+        "doichaind": "BITCOIND",
         "bench_namecoin": "BITCOIN_BENCH",
-        "namecoin-cli": "BITCOINCLI",
-        "namecoin-util": "BITCOINUTIL",
-        "namecoin-tx": "BITCOINTX",
-        "namecoin-chainstate": "BITCOINCHAINSTATE",
-        "namecoin-wallet": "BITCOINWALLET",
+        "doichain-cli": "BITCOINCLI",
+        "doichain-util": "BITCOINUTIL",
+        "doichain-tx": "BITCOINTX",
+        "doichain-chainstate": "BITCOINCHAINSTATE",
+        "doichain-wallet": "BITCOINWALLET",
     }
     # Set paths to bitcoin core binaries allowing overrides with environment
     # variables.

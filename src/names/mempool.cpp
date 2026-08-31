@@ -124,7 +124,7 @@ CNameMemPool::addUnchecked (const CTxMemPoolEntry& entry)
       mapNameRegs.insert (std::make_pair (name, txHash));
     }
 
-  if (entry.isNameUpdate ())
+  if (entry.isNameUpdate () || entry.isNameDoi ())
     {
       const valtype& name = entry.getName ();
       const auto mit = updates.find (name);
@@ -148,7 +148,7 @@ CNameMemPool::remove (const CTxMemPoolEntry& entry)
       mapNameRegs.erase (mit);
     }
 
-  if (entry.isNameUpdate ())
+  if (entry.isNameUpdate () || entry.isNameDoi ())
     {
       const auto itName = updates.find (entry.getName ());
       assert (itName != updates.end ());
@@ -274,7 +274,7 @@ CNameMemPool::check (const CCoinsViewCache& tip,
             assert (data.isExpired (spendheight));
         }
 
-      if (entry.isNameUpdate ())
+      if (entry.isNameUpdate () || entry.isNameDoi ())
         {
           const valtype& name = entry.getName ();
 
@@ -284,11 +284,18 @@ CNameMemPool::check (const CCoinsViewCache& tip,
 
           ++nameUpdates[name];
 
-          CNameData data;
-          if (tip.GetName (name, data))
-            assert (!data.isExpired (spendheight));
-          else
-            assert (registersName (name));
+          /* A plain NAME_UPDATE requires the name to exist (and be unexpired)
+             or to be registered in the mempool.  A NAME_DOI may instead be a
+             one-step registration of a currently free name, so we skip that
+             check for it.  */
+          if (!entry.isNameDoi ())
+            {
+              CNameData data;
+              if (tip.GetName (name, data))
+                assert (!data.isExpired (spendheight));
+              else
+                assert (registersName (name));
+            }
         }
     }
 
@@ -333,10 +340,11 @@ CNameMemPool::checkTx (const CTransaction& tx) const
           }
 
         case OP_NAME_UPDATE:
+        case OP_NAME_DOI:
           /* Multiple updates of the same name in a chain are perfectly fine.
              The main mempool logic takes care that updates are ordered
              properly and really a chain, as this is automatic due to the
-             coloured-coin nature of names.  */
+             coloured-coin nature of names.  NAME_DOI ops chain the same way.  */
           break;
 
         default:

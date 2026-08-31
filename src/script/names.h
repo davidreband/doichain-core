@@ -57,6 +57,7 @@ public:
       case OP_NAME_NEW:
       case OP_NAME_FIRSTUPDATE:
       case OP_NAME_UPDATE:
+      case OP_NAME_DOI:
         return true;
 
       case OP_NOP:
@@ -90,6 +91,7 @@ public:
       case OP_NAME_NEW:
       case OP_NAME_FIRSTUPDATE:
       case OP_NAME_UPDATE:
+      case OP_NAME_DOI:
         return op;
 
       default:
@@ -112,6 +114,7 @@ public:
 
       case OP_NAME_FIRSTUPDATE:
       case OP_NAME_UPDATE:
+      case OP_NAME_DOI:
         return true;
 
       default:
@@ -131,6 +134,7 @@ public:
       {
       case OP_NAME_FIRSTUPDATE:
       case OP_NAME_UPDATE:
+      case OP_NAME_DOI:
         return args[0];
 
       default:
@@ -152,6 +156,7 @@ public:
         return args[2];
 
       case OP_NAME_UPDATE:
+      case OP_NAME_DOI:
         return args[1];
 
       default:
@@ -237,6 +242,17 @@ public:
    */
   static CScript buildNameUpdate (const CScript& addr, const valtype& name,
                                   const valtype& value);
+
+  /**
+   * Build a NAME_DOI transaction (Doichain one-step name registration or
+   * owner update).  Encoded like NAME_UPDATE but with the OP_NAME_DOI marker.
+   * @param addr The address script to append.
+   * @param name The name to register / update.
+   * @param value The value to set it to.
+   * @return The full NAME_DOI script.
+   */
+  static CScript buildNameDOI (const CScript& addr, const valtype& name,
+                               const valtype& value);
 
 };
 

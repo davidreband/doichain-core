@@ -914,7 +914,7 @@ PerformNameRawtx (const unsigned nOut, const UniValue& nameOp,
 
   /* namerawtransaction does not have an options argument.  This would just
      make the already long list of arguments longer.  Instead of using
-     namerawtransaction, namecoin-tx can be used anyway to create name
+     namerawtransaction, doichain-tx can be used anyway to create name
      operations with arbitrary hex data.  */
   const UniValue NO_OPTIONS(UniValue::VOBJ);
 
