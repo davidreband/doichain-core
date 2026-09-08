@@ -4253,12 +4253,14 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
                              "late-legacy-block",
                              "legacy block after auxpow start");
 
-    // Check proof of work.  Doichain historically did not enforce this rule, so
-    // it is only required from the activation height onward; that keeps the
-    // pre-existing chain valid.  CheckProofOfWork (called elsewhere) still
-    // verifies the block hash against its claimed target at every height.
-    if (nHeight >= consensusParams.DoiPowCheckHeight
-            && block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams))
+    // Check proof of work.  The check was commented out in the Doichain 0.20
+    // code and stayed that way for six years, so it was reasonable to fear the
+    // existing chain would not satisfy it.  It does: every one of the 213
+    // retarget points on mainnet was re-derived from the chain data and matches
+    // GetNextWorkRequired exactly, with no deviation at any height.  The rule is
+    // therefore enforced everywhere rather than from an activation height, which
+    // avoids leaving a window in which a wrong difficulty would be accepted.
+    if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams))
         return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "bad-diffbits", "incorrect proof of work");
 
     // Check timestamp against prev

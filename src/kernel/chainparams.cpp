@@ -127,7 +127,6 @@ public:
         consensus.CSVHeight = 216500;
         consensus.SegwitHeight = 216500;
         consensus.DoiOwnershipHeight = 450000; // TODO(doichain): finalize before rollout (above current tip ~431k)
-        consensus.DoiPowCheckHeight = 450000; // TODO(doichain): finalize; enforce correct difficulty from here on
         consensus.MinBIP9WarningHeight = 218500; // segwit activation height + miner confirmation window
         consensus.powLimit = uint256{"0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
@@ -285,7 +284,6 @@ public:
         consensus.CSVHeight = 1000;
         consensus.SegwitHeight = 1000;
         consensus.DoiOwnershipHeight = 300000; // TODO(doichain): finalize (above current testnet tip)
-        consensus.DoiPowCheckHeight = 300000; // TODO(doichain): finalize (above current testnet tip)
         consensus.MinBIP9WarningHeight = 1000; // segwit activation height + miner confirmation window
         consensus.powLimit = uint256{"000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
@@ -667,7 +665,6 @@ public:
         consensus.CSVHeight = 1;    // Always active unless overridden
         consensus.SegwitHeight = 0; // Always active unless overridden
         consensus.DoiOwnershipHeight = 0; // strict name_doi rules from genesis on regtest
-        consensus.DoiPowCheckHeight = 0; // enforce difficulty rule from genesis on regtest
         consensus.MinBIP9WarningHeight = 0;
         consensus.powLimit = uint256{"7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
         consensus.nPowTargetTimespan = 24 * 60 * 60; // one day
