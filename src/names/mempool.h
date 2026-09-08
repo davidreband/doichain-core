@@ -26,7 +26,10 @@ class CTxMemPoolEntry;
  * the network has upgraded sufficiently, we should increase this to a value
  * higher but still lower than the general mempool ancestor limit.
  */
-static constexpr unsigned DEFAULT_NAME_CHAIN_LIMIT = 1;
+/* Namecoin allows a single pending operation per name.  Doichain has run with
+   two since 0.20, which is what the production nodes and the applications
+   built on them expect, so the higher value is kept.  */
+static constexpr unsigned DEFAULT_NAME_CHAIN_LIMIT = 2;
 
 /**
  * Handle the name component of the transaction mempool.  This keeps track
