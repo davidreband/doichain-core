@@ -384,12 +384,29 @@ CNameMemPool::checkTx (const CTransaction& tx) const
           }
 
         case OP_NAME_UPDATE:
-        case OP_NAME_DOI:
           /* Multiple updates of the same name in a chain are perfectly fine.
              The main mempool logic takes care that updates are ordered
              properly and really a chain, as this is automatic due to the
-             coloured-coin nature of names.  NAME_DOI ops chain the same way.  */
+             coloured-coin nature of names.  */
           break;
+
+        case OP_NAME_DOI:
+          {
+            /* DOI operations chain in exactly the same way.  But the d/
+               namespace belongs to the classic name_new / name_firstupdate
+               workflow and must not be used with name_doi.
+
+               The name is compared as raw bytes.  The original Doichain code
+               compared it against EncodeNameForMessage(), which wraps the name
+               in single quotes, so the comparison could never match and d/
+               names were accepted for name_doi regardless.  */
+            static const valtype dPrefix{'d', '/'};
+            const valtype& name = nameOp.getOpName ();
+            if (name.size () >= dPrefix.size ()
+                && std::equal (dPrefix.begin (), dPrefix.end (), name.begin ()))
+              return false;
+            break;
+          }
 
         default:
           assert (false);
