@@ -34,6 +34,7 @@ class NameDoiTest (NameTestFramework):
     self.test_d_namespace_rejected (node)
     self.test_decoding_does_not_abort (node)
     self.test_pending_operations (node)
+    self.test_update_chained_on_pending_doi (node)
     self.test_reorg (node)
 
   def test_registration (self, node):
@@ -152,6 +153,33 @@ class NameDoiTest (NameTestFramework):
 
     self.generateToOther (1)
     assert_equal (node.name_show ("e/chained")["value"], "two")
+
+  def test_update_chained_on_pending_doi (self, node):
+    """A name_update may chain onto a DOI operation that is still pending,
+    including one that is registering a name not yet on chain.
+
+    Consensus permits this: CheckNameTransaction returns early for a name
+    input at MEMPOOL_HEIGHT without consulting the name database.  The
+    mempool bookkeeping has to agree, or the consistency check that regtest
+    runs on every mempool change aborts the node."""
+    self.log.info ("chaining a name_update onto a pending name_doi")
+
+    doi = node.name_doi ("e/chain-update", "registered by doi")
+    assert doi in node.getrawmempool ()
+    # The name exists only in the mempool at this point.
+    assert_raises_rpc_error (-4, "name never existed",
+                             node.name_show, "e/chain-update")
+
+    upd = node.name_update ("e/chain-update", "updated while pending")
+    assert upd in node.getrawmempool ()
+
+    # The update spends the DOI's name output.
+    raw = node.getrawtransaction (upd, True)
+    assert doi in [vin["txid"] for vin in raw["vin"]]
+
+    self.generateToOther (1)
+    assert_equal (node.name_show ("e/chain-update")["value"],
+                  "updated while pending")
 
   def test_reorg (self, node):
     """A DOI registration must survive being reorged out and back in, and
