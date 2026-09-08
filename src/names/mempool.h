@@ -65,6 +65,16 @@ private:
   std::map<valtype, std::set<Txid>> updates;
 
   /**
+   * Keep track of names that have a pending NAME_DOI operation.  Such an
+   * operation is both a registration and an update, so the transactions are
+   * also held in "updates" above, which is what drives chaining and expiry.
+   * This map answers the separate question of whether a name that does not
+   * exist on chain yet is being brought into existence by the mempool, which
+   * mapNameRegs answers for the classic name_firstupdate workflow.
+   */
+  std::map<valtype, std::set<Txid>> mapNameDois;
+
+  /**
    * Map NAME_NEW hashes to the corresponding transaction IDs.  This is
    * data that is kept only in memory but never cleared (until a restart).
    * It is used to prevent "name_new stealing", at least in a "soft" way.
@@ -89,6 +99,18 @@ public:
   registersName (const valtype& name) const
   {
     return mapNameRegs.count (name) > 0;
+  }
+
+  /**
+   * Checks whether a particular name is being registered by a pending
+   * NAME_DOI operation.  This is the DOI counterpart to registersName;
+   * unlike a registration, several DOI operations on one name may be
+   * pending at the same time.  Does not lock.
+   */
+  bool
+  registersDoi (const valtype& name) const
+  {
+    return mapNameDois.count (name) > 0;
   }
 
   /**

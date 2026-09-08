@@ -230,9 +230,23 @@ CheckNameTransaction (const CTransaction& tx, unsigned nHeight,
       if (!doiExists || oldDoi.isExpired (nHeight))
         {
           if (nameIn != -1)
-            return state.Invalid (TxValidationResult::TX_CONSENSUS,
-                                  "tx-namedoi-freename-with-input",
-                                  "NAME_DOI registration of a free name must not spend a name input");
+            {
+              /* The name may be free only because its registration is still
+                 sitting in the mempool.  Doichain allows a chain of pending
+                 operations on one name (see DEFAULT_NAME_CHAIN_LIMIT), and the
+                 second operation of such a chain necessarily spends the name
+                 output of the first while the name is not on chain yet.  That
+                 is the owner operating on their own registration, which is
+                 what this rule is meant to protect, so it is allowed.  */
+              if (coinIn.nHeight == MEMPOOL_HEIGHT
+                    && nameOpIn.getNameOp () == OP_NAME_DOI
+                    && doiName == nameOpIn.getOpName ())
+                return true;
+
+              return state.Invalid (TxValidationResult::TX_CONSENSUS,
+                                    "tx-namedoi-freename-with-input",
+                                    "NAME_DOI registration of a free name must not spend a name input");
+            }
           return true;
         }
 

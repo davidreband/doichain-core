@@ -59,6 +59,8 @@ getNameOutput (const CTxMemPool& pool, const Txid& txid)
 COutPoint
 CNameMemPool::lastNameOutput (const valtype& name) const
 {
+  AssertLockHeld (pool.cs);
+
   const auto itUpd = updates.find (name);
   if (itUpd != updates.end ())
     {
@@ -134,6 +136,17 @@ CNameMemPool::addUnchecked (const CTxMemPoolEntry& entry)
       else
         mit->second.insert (txHash);
     }
+
+  if (entry.isNameDoi ())
+    {
+      const valtype& name = entry.getName ();
+      const auto mit = mapNameDois.find (name);
+
+      if (mit == mapNameDois.end ())
+        mapNameDois.emplace (name, std::set<Txid> ({txHash}));
+      else
+        mit->second.insert (txHash);
+    }
 }
 
 void
@@ -158,6 +171,18 @@ CNameMemPool::remove (const CTxMemPoolEntry& entry)
       txids.erase (itTxid);
       if (txids.empty ())
         updates.erase (itName);
+    }
+
+  if (entry.isNameDoi ())
+    {
+      const auto itName = mapNameDois.find (entry.getName ());
+      assert (itName != mapNameDois.end ());
+      auto& txids = itName->second;
+      const auto itTxid = txids.find (entry.GetTx ().GetHash ());
+      assert (itTxid != txids.end ());
+      txids.erase (itTxid);
+      if (txids.empty ())
+        mapNameDois.erase (itName);
     }
 }
 
@@ -245,6 +270,7 @@ CNameMemPool::check (const CCoinsViewCache& tip,
 
   std::set<valtype> nameRegs;
   std::map<valtype, unsigned> nameUpdates;
+  std::map<valtype, unsigned> nameDois;
   for (const auto& entry : pool.mapTx)
     {
       const Txid txHash = entry.GetTx ().GetHash ();
@@ -284,25 +310,43 @@ CNameMemPool::check (const CCoinsViewCache& tip,
 
           ++nameUpdates[name];
 
-          /* A plain NAME_UPDATE requires the name to exist (and be unexpired)
-             or to be registered in the mempool.  A NAME_DOI may instead be a
-             one-step registration of a currently free name, so we skip that
-             check for it.  */
-          if (!entry.isNameDoi ())
+          if (entry.isNameDoi ())
             {
+              const auto mitDoi = mapNameDois.find (name);
+              assert (mitDoi != mapNameDois.end ());
+              assert (mitDoi->second.count (txHash) > 0);
+
+              ++nameDois[name];
+
+              /* No check against the name database here.  A DOI operation is
+                 its own registration, and registering a name whose earlier
+                 incarnation has expired is allowed, so an expired entry may
+                 legitimately be present.  */
+            }
+          else
+            {
+              /* A plain NAME_UPDATE requires the name to exist and be
+                 unexpired, or else to be brought into existence by the
+                 mempool.  That can happen through a classic name_firstupdate
+                 or through a pending DOI operation -- consensus lets an
+                 update chain onto a pending name output either way, so both
+                 have to be accepted here.  */
               CNameData data;
               if (tip.GetName (name, data))
                 assert (!data.isExpired (spendheight));
               else
-                assert (registersName (name));
+                assert (registersName (name) || registersDoi (name));
             }
         }
     }
 
   assert (nameRegs.size () == mapNameRegs.size ());
   assert (nameUpdates.size () == updates.size ());
+  assert (nameDois.size () == mapNameDois.size ());
   for (const auto& upd : nameUpdates)
     assert (updates.at (upd.first).size () == upd.second);
+  for (const auto& doi : nameDois)
+    assert (mapNameDois.at (doi.first).size () == doi.second);
 }
 
 bool
